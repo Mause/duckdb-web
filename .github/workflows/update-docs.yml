@@ -1,0 +1,32 @@
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch: {}
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+name: Update docs
+jobs:
+  update_docs:
+    name: Update docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+      - run: npm install -g jsdoc-to-markdown
+      - run: pip install -r requirements.txt -U
+      - run: pip install duckdb --pre -U
+      - run: gh repo clone duckdb/duckdb
+      - name: Update docs
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            ./scripts/generate_all_docs.sh duckdb/
+          COMMIT_MESSAGE: "chore: update docs"
+          COMMIT_NAME: "GitHub Actions"
+          COMMIT_EMAIL: "example@example.com"
+          PR_BRANCH_NAME: "chore-update-docs-${PR_ID}"
+          PR_TITLE: "chore: update docs"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
