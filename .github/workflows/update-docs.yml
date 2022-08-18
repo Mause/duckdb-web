@@ -1,0 +1,28 @@
+on:
+  schedule:
+    - cron: "@weekly"
+  workflow_dispatch: {}
+
+name: Update docs
+jobs:
+  update_readme:
+    name: Update docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+      - run: pip install requirements.txt -U
+      - run: pip install duckdb --pre -U
+      - run: gh clone duckdb/duckdb
+      - name: Update readme
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            ./scripts/generate_all_docs.sh
+          COMMIT_MESSAGE: "chore: update docs"
+          COMMIT_NAME: "GitHub Actions"
+          COMMIT_EMAIL: "example@example.com"
+          PR_BRANCH_NAME: "chore-update-readme-${PR_ID}"
+          PR_TITLE: "chore: update docs"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
