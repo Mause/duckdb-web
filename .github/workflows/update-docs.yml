@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "@weekly"
+    - cron: "0 0 * * 1"
   workflow_dispatch: {}
 
 name: Update docs
