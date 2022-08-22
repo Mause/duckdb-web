@@ -1397,11 +1397,11 @@ title: Python Client API
 <dd>
 <p>Overloaded function.</p>
 <ol class="arabic simple">
-<li><p>from_parquet(file_name: str, binary_as_string: bool, connection: duckdb.DuckDBPyConnection = &lt;duckdb.DuckDBPyConnection object at 0x7fa58bad8470&gt;) -&gt; duckdb.DuckDBPyRelation</p></li>
+<li><p>from_parquet(file_name: str, binary_as_string: bool, connection: duckdb.DuckDBPyConnection = &lt;duckdb.DuckDBPyConnection object at 0x7f186eb9bf30&gt;) -&gt; duckdb.DuckDBPyRelation</p></li>
 </ol>
 <p>Creates a relation object from the Parquet file in file_name</p>
 <ol class="arabic simple" start="2">
-<li><p>from_parquet(file_name: str, connection: duckdb.DuckDBPyConnection = &lt;duckdb.DuckDBPyConnection object at 0x7fa58bad8470&gt;) -&gt; duckdb.DuckDBPyRelation</p></li>
+<li><p>from_parquet(file_name: str, connection: duckdb.DuckDBPyConnection = &lt;duckdb.DuckDBPyConnection object at 0x7f186eb9bf30&gt;) -&gt; duckdb.DuckDBPyRelation</p></li>
 </ol>
 <p>Creates a relation object from the Parquet file in file_name</p>
 </dd>
