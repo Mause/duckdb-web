@@ -13,9 +13,9 @@ skipped_files = [
 ]
 
 file_list = []
-skip_types = [
-	marko.block.HTMLBlock
-]
+skip_types = (
+	marko.block.HTMLBlock,
+)
 
 
 def normal_whitespace(desc: str) -> str:
@@ -25,9 +25,9 @@ def normal_whitespace(desc: str) -> str:
 def extract_text(parse_node):
 	if not hasattr(parse_node, 'children'):
 		return ''
-	if type(parse_node) in skip_types:
+	if isinstance(parse_node, skip_types):
 		return ''
-	if type(parse_node.children) == type(''):
+	if isinstance(parse_node.children, str):
 		return parse_node.children.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
 	result = ''
 	for child in parse_node.children:
@@ -39,7 +39,7 @@ def sanitize_input(text):
 
 def extract_blurb(parse_node):
 	for child in parse_node.children:
-		if type(child) == marko.block.Paragraph:
+		if isinstance(child, marko.block.Paragraph):
 			return extract_text(parse_node)
 	return ''
 
