@@ -29,10 +29,8 @@ def extract_text(parse_node):
 		return ''
 	if isinstance(parse_node.children, str):
 		return parse_node.children.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
-	result = ''
-	for child in parse_node.children:
-		result += ' ' + extract_text(child)
-	return result
+
+	return ' '.join(extract_text(child) for child in parse_node.children)
 
 def sanitize_input(text):
 	return normal_whitespace(re.sub(r'[^\w\s_-]', ' ', text.lower())).strip()
