@@ -4,5 +4,6 @@ sphinx
 pandas
 pandas-stubs
 lxml
+javasphinx
 
 marko # for generating search index
