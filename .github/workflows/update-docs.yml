@@ -1,4 +1,5 @@
 on:
+  push: {}
   schedule:
     - cron: "0 0 * * 1"  # run once a week on mondays
   workflow_dispatch: {}  # allow running manually from the github ui
@@ -29,7 +30,10 @@ jobs:
           mkdir -p duckdb/build/debug
           unzip duckdb_cli-linux-amd64.zip -d duckdb/build/debug
 
+      - run: ./scripts/generate_all_docs.sh duckdb
+
       - name: Update docs
+        if: github.event.type != 'push'
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
