@@ -69,6 +69,7 @@ def main():
                 "sphinx.ext.intersphinx",
                 "sphinx.ext.autodoc",
                 "generate_python_docs",
+                "javasphinx",
             ],
             "html_theme": "basic",
             "html_show_sourcelink": False,
