@@ -2,6 +2,7 @@
 layout: docu
 title: Extensions
 selected: Documentation/Extensions
+railroad: extension_install.js
 ---
 DuckDB has a number of extensions available for use. Not all of them are included by default in every distribution, but DuckDB has a mechanism that allows for remote installation.
 
@@ -47,6 +48,12 @@ select * from duckdb_extensions();
 | tpcds             | Adds TPC-DS data generation and query support                        |                 |
 | tpch              | Adds TPC-H data generation and query support                         |                 |
 | visualizer        |                                                                      |                 |
+
+## Installing extensions manually
+
+The following railroad diagram indicates how to construct download URL's for extension binaries. They should be downloaded and placed in `~/.duckdb/extensions/{version}/{platform}/{extension}.duckdb_extension`
+
+<div id="rrdiagram"></div>
 
 
 ## Pages in this Section

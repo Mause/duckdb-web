@@ -1262,6 +1262,65 @@ and can be changed before creating a DiagramNode.
 		return this;
 	}
 
+	var Group = funcs.Group = function Group(item, label) {
+		FakeSVG.call(this, 'g');
+		this.item = wrapString(item);
+		this.label =
+			label instanceof FakeSVG
+				? label
+				: label
+					? new Comment(label)
+					: undefined;
+
+		this.width = Math.max(
+			this.item.width + (this.item.needsSpace?20:0),
+			this.label ? this.label.width : 0,
+			DiagramNode.ARC_RADIUS*2);
+		this.height = this.item.height;
+		this.boxUp = this.up = Math.max(this.item.up + DiagramNode.VERTICAL_SEPARATION, DiagramNode.ARC_RADIUS);
+		if(this.label) {
+			this.up += this.label.up + this.label.height + this.label.down;
+		}
+		this.down = Math.max(this.item.down + DiagramNode.VERTICAL_SEPARATION, DiagramNode.ARC_RADIUS);
+		this.needsSpace = true;
+		if(DiagramNode.DEBUG) {
+			this.attrs['data-updown'] = this.up + " " + this.height + " " + this.down;
+			this.attrs['data-type'] = "group";
+		}
+	};
+	subclassOf(Group, FakeSVG);
+	Group.prototype.format = function(x, y, width) {
+		var gaps = determineGaps(width, this.width);
+		new Path(x,y).h(gaps[0]).addTo(this);
+		new Path(x+gaps[0]+this.width,y+this.height).h(gaps[1]).addTo(this);
+		x += gaps[0];
+
+		new FakeSVG('rect', {
+			x,
+			y:y-this.boxUp,
+			width:this.width,
+			height:this.boxUp + this.height + this.down,
+			rx: DiagramNode.ARC_RADIUS,
+			ry: DiagramNode.ARC_RADIUS,
+			'class':'group-box',
+		}).addTo(this);
+
+		this.item.format(x,y,this.width).addTo(this);
+		if(this.label) {
+			this.label.format(
+				x,
+				y-(this.boxUp+this.label.down+this.label.height),
+				this.label.width).addTo(this);
+		}
+
+		return this;
+	}
+	Group.prototype.walk = function(cb) {
+		cb(this);
+		this.item.walk(cb);
+		this.label.walk(cb);
+	}
+
 	var root;
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
