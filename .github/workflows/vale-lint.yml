@@ -15,7 +15,7 @@ jobs:
     - name: Vale
       uses: errata-ai/vale-action@reviewdog
       with:
-        files: .
+        files: docs
         args: --glob='!docs/archive/*'
         debug: true
       env:
