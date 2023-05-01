@@ -3,6 +3,8 @@ layout: docu
 title: Third Party Extensions
 ---
 
+A number of third party extensions have been written using our [extension template](https://github.com/duckdb/extension-template). The information available on this page is also available at [/data/extensions.json](/data/extensions.json). You can add a new extension to this repository by [submitting a pull request](https://github.com/Mause/duckdb-web/new/third-party-extensions/_data/extensions)
+
 {% assign extensions = site.data.extensions | sort %}
 <dl>
 {% for extension_hash in extensions %}
