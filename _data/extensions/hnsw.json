@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "HNSW",
+    "description": "Duckdb extension supporting ANN search based on HNSW",
+    "git_repository": "https://github.com/Jimexist/duckdb-hnsw"
+}
