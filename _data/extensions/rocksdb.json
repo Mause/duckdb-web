@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "RocksDB",
+    "git_repository": "https://github.com/hinxx/rocksdb_scanner",
+    "description": "RocksDB DuckDB Integration"
+}

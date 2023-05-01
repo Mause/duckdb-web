@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "PRQL",
+    "git_repository": "https://github.com/ywelsch/duckdb-prql",
+    "description": "PRQL DuckDB Integration"
+}

@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "Fluvio",
+    "git_repository": "https://github.com/infinyon/fluvio-duck",
+    "description": "Fluvio DuckDB Integration"
+}

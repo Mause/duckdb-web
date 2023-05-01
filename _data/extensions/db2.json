@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "DB2 Scanner",
+    "git_repository": "https://github.com/fremantle-industries/db2_scanner",
+    "description": "The db2_scanner extension allows DuckDB to directly read data from a running Db2 instance"
+}
