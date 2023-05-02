@@ -17,15 +17,22 @@ A number of third party extensions have been written using our [extension templa
     {% assign short_repo = extension.git_repository | split:"https://github.com/" | last %}
 
     <img src="https://img.shields.io/github/stars/{{ short_repo }}?style=social" style="height: 20px; width: auto; margin: 0" />
-    {% else %}
-    - closed source
     {% endif %}
 </dt>
 
 <dd>
-{{extension.description}}
+<dl>
+<dt>Description</dt>
+<dd>{{extension.description}}</dd>
 
-<br/><br/>
+<dt>Extension registry</dt>
+
+<dd>
+{% if extension.extension_repository %}
+<a href="http://{{extension.extension_repository}}">{{extension.extension_repository}}</a>{% else %}Please see GitHub for download details
+{% endif %}
+</dd>
+</dl>
 </dd>
 {% endif %}
 {% endfor %}
