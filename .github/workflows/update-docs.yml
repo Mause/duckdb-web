@@ -25,7 +25,7 @@ jobs:
       - run: gh repo clone duckdb/duckdb-swift
       - run: |
           git apply ../.github/workflows/duckdb-swift.patch
-          swift package generate-documentation --disable-indexing --transform-for-static-hosting
+          swift package generate-documentation --disable-indexing --transform-for-static-hosting --hosting-base-path /docs/api/swift/api --output-path ../docs/api/swift/api
         working-directory: duckdb-swift  
       - run: gh repo clone duckdb/duckdb
       - name: download latest duckdb cli binary
