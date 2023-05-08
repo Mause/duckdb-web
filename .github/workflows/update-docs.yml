@@ -24,7 +24,7 @@ jobs:
       - run: pip install duckdb --pre -U  # grab the latest duckdb python dev version
       - run: gh repo clone duckdb/duckdb-swift
       - run: |
-          swift package add https://github.com/apple/swift-docc-plugin
+          git apply ../.github/workflows/duckdb-swift.patch
           swift package generate-documentation --disable-indexing --transform-for-static-hosting
         working-directory: duckdb-swift  
       - run: gh repo clone duckdb/duckdb
