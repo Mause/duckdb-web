@@ -22,6 +22,11 @@ jobs:
       - run: pip install wheel pip -U
       - run: pip install -r requirements.txt -U
       - run: pip install duckdb --pre -U  # grab the latest duckdb python dev version
+      - run: gh repo clone duckdb/duckdb-swift
+      - run: |
+          swift package add https://github.com/apple/swift-docc-plugin
+          swift package generate-documentation --disable-indexing --transform-for-static-hosting
+        working-directory: duckdb-swift  
       - run: gh repo clone duckdb/duckdb
       - name: download latest duckdb cli binary
         run: |
