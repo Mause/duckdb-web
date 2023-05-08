@@ -36,6 +36,7 @@ jobs:
           gh run download $RUN_ID --repo duckdb/duckdb --name duckdb-binaries-linux
           mkdir -p duckdb/build/debug
           unzip duckdb_cli-linux-amd64.zip -d duckdb/build/debug
+          rm -rf duckdb-swift
 
       - name: Update docs
         uses: technote-space/create-pr-action@v2
