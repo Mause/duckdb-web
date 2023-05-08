@@ -38,6 +38,8 @@ plugins:
   - jekyll-redirect-from
   - jekyll-sitemap
 excerpt_separator: <!--more-->
+github:
+  repository_url: https://github.com/duckdb/duckdb-web
 
 twitter:
   username: DuckDB
