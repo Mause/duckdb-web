@@ -12,6 +12,7 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 
 <!-- This follows the order of shorthand, core/main function (list_), other list_ aliases, array_ aliases -->
 
+<!-- function table: name.startswith('array_') or name.startswith('list_') -->
 | Function                                          | Description                                                                                                                                                                         | Example                                  | Result            |
 |:--------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------|:------------------|
 | *`list`*`[`*`index`*`]`                           | Bracket notation serves as an alias for `list_extract`.                                                                                                                             | `l[3]`                                   | `6`               |

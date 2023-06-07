@@ -18,14 +18,14 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
-      - run: pip install wheel pip -U
+      - run: pip install wheel pip rich -U
       - run: pip install -r requirements.txt -U
       - run: pip install duckdb --pre -U
-      # - run: gh repo clone duckdb/duckdb
-      - uses: actions-rs/install@v0.1
+      - run: gh repo clone duckdb/duckdb
+      - uses: taiki-e/install-action@v2
         with:
-          crate: ripgrep
-          version: latest
-          use-tool-cache: true
+          tool: ripgrep
+      - run: python3 scripts/generate_function_docs.py duckdb
+        if: always()
       - run: python3 scripts/check_for_missing_docs.py >> $GITHUB_STEP_SUMMARY
-        if: success() || failure()
+        if: always()
