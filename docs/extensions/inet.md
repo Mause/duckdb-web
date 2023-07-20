@@ -1,7 +1,7 @@
 ---
 layout: docu
 title: INET
-selected: Documentation/INET
+selected: Extensions
 ---
 
 This extension adds a new type (`inet`) to DuckDB, along with cast operators, and primarily exists as a demo of adding new types and operators.

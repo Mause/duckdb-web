@@ -945,6 +945,14 @@
             {
               "page": "Spatial",
               "url": "spatial"
+            },
+            {
+              "page": "INET",
+              "url": "inet"
+            },
+            {
+              "page": "Excel",
+              "url": "excel"
             }
           ]
         }
