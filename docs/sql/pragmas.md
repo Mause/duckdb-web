@@ -30,7 +30,7 @@ PRAGMA functions;
 
 ```sql
 cid INTEGER,        -- cid of the column
-name VARCHAR,       -- name fo the column
+name VARCHAR,       -- name of the column
 type VARCHAR,       -- type of the column
 notnull BOOLEAN,    -- if the column is marked as NOT NULL
 dflt_value VARCHAR, -- default value of the column, or NULL if not specified
@@ -88,6 +88,15 @@ PRAGMA default_order='DESCENDING';
 -- show DuckDB version
 PRAGMA version;
 CALL pragma_version();
+```
+
+### platform
+`platform` returns an identifier for the platform the current DuckDB executable has been compiled for.
+This matches the platform_name as described [on the extension loading explainer](../extensions/overview#downloading-extensions-directly-from-s3).
+```sql
+-- show platform of current DuckDB executable
+PRAGMA platform;
+CALL pragma_platform();
 ```
 
 ### enable_progress_bar, disable_progress_bar, enable_profiling, disable_profiling, profiling_output

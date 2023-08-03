@@ -68,7 +68,7 @@ The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME
 
 | Function | Description | Example | Result |
 |:---|:---|:---|:---|
-| `age(`*`timestamptz`*`, `*`timestamptz`*`)` | Subtract arguments, resulting in the time difference between the two timestamps | `age(TIMESTAMP '2001-04-10', TIMESTAMP '1992-09-20')` | `8 years 6 months 20 days` |
+| `age(`*`timestamptz`*`, `*`timestamptz`*`)` | Subtract arguments, resulting in the time difference between the two timestamps | `age(TIMESTAMPTZ '2001-04-10', TIMESTAMPTZ '1992-09-20')` | `8 years 6 months 20 days` |
 | `age(`*`timestamptz`*`)` | Subtract from current_date | `age(TIMESTAMP '1992-09-20')` | `29 years 1 month 27 days 12:39:00.844` |
 | `date_diff(`*`part`*`, `*`startdate`*`, `*`enddate`*`)` | The number of [partition](../../sql/functions/datepart) boundaries between the timestamps | `date_diff('hour', TIMESTAMPTZ '1992-09-30 23:59:59', TIMESTAMPTZ '1992-10-01 01:58:00')` | `2` |
 | `datediff(`*`part`*`, `*`startdate`*`, `*`enddate`*`)` | Alias of date_diff. The number of [partition](../../sql/functions/datepart) boundaries between the timestamps | `datediff('hour', TIMESTAMPTZ '1992-09-30 23:59:59', TIMESTAMPTZ '1992-10-01 01:58:00')` | `2` |
@@ -81,8 +81,12 @@ The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME
 | `date_trunc(`*`part`*`, `*`timestamptz`*`)` | Truncate to specified [precision](../../sql/functions/datepart) | `date_trunc('hour', TIMESTAMPTZ '1992-09-20 20:38:40')` | `1992-09-20 20:00:00` |
 | `datetrunc(`*`part`*`, `*`timestamptz`*`)` | Alias of date_trunc. Truncate to specified [precision](../../sql/functions/datepart) | `datetrunc('hour', TIMESTAMPTZ '1992-09-20 20:38:40')` | `1992-09-20 20:00:00` |
 | `extract(`*`field`* `from` *`timestamptz`*`)` | Get [subfield](../../sql/functions/datepart) from a timestamp with time zone | `extract('hour' FROM TIMESTAMPTZ '1992-09-20 20:38:48')` | `20` |
+| `epoch_ms(`*`timestamptz`*`)` | Converts a timestamptz to milliseconds since the epoch | `epoch_ms('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123` |
+| `epoch_us(`*`timestamptz`*`)` | Converts a timestamptz to microseconds since the epoch | `epoch_us('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123456` |
+| `epoch_ns(`*`timestamptz`*`)` | Converts a timestamptz to nanoseconds since the epoch | `epoch_ns('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123456000` |
 | `last_day(`*`timestamptz`*`)` | The last day of the month. | `last_day(TIMESTAMPTZ '1992-03-22 01:02:03.1234')` | `1992-03-31` |
 | `make_timestamptz(`*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`double`*`)` | The timestamp with time zone for the given parts in the current time zone | `make_timestamptz(1992, 9, 20, 13, 34, 27.123456)` | `1992-09-20 13:34:27.123456-07` |
+| `make_timestamptz(`*`microseconds`*`)` | The timestamp with time zone for the given µs since the epoch | `make_timestamptz(1667810584123456)` | `2022-11-07 16:43:04.123456-08` |
 | `make_timestamptz(`*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`double`*`, `*`string`*`)` | The timestamp with time zone for the given parts and time zone | `make_timestamptz(1992, 9, 20, 15, 34, 27.123456, 'CET')` | `1992-09-20 06:34:27.123456-07` |
 | `strftime(`*`timestamptz`*`, `*`format`*`)` | Converts timestamp with time zone to string according to the [format string](../../sql/functions/dateformat) | `strftime(timestamptz '1992-01-01 20:38:40', '%a, %-d %B %Y - %I:%M:%S %p')` | `Wed, 1 January 1992 - 08:38:40 PM` |
 | `strptime(`*`text`*`, `*`format`*`)` | Converts string to timestamp with time zone according to the [format string](../../sql/functions/dateformat) if `%Z` is specified. | `strptime('Wed, 1 January 1992 - 08:38:40 PST', '%a, %-d %B %Y - %H:%M:%S %Z')` | `1992-01-01 08:38:40-08` |
@@ -91,6 +95,16 @@ The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME
 | `time_bucket(`*`bucket_width`*`, `*`timestamptz`*`[, `*`timezone`*`])` | Truncate `timestamptz` by the specified interval `bucket_width`. Bucket starts and ends are calculated using `timezone`. `timezone` is a varchar and defaults to UTC. | `time_bucket(INTERVAL '2 days', TIMESTAMPTZ '1992-04-20 15:26:00-07', 'Europe/Berlin')` | `1992-04-19 15:00:00-07` |
 
 There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart).
+
+## ICU Timestamp Table Functions
+The table below shows the available table functions for `TIMESTAMP WITH TIME ZONE` types.
+
+| Function | Description | Example |
+|:---|:---|:---|
+| `generate_series(`*`timestamptz`*`, `*`timestamptz`*`, `*`interval`*`)` | Generate a table of timestamps in the closed range (including both the starting timestamp and the ending timestamp), stepping by the interval | `generate_series(TIMESTAMPTZ '2001-04-10', TIMESTAMPTZ '2001-04-11', INTERVAL 30 MINUTE)` |
+| `range(`*`timestamptz`*`, `*`timestamptz`*`, `*`interval`*`)` | Generate a table of timestamps in the half open range (including the starting timestamp, but stopping before the ending timestamp) , stepping by the interval | `range(TIMESTAMPTZ '2001-04-10', TIMESTAMPTZ '2001-04-11', INTERVAL 30 MINUTE)` |
+
+Infinite values are not allowed as table function bounds.
 
 ## ICU Timestamp Without Time Zone Functions
 The table below shows the ICU provided scalar functions that operate on plain `TIMESTAMP` values.

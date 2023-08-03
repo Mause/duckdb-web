@@ -1423,25 +1423,46 @@ function GenerateOptionalColumnList(options) {
 }
 
 function GenerateOrderTerms(options) {
-	return OneOrMore(Sequence([
-		Expression(),
-		Choice(0, [
-			new Skip(),
-			Keyword("ASC"),
-			Keyword("DESC")
-		]),
-		Choice(0, [
-			Skip(),
-			Sequence([
-				Keyword("NULLS"),
-				Keyword("FIRST")
+	return Choice(0, [
+		OneOrMore(Sequence([
+			Expression(),
+			Choice(0, [
+				new Skip(),
+				Keyword("ASC"),
+				Keyword("DESC")
 			]),
-			Sequence([
-				Keyword("NULLS"),
-				Keyword("LAST")
+			Choice(0, [
+				Skip(),
+				Sequence([
+					Keyword("NULLS"),
+					Keyword("FIRST")
+				]),
+				Sequence([
+					Keyword("NULLS"),
+					Keyword("LAST")
+				])
 			])
-		])
-	]), ",")
+		]), ","),
+		Sequence([
+			Keyword("ALL"),
+			Choice(0, [
+				new Skip(),
+				Keyword("ASC"),
+				Keyword("DESC")
+			]),
+			Choice(0, [
+				Skip(),
+				Sequence([
+					Keyword("NULLS"),
+					Keyword("FIRST")
+				]),
+				Sequence([
+					Keyword("NULLS"),
+					Keyword("LAST")
+				])
+			])
+		]),
+	])
 }
 
 
@@ -1685,33 +1706,58 @@ function GenerateSampleClause(options) {
 	]
 }
 
+function GenerateJoinType(options) {
+	return [
+		Optional(Choice(0,[
+			Keyword("INNER"),
+			Sequence([
+				Choice(0, [Keyword("LEFT"), Keyword("RIGHT"), Keyword("FULL")]), 
+				Optional(Keyword("OUTER"), "skip")
+			])
+		]), "skip")
+	]
+}
+
+function GenerateJoinCondition(options) {
+	return [
+		Optional(Choice(0, [
+			Sequence([
+				Keyword("ON"),
+				Expression()
+			]),
+			Sequence([
+				Keyword("USING"),
+				Keyword("("),
+				OneOrMore(Expression("column-name"), ","),
+				Keyword(")")
+			])
+		]), "skip")
+	]
+}
+
 function GenerateJoinClause(options) {
 	return [
 		Expression("table-or-subquery"),
-		OneOrMore(Sequence([
-				Sequence([
-					Optional(Keyword("NATURAL"), "skip"),
-					Optional(Choice(0,[
-						Keyword("INNER"),
-						Sequence([Choice(0, [Keyword("LEFT"), Keyword("RIGHT"), Keyword("FULL")]), Optional(Keyword("OUTER"), "skip")]),
-						Keyword("CROSS")
-					]), "skip"),
-					Keyword("JOIN")
-				]),
-				Expression("table-or-subquery"),
-				Choice(0, [
+		OneOrMore(
+			Sequence([
+				Choice(0,[
 					Sequence([
-						Keyword("ON"),
-						Expression()
+						Optional(
+							Choice(0,[
+								Keyword("NATURAL"),
+								Keyword("ASOF")
+							]), 
+							"skip"),
+						Expandable("join-type", options, "join-type", GenerateJoinType),
 					]),
-					Sequence([
-						Keyword("USING"),
-						Keyword("("),
-						OneOrMore(Expression("column-name"), ","),
-						Keyword(")")
-					])
-				])
-			]))
+					Keyword("CROSS"), 
+					Keyword("POSITIONAL")
+				]),
+				Keyword("JOIN"),
+				Expression("table-or-subquery"),
+				Expandable("join-conditions", options, "join-conditions", GenerateJoinCondition)
+			])
+		)
 	]
 }
 
@@ -1884,7 +1930,12 @@ function GenerateStarClause(options) {
 				Keyword("("),
 				Choice(0, [
 					Sequence(GenerateStarExpression(options, "-2")),
-					Expression("regex")
+					Expression("regex"),
+					Sequence([
+						Expression("c"),
+						Keyword("->"),
+						Expression("lambda-filter")
+					])
 				]),
 				Keyword(")")
 			])
@@ -1915,27 +1966,30 @@ function GenerateGroupByClause(options) {
 		Optional(Sequence([
 			Keyword("GROUP"),
 			Keyword("BY"),
-			OneOrMore(
-				Choice(0, [
-				Expression(),
-				Sequence([
-					Keyword("GROUPING"),
-					Keyword("SETS"),
-					Keyword("("),
-					OneOrMore(Sequence([
+			Choice(0,[
+				OneOrMore(
+					Choice(0, [
+					Expression(),
+					Sequence([
+						Keyword("GROUPING"),
+						Keyword("SETS"),
 						Keyword("("),
-						ZeroOrMore(Expression(), ","),
+						OneOrMore(Sequence([
+							Keyword("("),
+							ZeroOrMore(Expression(), ","),
+							Keyword(")")
+						]), ","),
 						Keyword(")")
-					]), ","),
-					Keyword(")")
-				]),
-				Sequence([
-					Choice(0, [Keyword("CUBE"), Keyword("ROLLUP")]),
-					Keyword("("),
-					OneOrMore(Expression(), ","),
-					Keyword(")")
-				])
-			]), ","),
+					]),
+					Sequence([
+						Choice(0, [Keyword("CUBE"), Keyword("ROLLUP")]),
+						Keyword("("),
+						OneOrMore(Expression(), ","),
+						Keyword(")")
+					])
+				]), ","),
+				Keyword("ALL"),
+			]),
 		])),
 		Optional(Sequence([
 			Keyword("HAVING"),
@@ -1957,7 +2011,7 @@ function GenerateWindowClause(options) {
 
 function GenerateLimitAndOrderBy(options) {
 	return [
-		Optional(Sequence(GenerateOrderBy(options))),
+		Sequence(GenerateOrderBy(options)),
 		Optional(Sequence([
 			Keyword("LIMIT"),
 			Expression(),

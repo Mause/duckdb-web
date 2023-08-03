@@ -11,7 +11,7 @@ Time zone support is a common request for temporal analytics, but the rules are 
 The most well supported library for locale-specific operations is the [International Components for Unicode (ICU)](https://icu.unicode.org).
 DuckDB already provided collated string comparisons using ICU via an extension (to avoid dependencies),
 and we have now connected the existing ICU calendar and time zone functions to the main code 
-via the new `TIMESTAMP WITH TIME ZONE` (or `TIMESTAMPTZ` for short) data type. The ICU extension is pre-bundled in DuckDB's Python and R clients and can be optionally installed in the remaining clients.
+via the new `TIMESTAMP WITH TIME ZONE` (or `TIMESTAMPTZ` for short) data type. The ICU extension is pre-bundled in DuckDB's Python client and can be optionally installed in the remaining clients.
 
 In this post, we will describe how time works in DuckDB and what time zone functionality has been added.
 
@@ -141,7 +141,7 @@ DuckDB extensions can define and validate their own settings, and the ICU extens
 ```sql
 -- Load the extension
 -- This is not needed in Python or R, as the extension is already installed
-require icu;
+load icu;
 
 -- Show the current time zone. The default is set to ICU's current time zone.
 SELECT * FROM duckdb_settings() WHERE name = 'TimeZone';
@@ -194,16 +194,14 @@ ICU can also perform binning operations for some non-Gregorian calendars.
 We have added support for these calendars via a `Calendar` setting and the `icu_calendar_names` table function:
 
 ```sql
-require icu
+load icu;
 
 -- Show the current calendar. The default is set to ICU's current locale.
-query IIII
 SELECT * FROM duckdb_settings() WHERE name = 'Calendar';
 ----
 Calendar    gregorian   The current calendar    VARCHAR
 
 -- List the available calendars
-query I
 SELECT DISTINCT name FROM icu_calendar_names()
 ORDER BY 1 DESC LIMIT 5;
 ----
@@ -214,14 +212,11 @@ iso8601
 islamic-umalqura
 
 -- Choose a calendar
-statement ok
 SET Calendar = 'japanese';
 
 -- Extract the current Japanese era number using Tokyo time
-statement ok
 SET TimeZone = 'Asia/Tokyo';
 
-query I
 SELECT era('2019-05-01 00:00:00+10'::TIMESTAMPTZ), era('2019-05-01 00:00:00+09'::TIMESTAMPTZ);
 ----
 235  236

@@ -16,7 +16,7 @@ The DuckDB CLI is based on the SQLite command line shell, so CLI-client-specific
 
 ## Getting Started
 Once the CLI executable has been downloaded, unzip it and save it to any directory. Navigate to that directory in a terminal and enter the command `duckdb` to run the executable. If in a PowerShell or POSIX shell environment, use the command `./duckdb` instead. To see additional command line options to use when starting the CLI, use the command `duckdb --help`.
-By default, the CLI will open a temporary in-memory database. To open or create a persistent database, simply include a path as a command line argument like `duckdb path/to/my_database.duckdb`. This path can point to an existing database or to a file that does not yet exist and DuckDB will open or create a database at that location as needed. The file may have any arbitrary extension, but `.db` or `.duckdb` are two common choices. You will see a prompt like the below, with a D on the final line.
+By default, the CLI will open a temporary in-memory database. To open or create a persistent database, simply include a path as a command line argument like `duckdb path/to/my_database.duckdb`. This path can point to an existing database or to a file that does not yet exist and DuckDB will open or create a database at that location as needed. The file may have any arbitrary extension, but `.db` or `.duckdb` are two common choices. You will see a prompt like the below, with a `D` on the final line.
 
 ```command
 v0.3.4 662041e2b
@@ -48,47 +48,40 @@ D SELECT
 
 The CLI supports all of DuckDB's rich SQL syntax including `SELECT`, `CREATE`, and `ALTER` statements, etc.
 
-To exit the CLI, press Ctrl-D if your platform supports it. Otherwise press Ctrl-C. If using a persistent database, it will automatically checkpoint (save the latest edits to disk) and close. This will remove the .WAL file (the Write-Ahead-Log) and consolidate all of your data into the single file database.
+To exit the CLI, press `Ctrl`-`D` if your platform supports it. Otherwise press `Ctrl`-`C`. If using a persistent database, it will automatically checkpoint (save the latest edits to disk) and close. This will remove the .WAL file (the Write-Ahead-Log) and consolidate all of your data into the single file database.
 
 ## Special Commands (Dot Commands)
 In addition to SQL syntax, special dot commands may be entered that are specific to the CLI client. To use one of these commands, begin the line with a period (`.`) immediately followed by the name of the command you wish to execute. Additional arguments to the command are entered, space separated, after the command. If an argument must contain a space, either single or double quotes may be used to wrap that parameter. Dot commands must be entered on a single line, and no whitespace may occur before the period. No semicolon is required at the end of the line. To see available commands, use the `.help` command:
 
 ```command
 D .help
-.auth ON|OFF             Show authorizer callbacks
-.backup ?DB? FILE        Backup DB (default "main") to FILE
 .bail on|off             Stop after hitting an error.  Default OFF
 .binary on|off           Turn binary output on or off.  Default OFF
 .cd DIRECTORY            Change the working directory to DIRECTORY
 .changes on|off          Show number of rows changed by SQL
 .check GLOB              Fail if output since .testcase does not match
 .clone NEWDB             Clone data into NEWDB from the existing database
+.columns                 Column-wise rendering of query results
 .constant ?COLOR?        Sets the syntax highlighting color used for constant values
 .constantcode ?CODE?     Sets the syntax highlighting terminal code used for constant values
 .databases               List names and files of attached databases
-.dbconfig ?op? ?val?     List or change sqlite3_db_config() options
-.dbinfo ?DB?             Show status information about the database
 .dump ?TABLE?            Render database content as SQL
 .echo on|off             Turn command echo on or off
-.eqp on|off|full|...     Enable or disable automatic EXPLAIN QUERY PLAN
 .excel                   Display the output of next command in spreadsheet
 .exit ?CODE?             Exit this program with return-code CODE
-.expert                  EXPERIMENTAL. Suggest indexes for queries
 .explain ?on|off|auto?   Change the EXPLAIN formatting mode.  Default: auto
-.filectrl CMD ...        Run various sqlite3_file_control() operations
 .fullschema ?--indent?   Show schema and the content of sqlite_stat tables
 .headers on|off          Turn display of headers on or off
 .help ?-all? ?PATTERN?   Show help text for PATTERN
 .highlight [on|off]      Toggle syntax highlighting in the shell on/off
 .import FILE TABLE       Import data from FILE into TABLE
-.imposter INDEX TABLE    Create imposter table TABLE on index INDEX
 .indexes ?TABLE?         Show names of indexes
 .keyword ?COLOR?         Sets the syntax highlighting color used for keywords
 .keywordcode ?CODE?      Sets the syntax highlighting terminal code used for keywords
-.limit ?LIMIT? ?VAL?     Display or change the value of an SQLITE_LIMIT
 .lint OPTIONS            Report potential schema issues.
 .log FILE|off            Turn logging on or off.  FILE can be stderr/stdout
 .maxrows COUNT           Sets the maximum number of rows for display. Only for duckbox mode.
+.maxwidth COUNT          Sets the maximum width in characters. 0 defaults to terminal width. Only for duckbox mode.
 .mode MODE ?TABLE?       Set output mode
 .nullvalue STRING        Use STRING in place of NULL values
 .once ?OPTIONS? ?FILE?   Output for the next SQL command only to FILE
@@ -96,30 +89,19 @@ D .help
 .output ?FILE?           Send output to FILE or stdout if FILE is omitted
 .parameter CMD ...       Manage SQL parameter bindings
 .print STRING...         Print literal STRING
-.progress N              Invoke progress handler after every N opcodes
 .prompt MAIN CONTINUE    Replace the standard prompts
 .quit                    Exit this program
 .read FILE               Read input from FILE
-.restore ?DB? FILE       Restore content of DB (default "main") from FILE
-.save FILE               Write in-memory database into FILE
-.scanstats on|off        Turn sqlite3_stmt_scanstatus() metrics on or off
+.rows                    Row-wise rendering of query results (default)
 .schema ?PATTERN?        Show the CREATE statements matching PATTERN
-.selftest ?OPTIONS?      Run tests defined in the SELFTEST table
 .separator COL ?ROW?     Change the column and row separators
 .sha3sum ...             Compute a SHA3 hash of database content
 .shell CMD ARGS...       Run CMD ARGS... in a system shell
 .show                    Show the current values for various settings
-.stats ?on|off?          Show stats or turn stats on or off
 .system CMD ARGS...      Run CMD ARGS... in a system shell
 .tables ?TABLE?          List names of tables matching LIKE pattern TABLE
 .testcase NAME           Begin redirecting output to 'testcase-out.txt'
-.testctrl CMD ...        Run various sqlite3_test_control() operations
-.timeout MS              Try opening locked tables for MS milliseconds
 .timer on|off            Turn SQL timer on or off
-.trace ?OPTIONS?         Output each SQL statement as it is run
-.vfsinfo ?AUX?           Information about the top-level VFS
-.vfslist                 List all available VFSes
-.vfsname ?AUX?           Print the name of the VFS stack
 .width NUM1 NUM2 ...     Set minimum column widths for columnar output
 ```
 
@@ -136,14 +118,6 @@ D .help sh
 .show                    Show the current values for various settings
 ```
 
-## Configuring the CLI
-
-The various options above can be used to configure the CLI. On start-up, the CLI reads and executes all commands in the file `~/.duckdbrc`. This allows you to store the configuration state of the CLI. For example, if you wish to change the `NULL` value display and the prompt, you may create the following `~/.duckdbrc` file.
-
-```
-.prompt 'D '
-.null NULL
-```
 
 ## Syntax Highlighting
 By default the shell includes support for syntax highlighting. Syntax highlighting can be disabled using the `.highlight off` command.
@@ -181,23 +155,27 @@ SELECT student_id FROM 'data/ -> data/grades.csv
 
 ## Output Formats
 The `.mode` command may be used to change the appearance of the tables returned in the terminal output. In addition to customizing the appearance, these modes have additional benefits. This can be useful for presenting DuckDB output elsewhere by redirecting the terminal output to a file, for example (see "Writing Results to a File" section below). Using the `insert` mode will build a series of SQL statements that can be used to insert the data at a later point. The `markdown` mode is particularly useful for building documentation!
-* ascii
-* box
-* csv
-* column
-* duckbox
-* html
-* insert
-* json
-* jsonlines
-* line
-* list
-* markdown
-* quote
-* table
-* tabs
-* tcl
-* trash
+
+|    mode    |                  description                 |
+|------------|----------------------------------------------|
+| ascii      | Columns/rows delimited by 0x1F and 0x1E      |
+| box        | Tables using unicode box-drawing characters  |
+| csv        | Comma-separated values                       |
+| column     | Output in columns.  (See .width)             |
+| duckbox    | Tables with extensive features               |
+| html       | HTML `<table>` code                          |
+| insert     | SQL insert statements for TABLE              |
+| json       | Results in a JSON array                      |
+| jsonlines  | Results in a NDJSON                          |
+| latex      | LaTeX tabular environment code               |
+| line       | One value per line                           |
+| list       | Values delimited by "\|"                     |
+| markdown   | Markdown table format                        |
+| quote      | Escape answers as for SQL                    |
+| table      | ASCII-art table                              |
+| tabs       | Tab-separated values                         |
+| tcl        | TCL list elements                            |
+| trash      | No output                                    |
 
 ```sql
 D .mode markdown
@@ -375,7 +353,7 @@ D .import import_example.csv test_table --skip 1 --csv
 ```
 
 ## Reading SQL From a File
-The DuckDB CLI can read both SQL commands and dot commands from an external file intead of the terminal using the `.read` command. This allows for a number of commands to be run in sequence and allows command sequences to be saved and reused.
+The DuckDB CLI can read both SQL commands and dot commands from an external file instead of the terminal using the `.read` command. This allows for a number of commands to be run in sequence and allows command sequences to be saved and reused.
 
 The `.read` command requires only one argument: the path to the file containing the SQL and/or commands to execute. After running the commands in the file, control will revert back to the terminal. Output from the execution of that file is governed by the same `.output` and `.once` commands that have been discussed previously. This allows the output to be displayed back to the terminal, as in the first example below, or out to another file, as in the second example.
 
@@ -429,22 +407,44 @@ In this case, no output is returned to the terminal. Instead, the file `series.m
 
 <!-- The edit function does not appear to work -->
 
-A file may also be read/processed before the CLI opens, via the `-init` switch:
+## Configuring the CLI
+
+The various dot commands above can be used to configure the CLI. On start-up, the CLI reads and executes all commands in the file `~/.duckdbrc`. This allows you to store the configuration state of the CLI. 
+This file is passed to a `.read` command at startup, so any series of dot commands and SQL commands may be included. 
+You may also point to a different initialization file using the `-init` switch.
+
+As an example, a file in the same directory as the DuckDB CLI named `select_example` will change the DuckDB prompt to be a duck head and run a SQL statement.
+Note that the duck head is built with unicode characters and does not always work in all terminal environments (like Windows, unless running with WSL and using the Windows Terminal).
+```sql
+-- Duck head prompt
+.prompt '⚫◗ '
+-- Example SQL statement
+select 'Begin quacking!' as "Ready, Set, ..."
 ```
-$ ./duckdb -init select_example.sql
--- Loading resources from select_example.sql
-| generate_series |
-|-----------------|
-| 0               |
-| 1               |
-| 2               |
-| 3               |
-| 4               |
-| 5               |
-v0.6.1-dev83 dfae126ebb
+
+To invoke that file on initialization, use this command:
+
+```
+$ ./duckdb -init select_example
+
+```
+This outputs:
+```
+-- Loading resources from /home/<user>/.duckdbrc
+┌─────────────────┐
+│ Ready, Set, ... │
+│     varchar     │
+├─────────────────┤
+│ Begin quacking! │
+└─────────────────┘
+v<version> <git hash>
 Enter ".help" for usage hints.
-D  
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+⚫◗
 ```
+
+
 
 ## Non-interactive usage
 
@@ -463,6 +463,20 @@ $
 
 ```
 
+To execute a command with SQL text passed in directly from the command line, call `duckdb` with two arguments: the database location (or `:memory:`), and a string with the SQL statement to execute.
+
+```sql
+./duckdb :memory: "SELECT 42 as the_answer"
+```
+```
+┌────────────┐
+│ the_answer │
+│   int32    │
+├────────────┤
+│         42 │
+└────────────┘
+```
+
 ## Loading Extensions
 The CLI does not use the SQLite shell's `.load` command. Instead, directly execute DuckDB's SQL `install` and `load` commands as you would other SQL statements. See the [Extension docs](../extensions/overview) for details.
 
@@ -472,3 +486,39 @@ D load 'fts';
 ```
 
 <!-- SQL parameters do not appear to work -->
+
+## Reading from stdin and writing to stdout
+
+When in a Unix environment, it can be useful to pipe data between multiple commands. 
+DuckDB is able to read data from stdin as well as write to stdout using the file location of stdin (`/dev/stdin`) and stdout (`/dev/stdout`) within SQL commands, as pipes act very similarly to file handles.
+
+This command will create an example csv:
+```sql
+COPY (SELECT 42 AS woot UNION ALL SELECT 43 AS woot) TO 'test.csv' (HEADER);
+```
+
+First, read a file and pipe it to the duckdb cli executable. As arguments to the DuckDB CLI, pass in the location of the database to open, in this case, an in memory database, and a SQL command that utilizes `/dev/stdin` as a file location.
+
+```sql
+cat test.csv | ./duckdb :memory: "SELECT * FROM read_csv_auto('/dev/stdin')"
+```
+```
+┌───────┐
+│ woot  │
+│ int32 │
+├───────┤
+│    42 │
+│    43 │
+└───────┘
+```
+
+To write back to stdout, the copy command can be used with the `/dev/stdout` file location.
+
+```sql
+cat test.csv | ./duckdb :memory: "COPY (SELECT * FROM read_csv_auto('/dev/stdin')) TO '/dev/stdout' WITH (FORMAT 'csv', HEADER)"
+```
+```
+woot
+42
+43
+```

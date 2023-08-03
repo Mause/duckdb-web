@@ -83,6 +83,7 @@ build/
 *.la
 *~
 *.pdf
+!pdf/*.pdf
 *.swp
 a.out
 
@@ -306,3 +307,4 @@ duckdb_functions.tab
 docs/sql/functions/descriptions.txt
 venv/
 node_modules/
+vendor/

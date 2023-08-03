@@ -7,9 +7,12 @@ The __httpfs__ extension is a loadable extension implementing a file system that
 files. For pure HTTP(S), only file reading is supported. For object storage using the S3 API, the __httpfs__ extension
 supports reading/writing/globbing files.
 
+Some clients come prebundled with this extension, in which case it's not necessary to first install or even load the extension.  
+Depending on the client you use, no action may be required, or you might have to `INSTALL httpfs` on first use and use `LOAD httpfs` at the start of every session.
+
 # HTTP(S)
 
-With the __httpfs__ extension, it is possible to directly query files over HTTP(S). This currently works for CSV and
+With the __httpfs__ extension, it is possible to directly query files over HTTP(S). This currently works for CSV, JSON, and
 Parquet files.
 
 ```sql
@@ -34,6 +37,9 @@ SELECT COUNT(*) FROM 'https://domain.tld/file.parquet';
 Scanning multiple files over HTTP(S) is also supported:
 
 ```sql
+SELECT * FROM read_parquet(['https://domain.tld/file1.parquet', 'https://domain.tld/file2.parquet']);
+
+-- parquet_scan is an alias of read_parquet, so they are equivalent
 SELECT * FROM parquet_scan(['https://domain.tld/file1.parquet', 'https://domain.tld/file2.parquet']);
 ```
 
@@ -43,8 +49,7 @@ The __httpfs__ extension supports reading/writing/globbing files on object stora
 
 ## Requirements
 
-The __httpfs__ filesystem is tested with [AWS S3](https://aws.amazon.com/s3/), [Minio](https://min.io/),
-and [Google cloud](https://cloud.google.com/storage/docs/interoperability). Other services that implement the S3 API
+The __httpfs__ filesystem is tested with [AWS S3](https://aws.amazon.com/s3/), [Minio](https://min.io/), [Google cloud](https://cloud.google.com/storage/docs/interoperability), and [lakeFS](https://docs.lakefs.io/integrations/duckdb.html). Other services that implement the S3 API
 should also work, but not all features may be supported. Below is a list of which parts of the S3 API are required for
 each __httpfs__ feature.
 
@@ -69,7 +74,15 @@ Optionally, the endpoint can be configured in case a non-AWS object storage serv
 SET s3_endpoint='<domain>.<tld>:<port>';
 ```
 
-Switching between path-style and vhost-style urls (see [AWS docs]()) is possible using:
+If the endpoint is not SSL-enabled then run: 
+
+```sql
+SET s3_use_ssl=false;
+```
+
+Switching between [path-style](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-bucket-intro.html#path-style-url-ex)
+and [vhost-style](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-bucket-intro.html#virtual-host-style-url-ex)
+urls  is possible using:
 
 ```sql
 SET s3_url_style='path';
@@ -92,6 +105,22 @@ Alternatively, session tokens are also supported and can be used instead:
 SET s3_session_token='<AWS session token>';
 ```
 
+### Per-Request Configuration
+Aside from the global S3 configuration described above, specific configuration values can be used on a per-request
+basis. This allows for use of multiple sets of credentials, regions, etc. These are used by including them on the S3
+URL as query parameters. All the individual configuration values listed above can be set as query parameters.
+
+For instance,
+```
+s3://bucket/file.parquet?s3_access_key_id=accessKey&s3_secret_access_key=secretKey
+```
+or
+```sql
+SELECT *
+FROM 's3://bucket/file.parquet?s3_region=region&s3_session_token=session_token' T1
+INNER JOIN 's3://bucket/file.csv?s3_access_key_id=accessKey&s3_secret_access_key=secretKey' T2;
+```
+
 ## Reading
 
 Reading files from S3 is now as simple as:
@@ -103,7 +132,7 @@ SELECT * FROM 's3://bucket/file.extension';
 Multiple files are also possible, for example:
 
 ```sql
-SELECT * FROM parquet_scan(['s3://bucket/file1.parquet', 's3://bucket/file2.parquet']);
+SELECT * FROM read_parquet(['s3://bucket/file1.parquet', 's3://bucket/file2.parquet']);
 ```
 
 ### Glob
@@ -112,7 +141,7 @@ File globbing is implemented using the ListObjectV2 API call and allows to use f
 multiple files, for example:
 
 ```sql
-SELECT * from parquet_scan('s3://bucket/*.parquet')
+SELECT * from read_parquet('s3://bucket/*.parquet')
 ```
 
 This query matches all files in the root of the bucket with the parquet extension.
@@ -121,13 +150,13 @@ Several features for matching are supported, such as `*` to match any number of 
 character or `[0-9]` for a single character in a range of characters:
 
 ```sql
-SELECT COUNT(*) FROM parquet_scan('s3://bucket/folder*/100?/t[0-9].parquet')
+SELECT COUNT(*) FROM read_parquet('s3://bucket/folder*/100?/t[0-9].parquet')
 ```
 
 A useful feature when using globs is the `filename` option which adds a column with the file that a row originated from:
 
 ```sql
-SELECT * FROM parquet_scan('s3://bucket/*.parquet', FILENAME = 1);
+SELECT * FROM read_parquet('s3://bucket/*.parquet', FILENAME = 1);
 ```
 
 could for example result in:
@@ -152,7 +181,7 @@ s3://bucket/year=2014/file.parquet
 If scanning these files with the HIVE_PARTITIONING option enabled:
 
 ```sql
-SELECT * FROM parquet_scan('s3://bucket/*/file.parquet', HIVE_PARTITIONING = 1);
+SELECT * FROM read_parquet('s3://bucket/*/file.parquet', HIVE_PARTITIONING = 1);
 ```
 
 could result in:
@@ -168,7 +197,7 @@ however, these columns behave just like regular columns. For example, filters ca
 columns:
 
 ```sql
-SELECT * FROM parquet_scan('s3://bucket/*/file.parquet', HIVE_PARTITIONING = 1) where year=2013;
+SELECT * FROM read_parquet('s3://bucket/*/file.parquet', HIVE_PARTITIONING = 1) where year=2013;
 ```
 
 ## Writing
@@ -178,6 +207,24 @@ works for both CSV and Parquet:
 
 ```sql
 COPY table_name TO 's3://bucket/file.extension';
+```
+
+Partioned copy to S3 also works:
+
+```sql
+COPY table TO 's3://my-bucket/partitioned' (FORMAT PARQUET, PARTITION_BY (part_col_a, part_col_b));
+```
+
+An automatic check is performed for existing files/directories, which is currently quite conservative (and on S3 will add a bit of latency). To disable this check and force writing, an `ALLOW_OVERWRITE` flag is added:
+
+```sql
+COPY table TO 's3://my-bucket/partitioned' (FORMAT PARQUET, PARTITION_BY (part_col_a, part_col_b), ALLOW_OVERWRITE TRUE);
+```
+
+The naming scheme of the written files looks like this:
+
+```text
+s3://my-bucket/partitioned/part_col_a=<val>/part_col_b=<val>/data_<thread_number>.parquet
 ```
 
 ### Configuration

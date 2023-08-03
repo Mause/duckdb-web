@@ -28,15 +28,16 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 | `len(`*`list`*`)`                                 | Return the length of the list.                                                                                                                                                      | `len([1, 2, 3])`                         | `3`               |
 | `array_length(`*`list`*`)`                        | Alias for `len`.                                                                                                                                                                    | `array_length([1, 2, 3])`                | `3`               |
 | `unnest(`*`list`*`)`                              | Unnests a list by one level. Note that this is a special function that alters the cardinality of the result. See the [UNNEST page](/docs/sql/query_syntax/unnest) for more details. | `unnest([1, 2, 3])`                      | `1`, `2`, `3`     |
+| `flatten(`*`list_of_lists`*`)`                    | Concatenate a list of lists into a single list. This only flattens one level of the list (see [examples](nested#flatten)).                                                          | `flatten([[1, 2], [3, 4]])`              | `[1, 2, 3, 4]`    |
 | `list_concat(`*`list1`*`, `*`list2`*`)`           | Concatenates two lists.                                                                                                                                                             | `list_concat([2, 3], [4, 5, 6])`         | `[2, 3, 4, 5, 6]` |
-| `list_cat(`*`list1`*`, `*`list2`*`)`              | Alias for `list_concat`.                                                                                                                                                            | `list_cat([2, 3], [4, 5, 6])`            | `[2, 3, 4, 5, 6`] |
-| `array_concat(`*`list1`*`, `*`list2`*`)`          | Alias for `list_concat`.                                                                                                                                                            | `array_concat([2, 3], [4, 5, 6])`        | `[2, 3, 4, 5, 6`] |
-| `array_cat(`*`list1`*`, `*`list2`*`)`             | Alias for `list_concat`.                                                                                                                                                            | `array_cat([2, 3], [4, 5, 6])`           | `[2, 3, 4, 5, 6`] |
-| `list_prepend(`*`element`*`, `*`list`*`)`         | Prepends `element` to `list`.                                                                                                                                                       | `list_prepend(3, [4, 5, 6])`             | `[3, 4, 5, 6`]    |
-| `array_prepend(`*`element`*`, `*`list`*`)`        | Alias for `list_prepend`.                                                                                                                                                           | `array_prepend(3, [4, 5, 6])`            | `[3, 4, 5, 6`]    |
+| `list_cat(`*`list1`*`, `*`list2`*`)`              | Alias for `list_concat`.                                                                                                                                                            | `list_cat([2, 3], [4, 5, 6])`            | `[2, 3, 4, 5, 6]` |
+| `array_concat(`*`list1`*`, `*`list2`*`)`          | Alias for `list_concat`.                                                                                                                                                            | `array_concat([2, 3], [4, 5, 6])`        | `[2, 3, 4, 5, 6]` |
+| `array_cat(`*`list1`*`, `*`list2`*`)`             | Alias for `list_concat`.                                                                                                                                                            | `array_cat([2, 3], [4, 5, 6])`           | `[2, 3, 4, 5, 6]` |
+| `list_prepend(`*`element`*`, `*`list`*`)`         | Prepends `element` to `list`.                                                                                                                                                       | `list_prepend(3, [4, 5, 6])`             | `[3, 4, 5, 6]`    |
+| `array_prepend(`*`element`*`, `*`list`*`)`        | Alias for `list_prepend`.                                                                                                                                                           | `array_prepend(3, [4, 5, 6])`            | `[3, 4, 5, 6]`    |
 | `array_push_front(`*`list`*`, `*`element`*`)`     | Alias for `list_prepend`.                                                                                                                                                           | `array_push_front(l, 3)`                 | `[3, 4, 5,6]`     |
-| `list_append(`*`list`*`, `*`element`*`)`          | Appends `element` to `list`.                                                                                                                                                        | `list_append([2, 3], 4)`                 | `[2, 3, 4`]       |
-| `array_append(`*`list`*`, `*`element`*`)`         | Alias for `list_append`.                                                                                                                                                            | `array_append([2, 3], 4)`                | `[2, 3, 4`]       |
+| `list_append(`*`list`*`, `*`element`*`)`          | Appends `element` to `list`.                                                                                                                                                        | `list_append([2, 3], 4)`                 | `[2, 3, 4]`       |
+| `array_append(`*`list`*`, `*`element`*`)`         | Alias for `list_append`.                                                                                                                                                            | `array_append([2, 3], 4)`                | `[2, 3, 4]`       |
 | `array_push_back(`*`list`*`, `*`element`*`)`      | Alias for `list_append`.                                                                                                                                                            | `array_push_back(l, 7)`                  | `[4, 5, 6, 7]`    |
 | `list_contains(`*`list`*`, `*`element`*`)`        | Returns true if the list contains the element.                                                                                                                                      | `list_contains([1, 2, NULL], 1)`         | `true`            |
 | `list_has(`*`list`*`, `*`element`*`)`             | Alias for `list_contains`.                                                                                                                                                          | `list_has([1, 2, NULL], 1)`              | `true`            |
@@ -65,6 +66,8 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 | `list_unique(`*`list`*`)`                         | Counts the unique elements of a list.                                                                                                                                               | `list_unique([1, 1, NULL, -3, 1, 5])`    | `3`               |
 | `array_unique(`*`list`*`)`                        | Alias for `list_unique`.                                                                                                                                                            | `array_unique([1, 1, NULL, -3, 1, 5])`   | `3`               |
 | `list_any_value(`*`list`*`)`                      | Returns the first non-null value in the list                                                                                                                                        | `list_any_value([NULL, -3])`             | `-3`              |
+| `list_resize(`*`list`*`, `*`size`*`[, `*`value`*`])`  | Resizes the list to contain `size` elements. Initializes new elements with `value` or `NULL` if `value` is not set.                                                             | `list_resize([1,2,3], 5, 0)`             | `[1, 2, 3, 0, 0]` |
+| `array_resize(`*`list`*`, `*`size`*`[, `*`value`*`])` | Alias for `list_resize`.                                                                                                                                                        | `array_resize([1,2,3], 5, 0)`            | `[1, 2, 3, 0, 0]` |
 
 ## List Comprehension
 Python-style list comprehension can be used to compute expressions over elements in a list. For example:
@@ -97,6 +100,9 @@ SELECT [upper(x) for x in strings if len(x)>0] FROM (VALUES (['Hello', '', 'Worl
 | `cardinality(`*`map`*`)` | Return the size of the map (or the number of entries in the map). | `cardinality( map([4, 2], ['a', 'b']) );` | `2` |
 | `map_from_entries(`*`STRUCT(k, v)[]`*`)` | Returns a map created from the entries of the array | `map_from_entries([{k: 5, v: 'val1'}, {k: 3, v: 'val2'}]);` | `{5=val1, 3=val2}` |
 | `map()` | Returns an empty map. | `map()` | `{}` |
+| `map_keys(`*`map`*`)` | Return a list of all keys in the map. | `map_keys(map([100, 5], [42, 43]))` | `[100, 42]` |
+| `map_values(`*`map`*`)` | Return a list of all values in the map. | `map_values(map([100, 5], [42, 43]))` | `[5, 33]` |
+| `map_entries(`*`map`*`)` | Return a list of struct(k, v) for each key-value pair in the map. | `map_entries(map([100, 5], [42, 43]))` | `[{'k': 100, 'v': 42}, {'k': 5, 'v': 43}]` |
 
 ## Union Functions
 
@@ -161,6 +167,8 @@ SELECT * FROM range(date '1992-01-01', date '1992-03-01', interval '1' month);
 
 The function `list_aggregate` allows the execution of arbitrary existing aggregate functions on the elements of a list. Its first argument is the list (column), its second argument is the aggregate function name, e.g. `min`, `histogram` or `sum`.
 
+`list_aggregate` accepts additional arguments after the aggregate function name. These extra arguments are passed directly to the aggregate function, which serves as the second argument of `list_aggregate`.
+
 ```sql
 SELECT list_aggregate([1, 2, -4, NULL], 'min');
 -- -4
@@ -170,6 +178,9 @@ SELECT list_aggregate([2, 4, 8, 42], 'sum');
 
 SELECT list_aggregate([[1, 2], [NULL], [2, 10, 3]], 'last');
 -- [2, 10, 3]
+
+SELECT list_aggregate([2, 4, 8, 42], 'string_agg', '|')
+-- 2|4|8|42
 ```
 
 The following is a list of existing rewrites. Rewrites simplify the use of the list aggregate function by only taking the list (column) as their argument. `list_avg`, `list_var_samp`, `list_var_pop`, `list_stddev_pop`, `list_stddev_samp`, `list_sem`, `list_approx_count_distinct`, `list_bit_xor`, `list_bit_or`, `list_bit_and`, `list_bool_and`, `list_bool_or`, `list_count`, `list_entropy`, `list_last`, `list_first`, `list_kurtosis`, `list_min`, `list_max`, `list_product`, `list_skewness`, `list_sum`, `list_string_agg`, `list_mode`, `list_median`, `list_mad` and `list_histogram`.
@@ -183,6 +194,18 @@ SELECT list_sum([2, 4, 8, 42]);
 
 SELECT list_last([[1, 2], [NULL], [2, 10, 3]]);
 -- [2, 10, 3]
+```
+
+### array_to_string
+
+Concatenates list/array elements using an optional delimiter.
+```sql
+SELECT array_to_string([1, 2, 3], '-') AS str;
+-- 1-2-3
+
+-- this is equivalent to the following SQL
+SELECT list_aggr([1, 2, 3], 'string_agg', '-') AS str;
+-- 1-2-3
 ```
 
 ## Sorting Lists
@@ -292,13 +315,79 @@ SELECT list_transform(list_filter([0, 1, 2, 3, 4, 5], x -> x % 2 = 0), y -> y * 
 [0, 4, 16]
 ```
 
+## Flatten
+
+The flatten function is a scalar function that converts a list of lists into a single list by concatenating each sub-list together.
+Note that this only flattens one level at a time, not all levels of sub-lists. 
+```sql
+-- Convert a list of lists into a single list
+SELECT 
+    flatten([
+        [1, 2],
+        [3, 4]
+    ]);
+----
+[1, 2, 3, 4]
+
+-- If the list has multiple levels of lists, 
+-- only the first level of sub-lists is concatenated into a single list
+SELECT 
+    flatten([
+        [
+            [1, 2],
+            [3, 4],
+        ],
+        [
+            [5, 6],
+            [7, 8],
+        ]
+    ]);
+----
+[[1, 2], [3, 4], [5, 6], [7, 8]] 
+```
+
+In general, the input to the flatten function should be a list of lists (not a single level list). 
+However, the behavior of the flatten function has specific behavior when handling empty lists and `NULL` values.
+```sql
+-- If the input list is empty, return an empty list
+SELECT flatten([]);
+----
+[]
+
+-- If the entire input to flatten is NULL, return NULL
+SELECT flatten(NULL);
+----
+NULL
+
+-- If a list whose only entry is NULL is flattened, return an empty list
+SELECT flatten([NULL]);
+----
+[]
+
+-- If the sub-list in a list of lists only contains NULL, 
+-- do not modify the sub-list
+-- (Note the extra set of parentheses vs. the prior example)
+SELECT flatten([[NULL]]);
+----
+[NULL]
+
+-- Even if the only contents of each sub-list is NULL,
+-- still concatenate them together
+-- Note that no de-duplication occurs when flattening. 
+-- See list_distinct function for de-duplication.
+SELECT flatten([[NULL],[NULL]]);
+----
+[NULL, NULL]
+```
 
 ## `generate_subscripts`
 
 The `generate_subscript(`*`arr`*`, `*`dim`*`)` function generates indexes along the `dim`th dimension of array `arr`.
 
-```
+```sql
 SELECT generate_subscripts([4,5,6], 1) AS i;
+```
+```
 ┌───┐
 │ i │
 ├───┤

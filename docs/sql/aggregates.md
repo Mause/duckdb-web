@@ -45,6 +45,7 @@ The table below shows the available general aggregate functions.
 | `bit_and(arg)` |Returns the bitwise AND of all bits in a given expression . | `bit_and(A)` | - |
 | `bit_or(arg)` |Returns the bitwise OR of all bits in a given expression.  | `bit_or(A)` | - |
 | `bit_xor(arg)` |Returns the bitwise XOR of all bits in a given expression. | `bit_xor(A)` | - |
+| `bitstring_agg(arg)` |Returns a bitstring with bits set for each distinct value. | `bitstring_agg(A)` | - |
 | `bool_and(arg)` |Returns TRUE if every input value is TRUE, otherwise FALSE. | `bool_and(A)` | - |
 | `bool_or(arg)` |Returns TRUE if any input value is TRUE, otherwise FALSE. | `bool_or(A)` | - |
 | `count(arg)` |Calculates the number of tuples tuples in arg. | `count(A)` | - |
@@ -76,8 +77,9 @@ The table below shows the available statistical aggregate functions.
 |:---|:---|:---|:---|
 | `corr(y,x)` | Returns the correlation coefficient for non-null pairs in a group. | `COVAR_POP(y, x) / (STDDEV_POP(x) * STDDEV_POP(y))`| - |
 | `covar_pop(y,x)` | Returns the population covariance of input values. | `(SUM(x*y) - SUM(x) * SUM(y) / COUNT(*)) / COUNT(*) ` | - |
+| `covar_samp(y,x)` | Returns the sample covariance for non-null pairs in a group. | `(SUM(x*y) - SUM(x) * SUM(y) / COUNT(*)) / (COUNT(*) - 1)` | - |
 | `entropy(x)` | Returns the log-2 entropy of count input-values. | - | - |
-| `kurtosis(x)` | Returns the excess kurtosis of all input values. | - | - |
+| `kurtosis(x)` | Returns the excess kurtosis (Fisher's definition) of all input values, with a bias correction according to the sample size. | - | - |
 | `mad(x)` | Returns the median absolute deviation for the values within x. NULL values are ignored. Temporal types return a positive `INTERVAL`. | `MEDIAN(ABS(x-MEDIAN(x)))` | - |
 | `median(x)` | Returns the middle value of the set. NULL values are ignored. For even value counts, quantitiative values are averaged and ordinal values return the lower value. | `QUANTILE_CONT(x, 0.5)` | - |
 | `mode(x)` | Returns the most frequent value for the values within x. NULL values are ignored. | - | - |

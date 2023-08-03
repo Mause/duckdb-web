@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "0 0 * * 1"  # run once a week on mondays
+    - cron: "0 5 * * 1"  # run once a week on mondays
   workflow_dispatch: {}  # allow running manually from the github ui
 
 env:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'

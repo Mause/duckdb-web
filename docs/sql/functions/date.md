@@ -13,8 +13,10 @@ The table below shows the available mathematical operators for `DATE` types.
 |:---|:---|:---|:---|
 | `+` | addition of days (integers) | `DATE '1992-03-22' + 5` | 1992-03-27 |
 | `+` | addition of an `INTERVAL` | `DATE '1992-03-22' + INTERVAL 5 DAY` | 1992-03-27 |
+| `+` | addition of a variable `INTERVAL` | `SELECT DATE '1992-03-22' + INTERVAL 1 DAY * d.days FROM (VALUES (5), (11)) AS d(days)` |1992-03-27 1992-04-02 |
 | `-` | subtraction of `DATE`s | `DATE '1992-03-27' - DATE '1992-03-22'` | 5 |
 | `-` | subtraction of an `INTERVAL` | `DATE '1992-03-27' - INTERVAL 5 DAY'` | 1992-03-22 |
+| `-` | subtraction of a variable `INTERVAL` | `SELECT DATE '1992-03-27' - INTERVAL 1 DAY * d.days FROM (VALUES (5), (11)) AS d(days)` |1992-03-22 1992-03-16 |
 
 Adding to or subtracting from [infinite values](../../sql/data_types/date#special-values) produces the same infinite value.
 
@@ -47,7 +49,8 @@ Dates can also be manipulated with the [timestamp functions](../../sql/functions
 | `time_bucket(`*`bucket_width`*`, `*`date`*`[, `*`offset`*`])` | Truncate `date` by the specified interval `bucket_width`. Buckets are offset by `offset` interval. | `time_bucket(INTERVAL '2 months', DATE '1992-04-20', INTERVAL '1 month')` | `1992-04-01` |
 | `today()` | Current date (start of current transaction) | `today()` | `2022-10-08` |
 
-There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart).
+There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart#part-functions).
+A few examples include extracting the day from a date, or the day of the week from a date. 
 
 Functions applied to infinite dates will either return the same infinite dates
 (e.g, `greatest`) or `NULL` (e.g., `date_part`) depending on what "makes sense".

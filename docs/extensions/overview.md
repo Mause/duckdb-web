@@ -30,23 +30,72 @@ select * from duckdb_extensions();
 
 ## All available extensions
 
-|  Extension name   |                             Description                              |     Aliases     |
-|-------------------|----------------------------------------------------------------------|-----------------|
-| excel             |                                                                      |                 |
-| fts               | Adds support for Full-Text Search Indexes                            |                 |
-| httpfs            | Adds support for reading and writing files over a HTTP(S) connection | http, https, s3 |
-| icu               | Adds support for time zones and collations using the ICU library     |                 |
-| inet              | Adds support for IP-related data types and functions                 |                 |
-| jemalloc          | Overwrites system allocator with JEMalloc                            |                 |
-| json              | Adds support for JSON operations                                     |                 |
-| parquet           | Adds support for reading and writing parquet files                   |                 |
-| postgres_scanner  | Adds support for reading from a Postgres database                    | postgres        |
-| sql_auto_complete |                                                                      |                 |
-| sqlite_scanner    | Adds support for reading SQLite database files                       | sqlite, sqlite3 |
-| substrait        | Adds support for the Substrait integration                           |
-| tpcds             | Adds TPC-DS data generation and query support                        |                 |
-| tpch              | Adds TPC-H data generation and query support                         |                 |
-| visualizer        |                                                                      |                 |
+| Extension name                                                                                                                      | Description                                                          | Aliases         |
+| ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------- |
+| autocomplete                                                                                                                        | Adds supports for autocomplete in the shell                          |                 |
+| arrow [![GitHub logo](../../images/github-mark.svg)](https://github.com/duckdblabs/arrow)                                           | A zero-copy data integration between Apache Arrow and DuckDB         |                 |
+| [excel](excel)                                                                                                                      | Adds support for Excel-like format strings                                 |                 |
+| [fts](full_text_search)                                                                                                             | Adds support for Full-Text Search Indexes                            |                 |
+| [httpfs](httpfs)                                                                                                                    | Adds support for reading and writing files over a HTTP(S) connection | http, https, s3 |
+| icu                                                                                                                                 | Adds support for time zones and collations using the ICU library     |                 |
+| inet                                                                                                                                | Adds support for IP-related data types and functions                 |                 |
+| jemalloc                                                                                                                            | Overwrites system allocator with JEMalloc                            |                 |
+| [json](json)                                                                                                                        | Adds support for JSON operations                                     |                 |
+| parquet                                                                                                                             | Adds support for reading and writing parquet files                   |                 |
+| [postgres_scanner](postgres_scanner) [![GitHub logo](../../images/github-mark.svg)](https://github.com/duckdblabs/postgres_scanner) | Adds support for reading from a Postgres database                    | postgres        |
+| [spatial](spatial) [![GitHub logo](../../images/github-mark.svg)](https://github.com/duckdblabs/duckdb_spatial)                     | Adds support for geospatial data processing                          |                 |
+| [sqlite_scanner](sqlite_scanner) [![GitHub logo](../../images/github-mark.svg)](https://github.com/duckdblabs/sqlite_scanner)       | Adds support for reading SQLite database files                       | sqlite, sqlite3 |
+| [substrait](substrait) [![GitHub logo](../../images/github-mark.svg)](https://github.com/duckdblabs/substrait)                      | Support substrait query plans in DuckDB                              |                 |
+| tpcds                                                                                                                               | Adds TPC-DS data generation and query support                        |                 |
+| tpch                                                                                                                                | Adds TPC-H data generation and query support                         |                 |
+| visualizer                                                                                                                          |                                                                      |                 |
+
+## Downloading extensions directly from S3
+
+Downloading an extension directly could be helpful when building a lambda or container that uses DuckDB.
+DuckDB extensions are stored in public S3 buckets, but the directory structure of those buckets is not searchable. 
+As a result, a direct URL to the file must be used. 
+To directly download an extension file, use the following format:  
+
+```
+https://extensions.duckdb.org/v{release_version_number}/{platform_name}/{extension_name}.duckdb_extension.gz
+```
+For example:
+```
+https://extensions.duckdb.org/v{{ site.currentduckdbversion }}/windows_amd64/json.duckdb_extension.gz
+```
+
+The list of supported platforms may increase over time, but the current list of platforms includes:
+* linux_amd64_gcc4
+* linux_amd64
+* linux_arm64
+* osx_amd64
+* osx_arm64
+* windows_amd64
+* windows_amd64_rtools
+
+See above for a list of extension names and how to pull the latest list of extensions.
+
+
+## Loading an extension from local storage
+Extensions are stored in gzip format, so they must be unzipped prior to use. 
+There are many methods to decompress gzip. Here is a Python example:
+
+```python
+import gzip
+import shutil
+
+with gzip.open('httpfs.duckdb_extension.gz','rb') as f_in:
+   with open('httpfs.duckdb_extension', 'wb') as f_out:
+     shutil.copyfileobj(f_in, f_out)
+```
+
+After unzipping, the install and load commands can be used with the path to the .duckdb_extension file. 
+For example, if the file was unzipped into the same directory as where DuckDB is being executed:
+```sql
+install 'httpfs.duckdb_extension';
+load 'httpfs.duckdb_extension';
+```
 
 
 ## Pages in this Section

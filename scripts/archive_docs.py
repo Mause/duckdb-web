@@ -8,10 +8,11 @@ import subprocess
 # Update _config.yml to specify the new version number
 # Add a new row to /_data/versions.csv with the new version number
 # Run this script. More options below, but as an example:
-# 	run this script in the top level docs directory like: python scripts/archive_docs.py 0.3.4
+# 	run this script in the top level docs directory like: python3 scripts/archive_docs.py 0.3.4
+# When testing, run a clean (non-incremental) serve: jekyll serve
 
 if len(sys.argv) < 2:
-	print("Usage: python scripts/archive_docs.py [version] [--noconfirm] [--date=YYYY-MM-DD]")
+	print("Usage: python3 scripts/archive_docs.py [version] [--noconfirm] [--date=YYYY-MM-DD]")
 	print("If date is specified, this script will copy docs that existed at that specific date")
 	print("Otherwise files are copied over as-is")
 	exit(1)
@@ -105,4 +106,4 @@ def recursive_copy(source, target):
 
 
 recursive_copy('docs', folder)
-copy_file('_data/menu_docs_current.json', '_data/menu_docs_%s.json' % (version.replace('.', ''),), )
+copy_file('_data/menu_docs_dev.json', '_data/menu_docs_%s.json' % (version.replace('.', ''),), )
