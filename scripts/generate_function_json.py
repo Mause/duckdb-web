@@ -1,48 +1,112 @@
+import ast
+import contextlib
+import os
+from io import StringIO
+import stat
 import json
+from csv import DictReader
 from pathlib import Path
 from argparse import ArgumentParser
-from subprocess import check_output, CalledProcessError, PIPE
+from subprocess import check_output, CalledProcessError, PIPE, TimeoutExpired, Popen
+from urllib.request import urlretrieve, urlopen
+from functools import lru_cache, cache
+from zipfile import ZipFile
+from os.path import exists
+from shutil import copyfileobj
 
 parser = ArgumentParser()
 parser.add_argument('--source', required=True)
 parser.add_argument('--binary', required=True)
 args = parser.parse_args()
 
-ducks = sorted(
-    [
-        (filename.name.split('-')[1], filename)
-        for filename in Path('~/Downloads').expanduser().glob('duckdb-*')
-    ]
-)
+url = "https://github.com/duckdb/duckdb/releases/download/{version}/duckdb_cli-linux-amd64.zip"
+
+
+@cache
+def get_versions():
+    versions = sorted(
+        [
+            version["tag_name"]
+            for version in json.load(
+                urlopen("https://api.github.com/repos/duckdb/duckdb/releases")
+            )
+        ]
+    )
+    # can't find working binaries for versions older than v0.1.9
+    return versions[versions.index("v0.1.9") :]
+
+
+@lru_cache()
+def get_duck(version: str) -> str:
+    dest = Path(f"duckdb-{version}")
+    if not dest.exists():
+        filename, _ = urlretrieve(url.format(version=version))
+
+        with ZipFile(filename) as zipfile, dest.open("wb") as fh:
+            copyfileobj(zipfile.open("duckdb"), fh)
+
+        os.chmod(dest, dest.stat().st_mode | stat.S_IEXEC)
+
+    return str(dest.resolve())
 
 
 def find_added_version(example):
-    for version, path in ducks:
-        #        get_raw_result(path, 'count(*) result from duckdb_functions()')
-        try:
+    versions = get_versions()
+    oldest_version = versions[0]
+
+    for version in versions:
+        with contextlib.suppress(CalledProcessError):
+            path = get_duck(version)
             get_raw_result(path, example)
-            return version
-        except CalledProcessError:
-            pass
-    return 'unknown'
+            return (
+                f"{oldest_version} or prior"
+                if version == oldest_version
+                else version[1:]
+            )
+    return "indeterminate, example passed in no versions"
 
 
 def get_raw_result(binary: str, example: str) -> str:
-    out = check_output(
+    proc = Popen(
         [
             binary,
-            '-json',
-            '-c',
-            'SELECT setseed(0.42); ',
-            '-c',
-            'LOAD icu;',
-            '-c',
-            f'SELECT {example.strip(";")} AS result',
+            "-csv",
+            # '-cmd',
+            # 'SELECT setseed(0.42); ',
+            # '-cmd',
+            # 'LOAD icu;',
+            "-batch",
         ],
+        stdout=PIPE,
         stderr=PIPE,
+        text=True,
+        stdin=PIPE,
     )
-    rows = json.loads(out.splitlines()[-1])
-    return rows[0]['result']
+    if "enum" in example.lower():
+        proc.stdin.write(
+            "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious');\n"
+        )
+
+    proc.stdin.write(f'SELECT {example.strip(";")} AS result;\n')
+    proc.stdin.close()
+    out = proc.stdout.read()
+    if err := proc.stderr.read():
+        raise CalledProcessError(
+            output=out, stderr=err, cmd="", returncode=proc.returncode
+        )
+
+    rows = list(DictReader(StringIO(out)))
+    if not rows:
+        return None
+
+    result = rows[0]["result"]
+    try:
+        if result in ['true', 'false']:
+            return result == 'true'
+        else:
+            return ast.literal_eval(result)
+    except (SyntaxError, ValueError):
+        return result
 
 
 def get_result(example: str) -> str:
@@ -58,7 +122,7 @@ def get_result(example: str) -> str:
     try:
         return get_raw_result(args.binary, example)
     except CalledProcessError as e:
-        print(example.strip(), e.stderr.decode())
+        print(e.stderr)
         return None
 
 
@@ -66,7 +130,6 @@ def main():
     functions = []
     source = Path(args.source)
     assert source.exists()
-    current_version = get_raw_result(args.binary, 'version()')[1:]
 
     with open('docs/functions.json') as fh:
         existing_functions = {
@@ -90,13 +153,15 @@ def main():
                         else []
                     ),
                     'category': category,
-                    'result': get_result(function['example'])
-                    if function.get('example')
-                    else None,
                     'added_in_version': existing_functions.get(
                         function['name'],
-                        find_added_version(function['example']),  # current_version
-                    ),
+                        find_added_version(function['example']),
+                    )
+                    if 'scalar' in function['type']
+                    else None,
+                    'result': get_result(function['example'])
+                    if function.get('example') and 'scalar' in function['type']
+                    else None,
                 }
                 for function in json.load(fh)
             ]
