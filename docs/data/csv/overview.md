@@ -20,9 +20,13 @@ CREATE TABLE ontime(FlightDate DATE, UniqueCarrier VARCHAR, OriginCityName VARCH
 COPY ontime FROM 'flights.csv' (AUTO_DETECT TRUE);
 -- alternatively, create a table without specifying the schema manually
 CREATE TABLE ontime AS SELECT * FROM 'flights.csv';
+-- we can use the FROM-first syntax to omit 'SELECT *'
+CREATE TABLE ontime AS FROM 'flights.csv';
 
 -- write the result of a query to a CSV file
 COPY (SELECT * FROM ontime) TO 'flights.csv' WITH (HEADER 1, DELIMITER '|');
+-- we can use the FROM-first syntax to omit 'SELECT *'
+COPY (FROM ontime) TO 'flights.csv' WITH (HEADER 1, DELIMITER '|');
 ```
 
 ### CSV Loading
@@ -38,8 +42,8 @@ Below are parameters that can be passed in to the CSV reader.
 |:---|:---|:----|:----|
 | `all_varchar` | Option to skip type detection for CSV parsing and assume all columns to be of type VARCHAR. | bool | false |
 | `auto_detect` | Enables [auto detection of parameters](auto_detection) | bool | true |
-| `columns` | A struct that specifies the column names and column types contained within the CSV file (e.g. `{'col1': 'INTEGER', 'col2': 'VARCHAR'}`). | `struct` | `(empty)` |
-| `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g. `t.csv.gz` will use gzip, `t.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
+| `columns` | A struct that specifies the column names and column types contained within the CSV file (e.g., `{'col1': 'INTEGER', 'col2': 'VARCHAR'}`). | `struct` | `(empty)` |
+| `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g., `t.csv.gz` will use gzip, `t.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
 | `dateformat` | Specifies the date format to use when parsing dates. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |
 | `decimal_separator` | The decimal separator of numbers | varchar | `.` |
 | `delim` or `sep` | Specifies the string that separates columns within each row (line) of the file. | varchar | `,` |
