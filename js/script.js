@@ -105,9 +105,9 @@ $(document).ready(function(){
 		var result = $('.possibleresults div'+classList).html();
 		$('.installartion.output .result').html(result);
 		
-		var exampleResult = $('.possibleresults .example'+userSelection.environment).html();
-		$('.example.output .result').html(exampleResult);
-
+		$('.example.output .result').html(); // clear dest
+		var exampleResult = $('.possibleresults .example'+userSelection.environment); // get new contents
+		exampleResult.appendTo($('.example.output .result')); // append element (retaining event handlers)
 	}
 	
 	$('body.installation .yourselection .select li').click(function(){
