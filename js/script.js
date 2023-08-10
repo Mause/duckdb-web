@@ -107,7 +107,9 @@ $(document).ready(function(){
 
 		// detach existing children
 		const dest = $('.example.output .result');
-		dest.each(() => $(this).detach());
+		dest.each(function () {
+			$(this).detach();
+		});
 
 		var exampleResult = $('.possibleresults .example'+userSelection.environment); // get new contents
 		exampleResult.appendTo(dest); // append element (retaining event handlers)
