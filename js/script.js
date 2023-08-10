@@ -104,10 +104,13 @@ $(document).ready(function(){
 		var classList = userSelection.version + userSelection.environment + userSelection.pack + userSelection.platform;
 		var result = $('.possibleresults div'+classList).html();
 		$('.installartion.output .result').html(result);
-		
-		$('.example.output .result').html(); // clear dest
+
+		// detach existing children
+		const dest = $('.example.output .result');
+		dest.each(child => child.detach());
+
 		var exampleResult = $('.possibleresults .example'+userSelection.environment); // get new contents
-		exampleResult.appendTo($('.example.output .result')); // append element (retaining event handlers)
+		exampleResult.appendTo(dest); // append element (retaining event handlers)
 	}
 	
 	$('body.installation .yourselection .select li').click(function(){
