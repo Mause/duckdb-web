@@ -12,6 +12,7 @@ jaro
 jaccard
 arcsine
 arccosine
+dbeaver
 uploader
 url
 urls
