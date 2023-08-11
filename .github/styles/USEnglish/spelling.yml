@@ -1,0 +1,6 @@
+extends: spelling
+message: Did you really mean '%s'?
+level: warning
+ignore: [.github/styles/USEnglish/ignore1.txt]
+action:
+  name: 'suggest'
