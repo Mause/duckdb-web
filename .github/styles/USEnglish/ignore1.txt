@@ -8,6 +8,10 @@ substring
 printf
 unicode
 levenshtein
+uinteger
+ubigint
+numpy
+pythonic
 jaro
 jaccard
 arcsine
