@@ -1,4 +1,6 @@
 duckdb
+autodetection
+autodetected
 bitstring
 bitwise
 bitstrings
