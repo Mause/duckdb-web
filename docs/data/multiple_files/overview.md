@@ -40,7 +40,7 @@ SELECT * FROM read_parquet('dir/**/*.parquet');
 DuckDB can also read a series of Parquet files and treat them as if they were a single table. Note that this only works if the Parquet files have the same schema. You can specify which Parquet files you want to read using a list parameter, glob pattern matching syntax, or a combination of both.
 
 #### List Parameter
-The read_parquet function can accept a list of filenames as the input parameter.
+The `read_parquet` function can accept a list of filenames as the input parameter.
 
 ```sql
 -- read 3 parquet files and treat them as a single table
@@ -48,7 +48,7 @@ SELECT * FROM read_parquet(['file1.parquet', 'file2.parquet', 'file3.parquet']);
 ```
 
 #### Glob Syntax
-Any file name input to the read_parquet function can either be an exact filename, or use a glob syntax to read multiple files that match a pattern.
+Any file name input to the `read_parquet` function can either be an exact filename, or use a glob syntax to read multiple files that match a pattern.
 
 |  Wildcard  |                        Description                        |
 |------------|-----------------------------------------------------------|
