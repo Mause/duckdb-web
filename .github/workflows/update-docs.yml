@@ -35,6 +35,7 @@ jobs:
         with:
           EXECUTE_COMMANDS: |
             ./scripts/generate_all_docs.sh duckdb
+            ./scripts/lint.sh -f
 
             # remove things we don't want commited
             rm *.zip
