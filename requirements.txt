@@ -6,5 +6,7 @@ pandas-stubs
 lxml
 ripgrepy~=2.0.0
 
+black # format scripts 
+
 marko # for generating search index
 python-frontmatter
