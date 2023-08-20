@@ -13,6 +13,7 @@ from functools import lru_cache, cache
 from zipfile import ZipFile
 from os.path import exists
 from shutil import copyfileobj
+from tqdm import tqdm
 
 parser = ArgumentParser()
 parser.add_argument('--source', required=True)
@@ -130,6 +131,9 @@ def main():
     functions = []
     source = Path(args.source)
     assert source.exists()
+
+    for version in tqdm(get_versions(), desc='Loading DuckDB versions'):
+        get_duck(version)
 
     with open('docs/functions.json') as fh:
         existing_functions = {

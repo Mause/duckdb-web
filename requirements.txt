@@ -5,6 +5,7 @@ pandas
 pandas-stubs
 lxml
 ripgrepy~=2.0.0
+tqdm
 
 marko # for generating search index
 python-frontmatter
