@@ -62,7 +62,7 @@ def find_added_version(example):
             return (
                 f"{oldest_version} or prior"
                 if version == oldest_version
-                else version[1:]
+                else version
             )
     return "indeterminate, example passed in no versions"
 
