@@ -20,7 +20,14 @@ parser.add_argument('--source', required=True)
 parser.add_argument('--binary', required=True)
 args = parser.parse_args()
 
-url = "https://github.com/duckdb/duckdb/releases/download/{version}/duckdb_cli-linux-amd64.zip"
+match sys.platform:
+    case 'linux':
+        platform = 'linux-amd64'
+    case 'darwin':
+        platform = 'osx-universal'
+    case 'win32':
+        platform = 'windows-amd64'
+url = "https://github.com/duckdb/duckdb/releases/download/{{version}}/duckdb_cli-{triplet}.zip"
 
 
 @cache
