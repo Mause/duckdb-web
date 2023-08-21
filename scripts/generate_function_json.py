@@ -51,20 +51,35 @@ def get_duck(version: str) -> str:
     return str(dest.resolve())
 
 
-def find_added_version(example):
+def find_added_version(function: dict) -> str:
     versions = get_versions()
     oldest_version = versions[0]
 
     for version in versions:
         with contextlib.suppress(CalledProcessError):
             path = get_duck(version)
-            get_raw_result(path, example)
+            get_raw_result(path, function['example'])
             return (
-                f"{oldest_version} or prior"
-                if version == oldest_version
-                else version
+                f"{oldest_version} or prior" if version == oldest_version else version
             )
-    return "indeterminate, example passed in no versions"
+
+    for version in versions:
+        with contextlib.suppress(CalledProcessError), contextlib.suppress(
+            BrokenPipeError
+        ):
+            if function['name'] in get_functions(version):
+                return version
+
+    # return "indeterminate, example passed in no versions"
+
+
+def get_functions(version: str) -> Set[str]:
+    return set(
+        get_raw_result(
+            get_duck(version), 'function_name as result from duckdb_functions()'
+        )
+    )
+
 
 
 def get_raw_result(binary: str, example: str) -> str:
@@ -159,10 +174,8 @@ def main():
                     'category': category,
                     'added_in_version': existing_functions.get(
                         function['name'],
-                        find_added_version(function['example']),
-                    )
-                    if 'scalar' in function['type']
-                    else None,
+                        find_added_version(function),
+                    ),
                     'result': get_result(function['example'])
                     if function.get('example') and 'scalar' in function['type']
                     else None,
