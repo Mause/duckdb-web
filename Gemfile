@@ -46,3 +46,5 @@ gem "sass", "3.7.4"
 
 gem "webrick", "~> 1.8"
 gem 'word_wrap', '~> 1.0'
+
+gem "jekyll-toc", "~> 0.18.0"

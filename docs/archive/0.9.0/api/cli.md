@@ -1,6 +1,7 @@
 ---
 layout: docu
 title: CLI API
+toc: true
 ---
 
 ## Installation
