@@ -141,14 +141,12 @@ Page URL: <https://duckdb.org{{ page.url }}>
 		<div class="wrap{% if page.title %} {{ page.title | downcase | remove: " " }}{% endif %}">
 			
 			<div id="main_content_wrap">
-				{% capture nested_content %}
+				{% if page.toc %}
+					<h1>Contents</h1>
+					{{ content | toc }}
+				{% else %}
 					{% include anchor_headings.html html=content %}
-				{% endcapture %}
-				{% capture nested_content %}
-					{{ nested_content | toc }}
-				{% endcapture %}
-				{% toc %}
-				{{ nested_content }}
+				{% endif %}
 			</div>
 
 			<div class="searchoverlay">
