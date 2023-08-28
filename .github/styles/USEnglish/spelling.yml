@@ -4,3 +4,6 @@ level: warning
 ignore: [.github/styles/USEnglish/ignore1.txt]
 action:
   name: 'suggest'
+filters:
+  # Ignore all words containing an underscore
+  - '.*_.*'
