@@ -54,7 +54,7 @@ Parquet files are self-describing, as such far fewer parameters are required tha
 | `hive_partitioning` | Whether or not to interpret the path as a [hive partitioned path](../partitioning/hive_partitioning). | bool | false |
 | `union_by_name` | Whether the columns of multiple schemas should be [unified by name](../multiple_files/combining_schemas), rather than by position. | bool | false |
 
-## read_parquet function
+## `read_parquet` function
 
 | Function                         | Description              | Example                                       |
 |:--|:--|:-----|

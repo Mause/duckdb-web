@@ -39,7 +39,6 @@ Below is a table of the columns returned by `parquet_metadata`.
 | `total_compressed_size`   | `BIGINT`  |
 | `total_uncompressed_size` | `BIGINT`  |
 
-
 ### Parquet Schema
 
 The `parquet_schema` function can be used to query the internal schema contained within a Parquet file. Note that this is the schema as it is contained within the metadata of the Parquet file. If you want to figure out the column names and types contained within a Parquet file it is easier to use `DESCRIBE`.
