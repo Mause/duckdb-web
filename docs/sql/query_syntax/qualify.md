@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: QUALIFY Clause
-selected: Documentation/SQL/Query Syntax/Qualify
-expanded: SQL
 railroad: query_syntax/qualify.js
 blurb: The QUALIFY clause is used to filter the results of WINDOW functions.
 ---
@@ -85,4 +83,5 @@ WHERE
 | pg_catalog  | format_pg_type  | 2             |
 
 ### Syntax
+
 <div id="rrdiagram"></div>

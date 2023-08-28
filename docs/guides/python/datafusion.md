@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: DuckDB with DataFusion
-selected: DuckDB with DataFusion
 ---
 
 [DataFusion](https://github.com/apache/arrow-datafusion-python/) is a DataFrame and SQL library built in Rust with bindings for Python. It uses [Apache Arrow's columnar format](https://arrow.apache.org/docs/format/Columnar.html) as its memory model.
@@ -11,13 +10,14 @@ Due to the interoperability of Apache Arrow, workflows can alternate between Duc
 
 This example workflow is also available as a [Google Collab notebook](https://colab.research.google.com/drive/1CHe6suiu7ZdDXejqJF6OacdXbJYpJoKr?usp=sharing).
 
-# Installation
+## Installation
 
 ```python
 pip install --quiet duckdb datafusion pyarrow
 ```
 
-# DataFusion to DuckDB
+## DataFusion to DuckDB
+
 To convert from DataFusion to DuckDB, first save DataFusion results into Arrow batches using the `collect` function, and then create an Arrow table using PyArrow's `Table.from_batches` function. Then include that Arrow Table in the `FROM` clause of a DuckDB query.
 
 As a note, Pandas is not required as a first step prior to using DataFusion, but was helpful for generating example data to reuse in the second example below.
@@ -78,7 +78,8 @@ output = duckdb.query("""
 """).arrow()
 ```
 
-# DuckDB to DataFusion
+## DuckDB to DataFusion
+
 DuckDB can output results as Apache Arrow tables, which can be imported into DataFusion with the DataFusion DataFrame constructor.  The same approach could be used with Pandas DataFrames, but Arrow is a faster way to pass data between DuckDB and DataFusion.
 
 This example reuses the original Pandas DataFrame created above as a starting point. As a note, Pandas is not required as a first step, but was only used to generate example data.

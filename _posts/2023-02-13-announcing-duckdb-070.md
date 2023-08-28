@@ -17,6 +17,7 @@ To install the new version, please visit the [installation guide](https://duckdb
 <!--more-->
 
 #### What's in 0.7.0
+
 The new release contains many improvements to the JSON support, new SQL features, improvements to data ingestion and export, and other new features. Below is a summary of the most impactful changes, together with the linked PRs that implement the features.
 
 #### Data Ingestion/Export Improvements
@@ -43,7 +44,7 @@ COPY orders TO 'orders' (FORMAT PARQUET, PARTITION_BY (year, month));
 
 This will cause the Parquet files to be written in the following directory structure:
 
-```
+```text
 orders
 ├── year=2021
 │    ├── month=1
@@ -144,7 +145,7 @@ SELECT * FROM t1 POSITIONAL JOIN t2;
 >>> lineitem = duckdb.sql('FROM lineitem.parquet')
 >>> lineitem.limit(3).show()
 ```
-```
+```text
 ┌────────────┬───────────┬───────────┬───┬───────────────────┬────────────┬──────────────────────┐
 │ l_orderkey │ l_partkey │ l_suppkey │ … │  l_shipinstruct   │ l_shipmode │      l_comment       │
 │   int32    │   int32   │   int32   │   │      varchar      │  varchar   │       varchar        │
@@ -160,7 +161,7 @@ SELECT * FROM t1 POSITIONAL JOIN t2;
 >>> lineitem_filtered = duckdb.sql('FROM lineitem WHERE l_orderkey>5000')
 >>> lineitem_filtered.limit(3).show()
 ```
-```
+```text
 ┌────────────┬───────────┬───────────┬───┬────────────────┬────────────┬──────────────────────┐
 │ l_orderkey │ l_partkey │ l_suppkey │ … │ l_shipinstruct │ l_shipmode │      l_comment       │
 │   int32    │   int32   │   int32   │   │    varchar     │  varchar   │       varchar        │
@@ -175,7 +176,7 @@ SELECT * FROM t1 POSITIONAL JOIN t2;
 ```py
 >>> duckdb.sql('SELECT MIN(l_orderkey), MAX(l_orderkey) FROM lineitem_filtered').show()
 ```
-```
+```text
 ┌─────────────────┬─────────────────┐
 │ min(l_orderkey) │ max(l_orderkey) │
 │      int32      │      int32      │
@@ -192,7 +193,7 @@ Note that everything is lazily evaluated. The Parquet file is not read from disk
 >>> lineitem = duckdb.read_csv('lineitem.csv')
 >>> lineitem.limit(3).show()
 ```
-```
+```text
 ┌────────────┬───────────┬───────────┬───┬───────────────────┬────────────┬──────────────────────┐
 │ l_orderkey │ l_partkey │ l_suppkey │ … │  l_shipinstruct   │ l_shipmode │      l_comment       │
 │   int32    │   int32   │   int32   │   │      varchar      │  varchar   │       varchar        │
@@ -207,7 +208,7 @@ Note that everything is lazily evaluated. The Parquet file is not read from disk
 ```py
 >>> duckdb.sql('select min(l_orderkey) from lineitem').show()
 ```
-```
+```text
 ┌─────────────────┐
 │ min(l_orderkey) │
 │      int32      │
@@ -224,7 +225,7 @@ import duckdb
 duckdb.sql('select 42').pl()
 ```
 
-```
+```text
 shape: (1, 1)
 ┌─────┐
 │ 42  │
@@ -244,7 +245,7 @@ df = pl.DataFrame({'a': 42})
 duckdb.sql('select * from df').pl()
 ```
 
-```
+```text
 shape: (1, 1)
 ┌─────┐
 │ a   │

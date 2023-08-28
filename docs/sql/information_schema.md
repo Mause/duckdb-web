@@ -1,15 +1,15 @@
 ---
 layout: docu
 title: Information Schema
-selected: Documentation/Information Schema
 ---
 The views in the `information_schema` are SQL-standard views that describe the catalog entries of the database. These views can be filtered to obtain information about a specific column or table.
 
 ## Database, Catalog and Schema
+
 The top level catalog view is `information_schema.schemata`. It lists the catalogs and the schemas present in the database and has the following layout:
 
 | Column | Description | Type | Example |
-|:---|:---|:---|:---|
+|:--|:---|:-|:-|
 | `catalog_name` |Name of the database that the schema is contained in. | `VARCHAR` | `NULL` |
 | `schema_name` |Name of the schema. | `VARCHAR` | `'main'` |
 | `schema_owner` |Name of the owner of the schema. Not yet implemented. | `VARCHAR` | `NULL` |
@@ -19,10 +19,11 @@ The top level catalog view is `information_schema.schemata`. It lists the catalo
 | `sql_path` |The file system location of the database. Currently unimplemented. | `VARCHAR` | `NULL` |
 
 ## Tables and Views
+
 The view that describes the catalog information for tables and views is `information_schema.tables`. It lists the tables present in the database and has the following layout:
 
 | Column | Description | Type | Example |
-|:---|:---|:---|:---|
+|:--|:---|:-|:-|
 | `table_catalog` |The catalog the table or view belongs to.| `VARCHAR` | `NULL` |
 | `table_schema` |The schema the table or view belongs to.| `VARCHAR` | `'main'` |
 | `table_name` |The name of the table or view.| `VARCHAR` | `'widgets'` |
@@ -37,10 +38,11 @@ The view that describes the catalog information for tables and views is `informa
 | `commit_action` |Not yet implemented.| `VARCHAR` | `'NO'` |
 
 ## Columns
+
 The view that describes the catalog information for columns is `information_schema.columns`. It lists the column present in the database and has the following layout:
 
 | Column | Description | Type | Example |
-|:---|:---|:---|:---|
+|:--|:---|:-|:-|
 | `table_catalog` |Name of the database containing the table.| `VARCHAR` | `NULL` |
 | `table_schema` |Name of the schema containing the table.| `VARCHAR` | `'main'` |
 | `table_name` |Name of the table.| `VARCHAR` | `'widgets'` |
@@ -56,9 +58,10 @@ The view that describes the catalog information for columns is `information_sche
 | `datetime_precision` |If data_type identifies a date, time, timestamp, or interval type, this column contains the (declared or implicit) fractional seconds precision of the type for this column, that is, the number of decimal digits maintained following the decimal point in the seconds value. No fractional seconds are currently supported in DuckDB. For all other data types, this column is null.|`INTEGER`| `0` |
 
 ## Catalog Functions
+
 Several functions are also provided to see details about the schemas that are configured in the database.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:---|:--|:--|
 | `current_schema()` | Return the name of the currently active schema. Default is main. | `current_schema()` | `'main'` |
 | `current_schemas(boolean)` | Return list of schemas. Pass a parameter of `True` to include implicit schemas. | `current_schemas(true)` | `['temp', 'main', 'pg_catalog']` |

@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: SAMPLE Clause
-selected: Documentation/SQL/Query Syntax/Sample
-expanded: SQL
 railroad: query_syntax/sample.js
 ---
 
@@ -26,4 +24,5 @@ USING SAMPLE 10 ROWS;
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>

@@ -1,23 +1,22 @@
 ---
 layout: docu
 title: DuckDB Full Text Search
-selected: DuckDB Full Text Search
 ---
 
 A full text index allows for a query to quickly search for all occurrences of individual words within longer text strings.
 Here's an example of building a full text index of Shakespeare's plays.
 
 ```sql
-create table corpus as
-  select * from read_parquet(
+CREATE TABLE corpus AS
+  SELECT * FROM read_parquet(
     'https://github.com/marhar/duckdb_tools/raw/main/full-text-shakespeare/shakespeare.parquet');
 ```
 
 ```sql
-describe corpus;
+DESCRIBE corpus;
 ```
 
-```console
+```text
 ┌─────────────┬─────────────┬─────────┐
 │ column_name │ column_type │  null   │
 ├─────────────┼─────────────┼─────────┤
@@ -56,7 +55,7 @@ SELECT fts_main_corpus.match_bm25(line_id, 'butter') AS score,
   ORDER BY score;
 ```
 
-```console
+```text
 ┌───────────────────┬─────────────┬──────────────────────┬──────────────┬──────────────────────────────────────────────┐
 │       score       │   line_id   │      play_name       │   speaker    │                  text_entry                  │
 │      double       │   varchar   │       varchar        │   varchar    │                   varchar                    │
@@ -83,7 +82,7 @@ SELECT fts_main_corpus.match_bm25(line_id, 'butter') AS score,
 Unlike standard indexes, full text indexes don't auto-update as the underlying data is changed, so you need to
 `PRAGMA drop_fts_index(my_fts_index)` and recreate it when appropriate.
 
-## Note on generating the corpus table
+## Note on Generating the Corpus Table
 
 Details are [here](https://duckdb.blogspot.com/2023/04/generating-shakespeare-corpus-for-full.html)
 - The Columns are:  line_id, play_name, line_number, speaker, text_entry.

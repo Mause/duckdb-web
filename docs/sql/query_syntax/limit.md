@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: LIMIT Clause
-selected: Documentation/SQL/Query Syntax/Limit
-expanded: SQL
 railroad: query_syntax/orderby.js
 ---
 
@@ -32,4 +30,5 @@ LIMIT 5;
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>

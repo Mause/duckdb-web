@@ -169,10 +169,6 @@
               "url": "ibis"
             },
             {
-              "page": "DuckDB with Fugue",
-              "url": "fugue"
-            },
-            {
               "page": "DuckDB with Polars",
               "url": "polars"
             },
@@ -197,18 +193,6 @@
             {
               "page": "DBeaver SQL IDE",
               "url": "dbeaver"
-            },
-            {
-              "page": "Harlequin SQL IDE",
-              "url": "harlequin"
-            },
-            {
-              "page": "qStudio SQL IDE",
-              "url": "qstudio"
-            },
-            {
-              "page": "Rill Data Developer",
-              "url": "rill"
             }
           ]
         },
@@ -219,10 +203,6 @@
             {
               "page": "Tableau",
               "url": "tableau"
-            },
-            {
-              "page": "Tad",
-              "url": "tad"
             },
             {
               "page": "YouPlot",
@@ -535,7 +515,6 @@
         },
         {
           "page": "SQL",
-          "open": true,
           "slug": "sql",
           "subfolderitems": [
             {
@@ -935,12 +914,20 @@
               "url": "overview"
             },
             {
+              "page": "AutoComplete",
+              "url": "autocomplete"
+            },
+            {
               "page": "Full Text Search",
               "url": "full_text_search"
             },
             {
               "page": "HTTPFS",
               "url": "httpfs"
+            },
+            {
+              "page": "Iceberg",
+              "url": "iceberg"
             },
             {
               "page": "JSON",

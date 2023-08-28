@@ -1,12 +1,10 @@
 ---
 layout: docu
 title: Copy
-selected: Documentation/SQL/Copy
-expanded: SQL
 railroad: statements/copy.js
 ---
 
-#### Examples
+## Examples
 
 ```sql
 -- read a CSV file into the lineitem table - using auto-detected options
@@ -22,12 +20,13 @@ COPY lineitem TO 'lineitem.csv' (FORMAT CSV, DELIMITER '|', HEADER);
 COPY (SELECT l_orderkey, l_partkey FROM lineitem) TO 'lineitem.parquet' (COMPRESSION ZSTD);
 ```
 
-#### Copy Statements
+## Copy Statements
 
 `COPY` moves data between DuckDB and external files. `COPY ... FROM` imports data into DuckDB from an external file. `COPY ... TO` writes data from DuckDB to an external file. The `COPY` command can be used for `CSV`, `PARQUET` and `JSON` files.
 
 
-# Copy From
+### Copy From
+
 `COPY ... FROM` imports data from an external file into an existing table. The data is appended to whatever data is in the table already. The amount of columns inside the file must match the amount of columns in the table `table_name`, and the contents of the columns must be convertible to the column types of the table. In case this is not possible, an error will be thrown.
 
 If a list of columns is specified, `COPY` will only copy the data in the specified columns from the file. If there are any columns in the table that are not in the column list, `COPY ... FROM` will insert the default values for those columns
@@ -51,12 +50,12 @@ COPY lineitem FROM 'lineitem.ndjson' ( FORMAT JSON );
 COPY lineitem FROM 'lineitem.json' ( FORMAT JSON, ARRAY TRUE );
 ```
 
-## Syntax
+#### Syntax
+
 <div id="rrdiagram1"></div>
 
+### Copy To
 
-
-# Copy To
 `COPY ... TO` exports data from DuckDB to an external CSV or Parquet file. It has mostly the same set of options as `COPY ... FROM`, however, in the case of `COPY ... TO` the options specify how the file should be written to disk. Any file created by `COPY ... TO` can be copied back into the database by using `COPY ... FROM` with a similar set of options.
 
 The `COPY ... TO` function can be called specifying either a table name, or a query. When a table name is specified, the contents of the entire table will be written into the resulting file. When a query is specified, the query is executed and the result of the query is written to the resulting file.
@@ -76,10 +75,11 @@ COPY (SELECT 42 AS a, 'hello' AS b) TO 'query.ndjson' (FORMAT JSON);
 COPY (SELECT 42 AS a, 'hello' AS b) TO 'query.json' (FORMAT JSON, ARRAY TRUE);
 ```
 
-## Syntax
+#### Syntax
+
 <div id="rrdiagram2"></div>
 
-## Copy Options
+#### Copy Options
 
 Zero or more copy options may be provided as a part of the copy operation. The `WITH` specifier is optional, but if any options are specified, the parentheses are required. Parameter values can be passed in with or without wrapping in single quotes. 
 
@@ -88,19 +88,19 @@ Any option that is a boolean can be enabled or disabled in multiple ways. You ca
 The below options are applicable to all formats written with `COPY`. 
 
 | Name | Description | Type | Default |
-|:---|:---|:----|:----|
+|:--|:-----|:-|:-|
 | `allow_overwrite` | Whether or not to allow overwriting a directory if one already exists. Only has an effect when used with `partition_by`. | bool | false |
 | `format` | Specifies the copy function to use. The default is selected from the file extension (e.g., `.parquet` results in a Parquet file being written/read). If the file extension is unknown `CSV` is selected. Available options are `CSV`, `PARQUET` and `JSON`. | varchar | auto |
 | `partition_by` | The columns to partition by using a hive partitioning scheme, see the [partitioned writes section](../../data/partitioning/partitioned_writes). | varchar[] | (empty) |
 | `per_thread_output` | Generate one file per thread, rather than one file in total. This allows for faster parallel writing. | bool | false |
 | `use_tmp_file` | Whether or not to write to a temporary file first if the original file exists (`target.csv.tmp`). This prevents overwriting an existing file with a broken file in case the writing is cancelled. | bool | auto |
 
-## CSV Options
+#### CSV Options
 
 The below options are applicable when writing `CSV` files.
 
 | Name | Description | Type | Default |
-|:---|:---|:----|:----|
+|:--|:-----|:-|:-|
 | `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g., `file.csv.gz` will use gzip, `file.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
 | `force_quote` | The list of columns to always add quotes to, even if not required. | varchar[] | `[]` |
 | `dateformat` | Specifies the date format to use when writing dates. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |
@@ -112,12 +112,12 @@ The below options are applicable when writing `CSV` files.
 | `timestampformat` | Specifies the date format to use when writing timestamps. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |
 
 
-## Parquet Options
+#### Parquet Options
 
 The below options are applicable when writing `Parquet` files.
 
 | Name | Description | Type | Default |
-|:---|:---|:----|:----|
+|:--|:-----|:-|:-|
 | `compression` | The compression format to use (uncompressed, snappy, gzip or zstd). | varchar | snappy |
 | `row_group_size` | The target size, i.e., number of rows, of each row-group. | bigint | 122880 |
 | `row_group_size_bytes` | The target size of each row-group. You can pass either a human-readable string, e.g., '2MB', or an integer, i.e., the number of bytes. This option is only used when you have issued `SET preserve_insertion_order=false;`, otherwise it is ignored. | bigint | `row_group_size * 1024` |
@@ -149,12 +149,12 @@ TO 'my.parquet' (FIELD_IDS {my_map: {__duckdb_field_id: 42, key: 43, value: 44}}
 ```
 
 
-## JSON Options
+#### JSON Options
 
 The below options are applicable when writing `JSON` files.
 
 | Name | Description | Type | Default |
-|:---|:---|:----|:----|
+|:--|:-----|:-|:-|
 | `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g., `file.csv.gz` will use gzip, `file.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
 | `dateformat` | Specifies the date format to use when writing dates. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |
 | `timestampformat` | Specifies the date format to use when writing timestamps. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |

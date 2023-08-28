@@ -1,12 +1,12 @@
 ---
 layout: docu
 title: Instantiation
-selected: Client APIs
 ---
 
 DuckDB-Wasm has multiple ways to be instantiated depending on the use case.
 
 ## Instantiation
+
 cdn(jsdelivr)
 ```ts
 import * as duckdb from '@duckdb/duckdb-wasm';

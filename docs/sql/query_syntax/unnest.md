@@ -1,11 +1,10 @@
 ---
 layout: docu
 title: UNNEST
-selected: Documentation/SQL/Query Syntax/UNNEST
-expanded: SQL
 ---
 
 ## Examples
+
 ```sql
 -- unnest a list, generating 3 rows (1, 2, 3)
 SELECT UNNEST([1, 2, 3]);

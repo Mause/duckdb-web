@@ -1,16 +1,15 @@
 ---
 layout: docu
 title: Timestamp Functions
-selected: Documentation/Functions/Timestamp Functions
-expanded: Functions
 ---
 This section describes functions and operators for examining and manipulating `TIMESTAMP` values.
 
 ## Timestamp Operators
+
 The table below shows the available mathematical operators for `TIMESTAMP` types.
 
 | Operator | Description | Example | Result |
-|:---|:---|:---|:---|
+|:-|:--|:----|:--|
 | `+` | addition of an `INTERVAL` | `TIMESTAMP '1992-03-22 01:02:03' + INTERVAL 5 DAY` | `1992-03-27 01:02:03` |
 | `-` | subtraction of `TIMESTAMP`s | `TIMESTAMP '1992-03-27' - TIMESTAMP '1992-03-22'` | `5 days` |
 | `-` | subtraction of an `INTERVAL` | `TIMESTAMP '1992-03-27 01:02:03' - INTERVAL 5 DAY` | `1992-03-22 01:02:03` |
@@ -18,10 +17,11 @@ The table below shows the available mathematical operators for `TIMESTAMP` types
 Adding to or subtracting from [infinite values](../../sql/data_types/timestamp#special-values) produces the same infinite value.
 
 ## Timestamp Functions
+
 The table below shows the available scalar functions for `TIMESTAMP` values.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:--|:---|:--|
 | `age(`*`timestamp`*`, `*`timestamp`*`)` | Subtract arguments, resulting in the time difference between the two timestamps | `age(TIMESTAMP '2001-04-10', TIMESTAMP '1992-09-20')` | `8 years 6 months 20 days` |
 | `age(`*`timestamp`*`)` | Subtract from current_date | `age(TIMESTAMP '1992-09-20')` | `29 years 1 month 27 days 12:39:00.844` |
 | `century(`*`timestamp`*`)` | Extracts the century of a timestamp | `century(TIMESTAMP '1992-03-22')` | `20` |
@@ -67,10 +67,11 @@ Functions applied to infinite dates will either return the same infinite dates
 In general, if the function needs to examine the parts of the infinite date, the result will be `NULL`.
 
 ## Timestamp Table Functions
+
 The table below shows the available table functions for `TIMESTAMP` types.
 
 | Function | Description | Example |
-|:---|:---|:---|
+|:--|:--|:---|
 | `generate_series(`*`timestamp`*`, `*`timestamp`*`, `*`interval`*`)` | Generate a table of timestamps in the closed range, stepping by the interval | `generate_series(TIMESTAMP '2001-04-10', TIMESTAMP '2001-04-11', INTERVAL 30 MINUTE)`
 | `range(`*`timestamp`*`, `*`timestamp`*`, `*`interval`*`)` | Generate a table of timestamps in the half open range, stepping by the interval | `range(TIMESTAMP '2001-04-10', TIMESTAMP '2001-04-11', INTERVAL 30 MINUTE)`
 

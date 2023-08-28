@@ -1,12 +1,13 @@
 ---
 layout: docu
 title: C++ API
-selected: C++
 ---
 ## Installation
+
 The DuckDB C++ API can be installed as part of the `libduckdb` packages. Please see the [installation page](../installation?environment=cplusplus) for details.
 
 ## Basic API Usage
+
 DuckDB implements a custom C++ API. This is built around the abstractions of a database instance (`DuckDB` class), multiple `Connection`s to the database instance and `QueryResult` instances as the result of queries. The header file for the C++ API is `duckdb.hpp`. 
 
 > The standard source distribution of `libduckdb` contains an "amalgamation" of the DuckDB sources, which combine all sources into two files `duckdb.hpp` and `duckdb.cpp`. The `duckdb.hpp` header is much larger in this case. Regardless of whether you are using the amalgamation or not, just include `duckdb.hpp`.
@@ -18,15 +19,16 @@ To use DuckDB, you must first initialize a `DuckDB` instance using its construct
 With the `DuckDB` instance, you can create one or many `Connection` instances using the `Connection()` constructor. While connections should be thread-safe, they will be locked during querying. It is therefore recommended that each thread uses its own connection if you are in a multithreaded environment.
 
 
-```c++
+```cpp
 DuckDB db(nullptr);
 Connection con(db);
 ```
 
 ### Querying
+
 Connections expose the `Query()` method to send a SQL query string to DuckDB from C++. `Query()` fully materializes the query result as a `MaterializedQueryResult` in memory before returning at which point the query result can be consumed. There is also a streaming API for queries, see further below.
 
-```c++
+```cpp
 // create a table
 con.Query("CREATE TABLE integers(i INTEGER, j INTEGER)");
 
@@ -39,23 +41,16 @@ if (!result->success) {
 }
 ```
 
-The `MaterializedQueryResult` instance contains firstly two fields that indicate whether the query was successful. `Query` will not throw exceptions under normal circumstances. Instead, invalid queries or other issues will lead to the `success` boolean field in the query result instance to be set to `false`. In this case an error message may be available in `error` as a string. If successful, other fields are set: The type of statement that was just executed (e.g., `StatementType::INSERT_STATEMENT`) is contained in `statement_type`. The high-level ("SQL type") types of the result set columns are in `sql_types` and the low-level data representation types are in `types`. The names of the result columns are in the `names` string vector. In case multiple result sets are returned, for example because the result set contained multiple statements, the result set can be chained using the `next` field. 
-
-```c++
-// TODO
-```
+The `MaterializedQueryResult` instance contains firstly two fields that indicate whether the query was successful. `Query` will not throw exceptions under normal circumstances. Instead, invalid queries or other issues will lead to the `success` boolean field in the query result instance to be set to `false`. In this case an error message may be available in `error` as a string. If successful, other fields are set: the type of statement that was just executed (e.g., `StatementType::INSERT_STATEMENT`) is contained in `statement_type`. The high-level ("SQL type") types of the result set columns are in `sql_types` and the low-level data representation types are in `types`. The names of the result columns are in the `names` string vector. In case multiple result sets are returned, for example because the result set contained multiple statements, the result set can be chained using the `next` field.
 
 DuckDB also supports prepared statements in the C++ API with the `Prepare()` method. This returns an instance of `PreparedStatement`. This instance can be used to execute the prepared statement with parameters. Below is an example:
 
-```c++
+```cpp
 std::unique_ptr<PreparedStatement> prepare = con.Prepare("SELECT COUNT(*) FROM a WHERE i=$1");
 std::unique_ptr<QueryResult> result = prepare->Execute(12);
 ```
 
 > Do **not** use prepared statements to insert large amounts of data into DuckDB. See [the data import documentation](../data/overview) for better options.
-
-### Streaming Queries
-
 
 ### UDF API
 
@@ -66,7 +61,7 @@ These methods created UDFs into the temporary schema (TEMP_SCHEMA) of the owner 
 
 The user can code an ordinary scalar function and invoke the `CreateScalarFunction()` to register and afterward use the UDF in a _SELECT_ statement, for instance:
 
-```c++
+```cpp
 bool bigger_than_four(int value) {
     return value > 4;
 }
@@ -78,8 +73,12 @@ connection.Query("SELECT bigger_than_four(i) FROM (VALUES(3), (5)) tbl(i)")->Pri
 
 The `CreateScalarFunction()` methods automatically creates vectorized scalar UDFs so they are as efficient as built-in functions, we have two variants of this method interface as follows:
 
-**1.**`template<typename TR, typename... Args>`\
-&nbsp;&nbsp;&nbsp;`void CreateScalarFunction(string name, TR (*udf_func)(Args…))`
+**1.**
+
+```cpp
+template<typename TR, typename... Args>
+void CreateScalarFunction(string name, TR (*udf_func)(Args…))
+```
 
 - template parameters:
     - **TR** is the return type of the UDF function;
@@ -100,12 +99,16 @@ This method automatically discovers from the template typenames the correspondin
 
 *In DuckDB some primitive types, e.g., _int32_t_, are mapped to the same SQLType: `INTEGER`, `TIME` and `DATE`, then for disambiguation the users can use the following overloaded method.
 
-**2.** `template<typename TR, typename... Args>`\
-&nbsp;&nbsp;&nbsp;`void CreateScalarFunction(string name, vector<SQLType> args, SQLType ret_type, TR (*udf_func)(Args…))`
+**2.**
+
+```cpp
+template<typename TR, typename... Args>
+void CreateScalarFunction(string name, vector<SQLType> args, SQLType ret_type, TR (*udf_func)(Args…))
+```
 
 An example of use would be:
 
-```c++
+```cpp
 int32_t udf_date(int32_t a) {
 	return a;
 }
@@ -142,7 +145,7 @@ This function checks the template types against the SQLTypes passed as arguments
 
 The `CreateVectorizedFunction()` methods register a vectorized UDF such as:
 
-```c++
+```cpp
 /*
 * This vectorized function copies the input values to the result vector
 */
@@ -182,11 +185,13 @@ con.Query("SELECT udf_vectorized_int(i) FROM integers")->Print();
 
 The Vectorized UDF is a pointer of the type _scalar_function_t_:
 
-`typedef std::function<void(DataChunk &args, ExpressionState &expr, Vector &result)> scalar_function_t;`
+```cpp
+typedef std::function<void(DataChunk &args, ExpressionState &expr, Vector &result)> scalar_function_t;
+```
 
-- **args** is a [DataChunk](https://github.com/duckdb/duckdb/blob/master/src/include/duckdb/common/types/data_chunk.hpp) that holds a set of input vectors for the UDF that all have the same length;
-- **expr** is an [ExpressionState](https://github.com/duckdb/duckdb/blob/master/src/include/duckdb/execution/expression_executor_state.hpp) that provides information to the query's expression state;
-- **result**: is a [Vector](https://github.com/duckdb/duckdb/blob/master/src/include/duckdb/common/types/vector.hpp) to store the result values.
+- **args** is a [DataChunk](https://github.com/duckdb/duckdb/blob/main/src/include/duckdb/common/types/data_chunk.hpp) that holds a set of input vectors for the UDF that all have the same length;
+- **expr** is an [ExpressionState](https://github.com/duckdb/duckdb/blob/main/src/include/duckdb/execution/expression_executor_state.hpp) that provides information to the query's expression state;
+- **result**: is a [Vector](https://github.com/duckdb/duckdb/blob/main/src/include/duckdb/common/types/vector.hpp) to store the result values.
 
 There are different vector types to handle in a Vectorized UDF:
 - ConstantVector;
@@ -200,8 +205,12 @@ There are different vector types to handle in a Vectorized UDF:
 
 The general API of the `CreateVectorizedFunction()` method is as follows:
 
-**1.** `template<typename TR, typename... Args>`\
-&nbsp;&nbsp;&nbsp;`void CreateVectorizedFunction(string name, scalar_function_t udf_func, SQLType varargs = SQLType::INVALID)`
+**1.**
+
+```cpp
+template<typename TR, typename... Args>
+void CreateVectorizedFunction(string name, scalar_function_t udf_func, SQLType varargs = SQLType::INVALID)
+```
 
 - template parameters:
     - **TR** is the return type of the UDF function;
@@ -221,9 +230,9 @@ This method automatically discovers from the template typenames the correspondin
 - double → SQLType::DOUBLE
 - string_t → SQLType::VARCHAR
 
-**2.** `template<typename TR, typename... Args>`\
-&nbsp;&nbsp;&nbsp;`void CreateVectorizedFunction(string name, vector<SQLType> args, SQLType ret_type, scalar_function_t udf_func, SQLType varargs = SQLType::INVALID)`
+**2.**
 
-```c++
-// TODO
+```cpp
+template<typename TR, typename... Args>
+void CreateVectorizedFunction(string name, vector<SQLType> args, SQLType ret_type, scalar_function_t udf_func, SQLType varargs = SQLType::INVALID)
 ```

@@ -1,13 +1,11 @@
 ---
 layout: docu
 title: Enum Types
-selected: Documentation/Data Types/Enum
-expanded: Data Types
 blurb: The ENUM type represents a dictionary data structure with all possible unique values of a column.
 ---
 | Name | Description |
-|:---|:---|
-| ENUM | Dictionary Encoding representing all possible string values of a column. |
+|:--|:-----|
+| `ENUM` | Dictionary Encoding representing all possible string values of a column. |
 
 ## Enums
 
@@ -15,13 +13,14 @@ The `ENUM` type represents a dictionary data structure with all possible unique 
 
 
 ### Enum Definition
+
 Enum types are created from either a hardcoded set of values or from a select statement that returns a single column of varchars. The set of values in the select statement will be deduplicated, but if the enum is created from a hardcoded set there may not be any duplicates.
 ```sql
 -- Create enum using hardcoded values
-CREATE TYPE ${enum_name} AS ENUM ([${value_1},${value_2},...])
+CREATE TYPE ${enum_name} AS ENUM ([${value_1},${value_2},...]);
 
 -- Create enum using a select statement that returns a single column of varchars
-CREATE TYPE ${enum_name} AS ENUM (${SELECT expression})
+CREATE TYPE ${enum_name} AS ENUM (${SELECT expression});
 ```
 For example:
 ```sql
@@ -51,11 +50,12 @@ CREATE TYPE birds AS ENUM (SELECT my_varchar FROM my_inputs);
 SELECT enum_range(NULL::birds) AS my_enum_range;
 ```
 
-| my_enum_range |
-|---------------|
-| [duck, goose] |
+|  my_enum_range  |
+|-----------------|
+| `[duck, goose]` |
 
 ### Enum Usage
+
 After an enum has been created, it can be used anywhere a standard built-in type is used. For example, we can create a table with a column that references the enum.
 ```sql
 -- Creates a table person, with attributes name (string type) and current_mood (mood type)
@@ -86,13 +86,14 @@ COPY person FROM 'path/to/file.csv' (AUTO_DETECT TRUE);
 
 ```
 
-### Enum Vs. Strings
+### Enum vs. Strings
+
 DuckDB Enums are automatically cast to `VARCHAR` types whenever necessary. This characteristic allows for `ENUM` columns to be used in any `VARCHAR` function. In addition, it also allows for comparisons between different `ENUM` columns, or an `ENUM` and a `VARCHAR` column.
 
 For example:
 ```sql
 -- regexp_matches is a function that takes a VARCHAR, hence current_mood is cast to VARCHAR
-SELECT regexp_matches(current_mood, '.*a.*') FROM person
+SELECT regexp_matches(current_mood, '.*a.*') FROM person;
 ----
 TRUE
 FALSE
@@ -120,21 +121,22 @@ SELECT * FROM person_2 where current_mood = past_mood;
 
 
 ### Enum Removal
+
 Enum types are stored in the catalog, and a catalog dependency is added to each table that uses them. It is possible to drop an Enum from the catalog using the following command:
 ```sql
-DROP TYPE ${enum_name}
+DROP TYPE ${enum_name};
 ```
 Note that any dependent must be removed before dropping the enum, or the enum must be dropped with the additional `CASCADE` parameter.
 
 For example:
 ```sql
 -- This will fail since person has a catalog dependency to the mood type
-DROP TYPE mood
+DROP TYPE mood;
 
 DROP TABLE person;
 DROP TABLE person_2;
 
 -- This successfully removes the mood type.
 -- Another option would be to DROP TYPE mood CASCADE (Drops the type and its dependents)
-DROP TYPE mood
+DROP TYPE mood;
 ```

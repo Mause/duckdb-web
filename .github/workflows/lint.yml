@@ -1,0 +1,32 @@
+name: Lint
+on: [push, pull_request]
+
+jobs:
+  markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Remove archive docs
+        run: |
+          rm -rf docs/archive
+      - uses: errata-ai/vale-action@reviewdog
+        with:
+          files: 'docs/,_posts/,dev/'
+          separator: ","
+          filter_mode: added
+          fail_on_error: false
+      - uses: articulate/actions-markdownlint@main
+        with:
+          config: .markdownlint.jsonc
+          files: 'docs/**/*.md _posts/*.md dev/*.md'
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: psf/black@stable
+      with:
+        options: "--check --skip-string-normalization --verbose --diff --color"
+        src: "./scripts"
+        version: "23.7.0"
+

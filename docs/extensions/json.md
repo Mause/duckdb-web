@@ -1,11 +1,11 @@
 ---
 layout: docu
 title: JSON
-selected: Documentation/JSON
 ---
 The __json__ extension is a loadable extension that implements SQL functions that are useful for reading values from existing JSON, and creating new JSON data.
 
 ## JSON Type
+
 The JSON extension makes use of the **JSON** logical type.
 The **JSON** logical type is interpreted as JSON, i.e., parsed, in JSON functions rather than interpreted as **VARCHAR**, i.e., a regular string.
 All JSON creation functions return values of this type.
@@ -23,13 +23,14 @@ SELECT {duck: 42}::JSON;
 
 This works for our nested types as shown in the example, but also for non-nested types:
 ```sql
-select '2023-05-12'::DATE::JSON;
+SELECT '2023-05-12'::DATE::JSON;
 -- "2023-05-12"
 ```
 
 The only exception to this behavior is the cast from `VARCHAR` to `JSON`, which does not alter the data, but instead parses and validates the contents of the `VARCHAR` as JSON.
 
 ## JSON Table Functions
+
 The following two table functions are used to read JSON:
 
 | Function | Description |
@@ -41,7 +42,7 @@ The following two table functions are used to read JSON:
 These functions have the following parameters:
 
 | Name | Description | Type | Default
-|:---|:---|:---|:---|
+|:--|:-----|:-|:-|
 | `maximum_object_size` | The maximum size of a JSON object (in bytes) | uinteger | `16777216` |
 | `format` | Can be one of `['auto', 'unstructured', 'newline_delimited', 'array']` | varchar | `'array'` |
 | `ignore_errors` | Whether to ignore parse errors (only possible when `format` is `'newline_delimited'`) | bool | false |
@@ -77,6 +78,7 @@ With `'array'`, each array element is read, e.g.:
   {
     "goose": [1,2,3]
   }
+]
 ```
 Again, will result in two objects being read.
 
@@ -95,7 +97,7 @@ SELECT * FROM read_ndjson_objects('*.json.gz');
 DuckDB also supports reading JSON as a table, using the following functions:
 
 | Function | Description |
-|:---|:---|
+|:----|:-------|
 | `read_json(`*`filename`*`)`   | Read JSON from **filename**, where **filename** can also be a list of files, or a glob pattern |
 | `read_ndjson(`*`filename`*`)` | Alias for `read_json` with parameter **format** set to `'newline_delimited'` |
 | `read_json_auto(`*`filename`*`)`   | Alias for `read_json` with all auto-detection enabled |
@@ -104,7 +106,7 @@ DuckDB also supports reading JSON as a table, using the following functions:
 Besides the `maximum_object_size`, `format`, `ignore_errors` and `compression`, these functions have additional parameters:
 
 | Name | Description | Type | Default |
-|:---|:---|:---|:---|
+|:--|:------|:-|:-|
 | `columns` | A struct that specifies the key names and value types contained within the JSON file (e.g., `{key1: 'INTEGER', key2: 'VARCHAR'}`). If `auto_detect` is enabled these will be inferred | struct | `(empty)` |
 | `records` | Can be one of `['auto', 'true', 'false']` | varchar | `'records'` |
 | `auto_detect` | Whether to auto-detect detect the names of the keys and data types of the values automatically | bool | `false` |
@@ -204,6 +206,7 @@ You can read the same file with `records` set to `'false'`, to get a single colu
 For additional examples reading more complex data, please see the [Shredding Deeply Nested JSON, One Vector at a Time blog post](https://duckdb.org/2023/03/03/json.html).
 
 ## JSON Import/Export
+
 When the JSON extension is installed, `FORMAT JSON` is supported for `COPY FROM`, `COPY TO`, `EXPORT DATABASE` and `IMPORT DATABASE`. See [Copy](../sql/statements/copy) and [Import/Export](../sql/statements/export).
 
 By default, `COPY` expects newline-delimited JSON. If you prefer copying data to/from a JSON array, you can specify `ARRAY TRUE`, i.e.,
@@ -233,13 +236,14 @@ COPY test FROM 'my.json' (AUTO_DETECT TRUE);
 ```
 
 ## JSON Scalar Functions
+
 The following scalar JSON functions can be used to gain information about the stored JSON values.
 With the exception of `json_valid(`*`json`*`)`, all JSON functions produce an error when invalid JSON is supplied.
 
 We support two kinds of notations to describe locations within JSON: [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) and JSONPath.
 
 | Function | Description |
-|:---|:---|
+|:---|:----|
 | `json(`*`json`*`)` | Parse and minify *`json`* |
 | `json_valid(`*`json`*`)` | Return whether *`json`* is valid JSON |
 | `json_array_length(`*`json `*`[, `*`path`*`])` | Return the number of elements in the JSON array *`json`*, or `0` if it is not a JSON array. If *`path`* is specified, return the number of elements in the JSON array at the given *`path`*. If *`path`* is a **LIST**, the result will be **LIST** of array lengths |
@@ -311,11 +315,12 @@ SELECT json_contains('{"top_key":{"key":"value"}}', '{"key":"value"}');
 ```
 
 ## JSON Extraction Functions
+
 There are two extraction functions, which have their respective operators. The operators can only be used if the string is stored as the **JSON** logical type.
 These functions supports the same two location notations as the previous functions.
 
 | Function | Alias | Operator | Description |
-|:---|:---|:---|
+|:---|:---|:-|
 | `json_extract(`*`json`*`,`*`path`*`)` | `json_extract_path` | `->` | Extract **JSON** from *`json`* at the given *`path`*. If *`path`* is a **LIST**, the result will be a **LIST** of **JSON** |
 | `json_extract_string(`*`json`*`,`*`path`*`)` | `json_extract_path_text` | `->>` | Extract **VARCHAR** from *`json`* at the given *`path`*. If *`path`* is a **LIST**, the result will be a **LIST** of **VARCHAR** |
 
@@ -347,10 +352,11 @@ SELECT j->'species'->>[0,1] FROM example;
 ```
 
 ## JSON Creation Functions
+
 The following functions are used to create JSON.
 
 | Function | Description |
-|:---|:---|
+|:--|:----|
 | `to_json(`*`any`*`)` | Create **JSON** from a value of *`any`* type. Our **LIST** is converted to a JSON array, and our **STRUCT** and **MAP** are converted to a JSON object |
 | `json_quote(`*`any`*`)` | Alias for `to_json` |
 | `array_to_json(`*`list`*`)` | Alias for `to_json` that only accepts **LIST** |
@@ -378,10 +384,11 @@ SELECT json_merge_patch('{"duck": 42}', '{"goose": 123}');
 ```
 
 ## JSON Aggregate Functions
+
 There are three JSON aggregate functions.
 
 | Function | Description |
-|:---|:---|
+|:---|:----|
 | `json_group_array(`*`any`*`)` | Return a JSON array with all values of *`any`* in the aggregation |
 | `json_group_object(`*`key`*`, `*`value`*`)` | Return a JSON object with all *`key`*, *`value`* pairs in the aggregation |
 | `json_group_structure(`*`json`*`)` | Return the combined `json_structure` of all *`json`* in the aggregation |
@@ -404,6 +411,7 @@ SELECT json_group_structure(j) FROM example;
 ```
 
 ## Transforming JSON
+
 In many cases, it is inefficient to extract values from JSON one-by-one.
 Instead, we can "extract" all values at once, transforming JSON to the nested types **LIST** and **STRUCT**.
 
@@ -435,10 +443,11 @@ SELECT json_transform_strict(j, '{"family":"TINYINT","coolness":"DOUBLE"}') FROM
 ```
 
 ## De/Serializing SQL to JSON and vice versa
+
 The JSON extension also provides functions to serialize and deserialize `SELECT` statements between SQL and JSON, as well as executing JSON serialized statements.
 
 | Function | Type | Description |
-|:---|:---|:---|
+|:------|:-|:---------|
 | `json_serialize_sql(`*`varchar`*`, skip_empty := `*`boolean`*`, skip_null := `*`boolean`*`, format := `*`boolean`*`)` | Scalar | Serialize a set of `;` separated select statments to an equivalent list of *`json`* serialized statements |
 | `json_deserialize_sql(`*`json`*`)` | Scalar  | Deserialize one or many *`json`* serialized statements back to an equivalent sql string |
 | `json_execute_serialized_sql(`*`varchar`*`)` | Table | Execute *`json`* serialized statements and return the resulting rows. Only one statement at a time is supported for now. |

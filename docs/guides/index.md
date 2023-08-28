@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: Guides
-selected: Guides
 ---
 
 The guides section contains compact how-to guides that are focused on achieving a single goal. For an in-depth reference see the Documentation section.
@@ -13,27 +12,28 @@ The guides section contains compact how-to guides that are focused on achieving 
 
 ## SQL: Data Import & Export
 
-##### CSV Files
+### CSV Files
 
 * [How to load a CSV file into a table](../guides/import/csv_import)
 * [How to export a table to a CSV file](../guides/import/csv_export)
 
-##### Parquet Files
+### Parquet Files
 
 * [How to load a Parquet file into a table](../guides/import/parquet_import)
 * [How to export a table to a Parquet file](../guides/import/parquet_export)
 * [How to run a query directly on a Parquet file](../guides/import/query_parquet)
 
-##### JSON Files
+### JSON Files
 
 * [How to load a JSON file into a table](../guides/import/json_import)
 * [How to export a table to a JSON file](../guides/import/json_export)
 
-##### Excel Files with the Spatial Extension
+### Excel Files with the Spatial Extension
+
 * [How to load an Excel file into a table](../guides/import/excel_import)
 * [How to export a table to an Excel file](../guides/import/excel_export)
 
-##### HTTP, S3 and GCP
+### HTTP, S3 and GCP
 
 * [How to load a Parquet file directly from HTTP(s)](../guides/import/http_import)
 * [How to load a Parquet file directly from S3 or GCS](../guides/import/s3_import)
@@ -73,7 +73,6 @@ The guides section contains compact how-to guides that are focused on achieving 
 ### Python Library Integrations
 
 * [How to use Ibis to query DuckDB with or without SQL](../guides/python/ibis)
-* [How to use FugueSQL to use DuckDB with Python/Pandas functions](../guides/python/fugue)
 * [How to use DuckDB with Polars DataFrames via Apache Arrow](../guides/python/polars)
 * [How to use DuckDB with Vaex DataFrames via Apache Arrow](../guides/python/vaex)
 * [How to use DuckDB with DataFusion via Apache Arrow](../guides/python/datafusion)
@@ -81,13 +80,8 @@ The guides section contains compact how-to guides that are focused on achieving 
 ## SQL Editors / IDE's
 
 * [How to set up the DBeaver SQL IDE](../guides/sql_editors/dbeaver)
-* [How to use the Harlequin terminal-based SQL IDE](../guides/sql_editors/harlequin)
-* [How to use qStudio SQL IDE](../guides/sql_editors/qstudio)
-* [How to set up Rill Data Developer](../guides/sql_editors/rill)
-
 
 ## Data Viewers
 
-* [How to use Tad to view tabular data files and DuckDB databases](../guides/data_viewers/tad)
 * [How to Visualise DuckDB databases with Tableau](../guides/data_viewers/tableau)
 * [How to draw command-line plots with DuckDB and YouPlot](../guides/data_viewers/youplot)

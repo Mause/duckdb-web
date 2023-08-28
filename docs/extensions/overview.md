@@ -1,11 +1,10 @@
 ---
 layout: docu
 title: Extensions
-selected: Documentation/Extensions
 ---
 DuckDB has a number of extensions available for use. Not all of them are included by default in every distribution, but DuckDB has a mechanism that allows for remote installation.
 
-## Remote installation
+## Remote Installation
 
 If a given extensions is not available with your distribution, you can do the following to make it available.
 
@@ -16,27 +15,28 @@ LOAD 'fts';
 
 If you are using the Python API client, you can install and load them with the `load_extension(name: str)` and `install_extension(name: str)` methods.
 
-## Unsigned extensions
+## Unsigned Extensions
 
 All verified extensions are signed, if you wish to load your own extensions or extensions from untrusted third-parties you'll need to enable the `allow_unsigned_extensions` flag.  
 To load unsigned extensions using the CLI, you'll need to pass the `-unsigned` flag to it on startup.
 
-## Listing extensions
+## Listing Extensions
 
 You can check the list of core and installed extensions with the following query:
 ```sql
-select * from duckdb_extensions();
+SELECT * FROM duckdb_extensions();
 ```
 
-## All available extensions
+## All Available Extensions
 
-| Extension name                                                                                                                      | Description                                                          | Aliases         |
-| ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------- |
+| Extension name | Description | Aliases |
+|---|-----|--|
 | autocomplete                                                                                                                        | Adds supports for autocomplete in the shell                          |                 |
 | arrow [![GitHub logo](/images/github-mark.svg)](https://github.com/duckdblabs/arrow)                                                | A zero-copy data integration between Apache Arrow and DuckDB         |                 |
 | [excel](excel)                                                                                                                      | Adds support for Excel-like format strings                           |                 |
 | [fts](full_text_search)                                                                                                             | Adds support for Full-Text Search Indexes                            |                 |
 | [httpfs](httpfs)                                                                                                                    | Adds support for reading and writing files over a HTTP(S) connection | http, https, s3 |
+| [iceberg](iceberg) [![GitHub logo](/images/github-mark.svg)](https://github.com/duckdblabs/duckdb_iceberg)                          | Adds support for the Apache Iceberg format                           |                 |
 | icu                                                                                                                                 | Adds support for time zones and collations using the ICU library     |                 |
 | inet                                                                                                                                | Adds support for IP-related data types and functions                 |                 |
 | jemalloc                                                                                                                            | Overwrites system allocator with JEMalloc                            |                 |
@@ -50,7 +50,7 @@ select * from duckdb_extensions();
 | tpch                                                                                                                                | Adds TPC-H data generation and query support                         |                 |
 | visualizer                                                                                                                          |                                                                      |                 |
 
-## Downloading extensions directly from S3
+## Downloading Extensions Directly from S3
 
 Downloading an extension directly could be helpful when building a lambda or container that uses DuckDB.
 DuckDB extensions are stored in public S3 buckets, but the directory structure of those buckets is not searchable. 
@@ -79,7 +79,8 @@ The list of supported platforms may increase over time, but the current list of 
 See above for a list of extension names and how to pull the latest list of extensions.
 
 
-## Loading an extension from local storage
+## Loading an Extension from Local Storage
+
 Extensions are stored in gzip format, so they must be unzipped prior to use. 
 There are many methods to decompress gzip. Here is a Python example:
 
@@ -95,12 +96,15 @@ with gzip.open('httpfs.duckdb_extension.gz','rb') as f_in:
 After unzipping, the install and load commands can be used with the path to the .duckdb_extension file. 
 For example, if the file was unzipped into the same directory as where DuckDB is being executed:
 ```sql
-install 'httpfs.duckdb_extension';
-load 'httpfs.duckdb_extension';
+INSTALL 'httpfs.duckdb_extension';
+LOAD 'httpfs.duckdb_extension';
 ```
 
+## Extension Template
 
-## Pages in this Section
+A template for creating extensions is available in the [`extension-template` repository](https://github.com/duckdb/extension-template/). Note that this project is work-in-progress.
+
+## Pages in This Section
 
 <!--
 any extensions that have their own pages will automatically be added to a table of contents that is rendered directly below this list.

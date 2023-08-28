@@ -1,13 +1,12 @@
 ---
 layout: docu
 title: Insert Statement
-selected: Documentation/SQL/Insert
-expanded: SQL
 railroad: statements/insert.js
 ---
 The `INSERT` statement inserts new data into a table.
 
 ### Examples
+
 ```sql
 -- insert the values (1), (2), (3) into "tbl"
 INSERT INTO tbl VALUES (1), (2), (3);
@@ -24,6 +23,7 @@ INSERT OR REPLACE INTO tbl(i) VALUES(1);
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>
 
 `INSERT INTO` inserts new rows into a table. One can insert one or more rows specified by value expressions, or zero or more rows resulting from a query.

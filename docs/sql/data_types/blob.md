@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Blob Type
-selected: Documentation/Data Types/Blob
-expanded: Data Types
 blurb: The blob (Binary Large OBject) type represents an arbitrary binary object stored in the database system.
 ---
 
@@ -24,4 +22,5 @@ SELECT 'AB'::BLOB;
 Blobs are typically used to store non-textual objects that the database does not provide explicit support for, such as images. While blobs can hold objects up to 4GB in size, typically it is not recommended to store very large objects within the database system. In many situations it is better to store the large file on the file system, and store the path to the file in the database system in a `VARCHAR` field.
 
 ## Functions
+
 See [Blob Functions](../functions/blob).

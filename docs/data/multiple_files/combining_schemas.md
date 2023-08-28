@@ -3,13 +3,15 @@ layout: docu
 title: Combining Schemas
 ---
 
+<!-- markdownlint-disable MD036 -->
+
 ### Examples
 
 ```sql
 -- read a set of CSV files combining columns by position
-SELECT * FROM read_csv_auto('flights*.csv')
+SELECT * FROM read_csv_auto('flights*.csv');
 -- read a set of CSV files combining columns by name 
-SELECT * FROM read_csv_auto('flights*.csv', union_by_name=True)
+SELECT * FROM read_csv_auto('flights*.csv', union_by_name=True);
 ```
 
 ### Combining Schemas
@@ -71,7 +73,7 @@ FlightDate|UniqueCarrier|OriginCityName|DestCityName
 Reading these when unifying column names **by position** results in an error - as the two files have a different number of columns. When specifying the `union_by_name` option, the columns are correctly unified, and any missing values are set to `NULL`. 
 
 ```sql
-SELECT * FROM read_csv_auto(['flights1.csv', 'flights2.csv'], union_by_name=True)
+SELECT * FROM read_csv_auto(['flights1.csv', 'flights2.csv'], union_by_name=True);
 ```
 
 | FlightDate | OriginCityName |  DestCityName   | UniqueCarrier |

@@ -3,6 +3,8 @@ layout: docu
 title: CSV Auto Detection
 ---
 
+<!-- markdownlint-disable MD036 -->
+
 When using `read_csv_auto`, or reading a CSV file with the `auto_detect` flag set, the system tries to automatically infer how to read the CSV file. This step is necessary because CSV files are not self-describing and come in many different dialects. The auto-detection works roughly as follows:
 
 * Detect the dialect of the CSV file (delimiter, quoting rule, escape)
@@ -15,15 +17,16 @@ The detection works by operating on a sample of the file. The size of the sample
 
 
 ### Dialect Detection
+
 Dialect detection works by attempting to parse the samples using the set of considered values. The detected dialect is the dialect that has (1) a consistent number of columns for each row, and (2) the highest number of columns for each row.
 
 The following dialects are considered for automatic dialect detection.
 
-| Parameters | Considered Values |
-|------------|-------------------|
-| delim      | , \| ; \t         |
-| quote      | " ' (empty)       |
-| escape     | " ' \\ (empty)    |
+| Parameters | Considered values     |
+|------------|-----------------------|
+| `delim`    | `,` `|` `;` `\t`      |
+| `quote`    | `"` `'` (empty)       |
+| `escape`   | `"` `'` `\` (empty)   |
 
 
 Consider the following example file.
@@ -87,23 +90,23 @@ The system considers the following formats for dates (`dateformat`). Higher entr
 
 | dateformat |
 |------------|
-| ISO 8601   |
-| %y-%m-%d   |
-| %Y-%m-%d   |
-| %d-%m-%y   |
-| %d-%m-%Y   |
-| %m-%d-%y   |
-| %m-%d-%Y   |
+| `ISO 8601` |
+| `%y-%m-%d` |
+| `%Y-%m-%d` |
+| `%d-%m-%y` |
+| `%d-%m-%Y` |
+| `%m-%d-%y` |
+| `%m-%d-%Y` |
 
 The system considers the following formats for timestamps (`timestampformat`). Higher entries are chosen over lower entries in case of ambiguities.
 
-|   timestampformat    |
-|----------------------|
-| ISO 8601             |
-| %y-%m-%d %H:%M:%S    |
-| %Y-%m-%d %H:%M:%S    |
-| %d-%m-%y %H:%M:%S    |
-| %d-%m-%Y %H:%M:%S    |
-| %m-%d-%y %I:%M:%S %p |
-| %m-%d-%Y %I:%M:%S %p |
-| %Y-%m-%d %H:%M:%S.%f |
+|   timestampformat      |
+|------------------------|
+| `ISO 8601`             |
+| `%y-%m-%d %H:%M:%S`    |
+| `%Y-%m-%d %H:%M:%S`    |
+| `%d-%m-%y %H:%M:%S`    |
+| `%d-%m-%Y %H:%M:%S`    |
+| `%m-%d-%y %I:%M:%S %p` |
+| `%m-%d-%Y %I:%M:%S %p` |
+| `%Y-%m-%d %H:%M:%S.%f` |

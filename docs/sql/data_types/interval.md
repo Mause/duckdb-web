@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Interval Type
-selected: Documentation/Data Types/Interval
-expanded: Data Types
 blurb: An interval specifies a period of time measured in units of a specific date part like years, days, seconds, or others.
 ---
 
@@ -73,6 +71,7 @@ SELECT datediff('month', TIMESTAMP '2000-01-01 11:00:00', TIMESTAMP '2000-02-01 
 ```
 
 ## Functions
+
 See the [Date Part Functions docs](../../sql/functions/datepart) for a list of available
 date parts for use with an `INTERVAL`.
 

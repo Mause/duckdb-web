@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: ORDER BY Clause
-selected: Documentation/SQL/Query Syntax/Order By
-expanded: SQL
 railroad: query_syntax/orderby.js
 ---
 
@@ -16,6 +14,7 @@ The expressions may begin with either an arbitrary scalar expression (which coul
 Each expression can optionally be followed by an order modifier (`ASC` or `DESC`, default is `ASC`), and/or a `NULL` order modifier (`NULLS FIRST` or `NULLS LAST`, default is `NULLS LAST`).
 
 ### ORDER BY ALL
+
 The `ALL` keyword indicates that the output should be sorted by every column in order from left to right. 
 The direction of this sort may be modified using either `ORDER BY ALL ASC` or `ORDER BY ALL DESC` and/or `NULLS FIRST` or `NULLS LAST`.
 Note that `ALL` may not be used in combination with other expressions in the `ORDER BY` clause - it must be by itself.
@@ -53,7 +52,7 @@ CREATE OR REPLACE TABLE addresses AS
     UNION ALL 
     SELECT '111 Duck Duck Goose Ln', 'Duck Town', '11111'
     UNION ALL 
-    SELECT '111 Duck Duck Goose Ln', 'Duck Town', '11111-0001'
+    SELECT '111 Duck Duck Goose Ln', 'Duck Town', '11111-0001';
 ;
 ```
 
@@ -77,11 +76,12 @@ ORDER BY city COLLATE DE;
 ```
 
 #### ORDER BY ALL Examples
+
 ```sql
 -- Order from left to right (by address, then by city, then by zip) in ascending order
 SELECT *
 FROM addresses
-ORDER BY ALL
+ORDER BY ALL;
 ```
 
 |        address         |   city    |    zip     |
@@ -96,7 +96,7 @@ ORDER BY ALL
 -- Order from left to right (by address, then by city, then by zip) in descending order
 SELECT *
 FROM addresses
-ORDER BY ALL DESC
+ORDER BY ALL DESC;
 ```
 
 |        address         |   city    |    zip     |
@@ -109,4 +109,5 @@ ORDER BY ALL DESC
 
 
 ### Syntax
+
 <div id="rrdiagram"></div>

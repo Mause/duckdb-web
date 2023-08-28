@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Nested Functions
-selected: Documentation/Functions/Nested Functions
-expanded: Functions
 ---
 This section describes functions and operators for examining and manipulating nested values. There are three nested data types: lists, structs, and maps.
 
@@ -12,8 +10,8 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 
 <!-- This follows the order of shorthand, core/main function (list_), other list_ aliases, array_ aliases -->
 
-| Function                                          | Description                                                                                                                                                                         | Example                                  | Result            |
-|:--------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------|:------------------|
+| Function | Description | Example | Result |
+|:---|:--|:---|:-|
 | *`list`*`[`*`index`*`]`                           | Bracket notation serves as an alias for `list_extract`.                                                                                                                             | `l[3]`                                   | `6`               |
 | `list_extract(`*`list`*`, `*`index`*`)`           | Extract the `index`th (1-based) value from the list.                                                                                                                                | `list_extract(l, 3)`                     | `6`               |
 | `list_element(`*`list`*`, `*`index`*`)`           | Alias for `list_extract`.                                                                                                                                                           | `list_element(l, 3)`                     | `6`               |
@@ -70,16 +68,18 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 | `array_resize(`*`list`*`, `*`size`*`[, `*`value`*`])` | Alias for `list_resize`.                                                                                                                                                        | `array_resize([1,2,3], 5, 0)`            | `[1, 2, 3, 0, 0]` |
 
 ## List Operators
+
 The following operators are supported for lists:
 
-| Operator | Description                                                                               | Example                    | Result          |
-|----------|-------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| Operator | Description | Example | Result |
+|-|--|---|-|
 | `&&`     | Alias for `list_intersect`                                                                | `[1,2,3,4,5] && [2,5,5,6]` | `[2,5]`         |
 | `@>`     | Alias for `list_has_all`, where the list on the **right** of the operator is the sublist. | `[1,2,3,4] @> [3,4,3]`     | `true`          |
 | `<@`     | Alias for `list_has_all`, where the list on the **left** of the operator is the sublist.  | `[1,4] <@ [1,2,3,4]`       | `true`          |
-| `\|\|`   | Alias for `list_concat`                                                                   | `[1,2,3] \|\| [4,5,6]`     | `[1,2,3,4,5,6]` |
+| `||`     | Alias for `list_concat`                                                                   | `[1,2,3] || [4,5,6]`       | `[1,2,3,4,5,6]` |
 
 ## List Comprehension
+
 Python-style list comprehension can be used to compute expressions over elements in a list. For example:
 
 ```sql
@@ -91,19 +91,19 @@ SELECT [upper(x) for x in strings if len(x)>0] FROM (VALUES (['Hello', '', 'Worl
 
 ## Struct Functions
 
-| Function | Description                                                                                                                                                                                                                | Example | Result |
-|:---|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---|:---|
-| *`struct`*`.`*`entry`* | Dot notation serves as an alias for `struct_extract`.                                                                                                                                                                      | `({'i': 3, 's': 'string'}).s` | `string` |
-| *`struct`*`[`*`entry`*`]` | Bracket notation serves as an alias for `struct_extract`.                                                                                                                                                                  | `({'i': 3, 's': 'string'})['s']` | `string` |
+| Function | Description | Example | Result |
+|:--|:---|:---|:--|
+| *`struct`*`.`*`entry`* | Dot notation serves as an alias for `struct_extract`. | `({'i': 3, 's': 'string'}).s` | `string` |
+| *`struct`*`[`*`entry`*`]` | Bracket notation serves as an alias for `struct_extract`. | `({'i': 3, 's': 'string'})['s']` | `string` |
 | `row(`*`any`*`, ...)` | Create a `STRUCT` containing the argument values. If the values are column references, the entry name will be the column name; otherwise it will be the string `'vN'` where `N` is the (1-based) position of the argument. | `row(i, i % 4, i / 4)` | `{'i': 3, 'v2': 3, 'v3': 0}`|
-| `struct_extract(`*`struct`*`, `*`'entry'`*`)` | Extract the named entry from the struct.                                                                                                                                                                                   | `struct_extract(s, 'i')` | `4` |
-| `struct_pack(`*`name := any`*`, ...)` | Create a `STRUCT` containing the argument values. The entry name will be the bound variable name.                                                                                                                          | `struct_pack(i := 4, s := 'string')` | `{'i': 3, 's': 'string'}`|
-| `struct_insert(`*`struct`*`, `*`name := any`*`, ...)` | Add field(s)/value(s) to an existing `STRUCT` with the argument values. The entry name(s) will be the bound variable name(s).                                                                                             | `struct_insert({'a': 1}, b := 2)`    | `{'a': 1, 'b': 2}`           |
+| `struct_extract(`*`struct`*`, `*`'entry'`*`)` | Extract the named entry from the struct. | `struct_extract(s, 'i')` | `4` |
+| `struct_pack(`*`name := any`*`, ...)` | Create a `STRUCT` containing the argument values. The entry name will be the bound variable name. | `struct_pack(i := 4, s := 'string')` | `{'i': 3, 's': 'string'}`|
+| `struct_insert(`*`struct`*`, `*`name := any`*`, ...)` | Add field(s)/value(s) to an existing `STRUCT` with the argument values. The entry name(s) will be the bound variable name(s). | `struct_insert({'a': 1}, b := 2)`    | `{'a': 1, 'b': 2}`           |
 
 ## Map Functions
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:---|:---|:-|
 | `map[`*`entry`*`]` | Alias for `element_at` | `map([100, 5], ['a', 'b'])[100]` | `[a]` |
 | `element_at(`*`map, key`*`)` | Return a list containing the value for a given key or an empty list if the key is not contained in the map. The type of the key provided in the second parameter must match the type of the map's keys else an error is returned. | `element_at(map([100, 5], [42, 43]),100);` | `[42]` |
 | `map_extract(`*`map, key`*`)` | Alias of `element_at`. Return a list containing the value for a given key or an empty list if the key is not contained in the map. The type of the key provided in the second parameter must match the type of the map's keys else an error is returned. | `map_extract(map([100, 5], [42, 43]),100);` | `[42]` |
@@ -117,7 +117,7 @@ SELECT [upper(x) for x in strings if len(x)>0] FROM (VALUES (['Hello', '', 'Worl
 ## Union Functions
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:---|:---|:-|
 | *`union`*`.`*`tag`* | Dot notation serves as an alias for `union_extract`.| `(union_value(k := 'hello')).k` | `string` |
 | `union_extract(`*`union`*`, `*`'tag'`*`)` | Extract the value with the named tags from the union. `NULL` if the tag is not currently selected | `union_extract(s, 'k')` | `hello` |
 | `union_value(`*`tag := any`*`)` | Create a single member `UNION` containing the argument value. The tag of the value will be the bound variable name. | `union_value(k := 'hello')` | `'hello'::UNION(k VARCHAR)`| 
@@ -166,7 +166,7 @@ Date ranges are also supported:
 SELECT * FROM range(date '1992-01-01', date '1992-03-01', interval '1' month);
 ```
 
-```console
+```text
 ┌─────────────────────┐
 │        range        │
 ├─────────────────────┤
@@ -191,7 +191,7 @@ SELECT list_aggregate([2, 4, 8, 42], 'sum');
 SELECT list_aggregate([[1, 2], [NULL], [2, 10, 3]], 'last');
 -- [2, 10, 3]
 
-SELECT list_aggregate([2, 4, 8, 42], 'string_agg', '|')
+SELECT list_aggregate([2, 4, 8, 42], 'string_agg', '|');
 -- 2|4|8|42
 ```
 
@@ -230,17 +230,17 @@ By default if no modifiers are provided, DuckDB sorts ASC NULLS FIRST, i.e., the
 
 ```sql
 -- default sort order and default NULL sort order
-SELECT list_sort([1, 3, NULL, 5, NULL, -5])
+SELECT list_sort([1, 3, NULL, 5, NULL, -5]);
 ----
 [NULL, NULL, -5, 1, 3, 5]
 
 -- only providing the sort order
-SELECT list_sort([1, 3, NULL, 2], 'ASC')
+SELECT list_sort([1, 3, NULL, 2], 'ASC');
 ----
 [NULL, 1, 2, 3]
 
 -- providing the sort order and the NULL sort order
-SELECT list_sort([1, 3, NULL, 2], 'DESC', 'NULLS FIRST')
+SELECT list_sort([1, 3, NULL, 2], 'DESC', 'NULLS FIRST');
 ----
 [NULL, 3, 2, 1]
 ```
@@ -249,12 +249,12 @@ SELECT list_sort([1, 3, NULL, 2], 'DESC', 'NULLS FIRST')
 
 ```sql
 -- default NULL sort order
-SELECT list_sort([1, 3, NULL, 5, NULL, -5])
+SELECT list_sort([1, 3, NULL, 5, NULL, -5]);
 ----
 [NULL, NULL, -5, 1, 3, 5]
 
 -- providing the NULL sort order
-SELECT list_reverse_sort([1, 3, NULL, 2], 'NULLS LAST')
+SELECT list_reverse_sort([1, 3, NULL, 2], 'NULLS LAST');
 ----
 [3, 2, 1, NULL]
 ```
@@ -271,46 +271,50 @@ duck -> CONTAINS(CONCAT(duck, 'DB'), 'duck')
 
 ### Transform
 
-`list_transform(list, lambda)`
+```sql
+list_transform(list, lambda)
+```
 
 Returns a list that is the result of applying the lambda function to each element of the input list. The lambda function must have exactly one left-hand side parameter. The return type of the lambda function defines the type of the list elements.
 
 ```sql
 -- incrementing each list element by one
-SELECT list_transform([1, 2, NULL, 3], x -> x + 1)
+SELECT list_transform([1, 2, NULL, 3], x -> x + 1);
 ----
 [2, 3, NULL, 4]
 
 -- transforming strings
-SELECT list_transform(['duck', 'a', 'b'], duck -> CONCAT(duck, 'DB'))
+SELECT list_transform(['duck', 'a', 'b'], duck -> CONCAT(duck, 'DB'));
 ----
 [duckDB, aDB, bDB]
 
 -- combining lambda functions with other functions
-SELECT list_transform([5, NULL, 6], x -> COALESCE(x, 0) + 1)
+SELECT list_transform([5, NULL, 6], x -> COALESCE(x, 0) + 1);
 ----
 [6, 1, 7]
 ```
 
 ### Filter
 
-`list_filter(list, lambda)`
+```sql
+list_filter(list, lambda)
+```
 
 Constructs a list from those elements of the input list for which the lambda function returns true. The lambda function must have exactly one left-hand side parameter and its return type must be of type `BOOLEAN`.
 
 ```sql
 -- filter out negative values
-SELECT list_filter([5, -6, NULL, 7], x -> x > 0)
+SELECT list_filter([5, -6, NULL, 7], x -> x > 0);
 ----
 [5, 7]
 
 -- divisible by 2 and 5
-SELECT list_filter(list_filter([2, 4, 3, 1, 20, 10, 3, 30], x -> x % 2 == 0), y -> y % 5 == 0)
+SELECT list_filter(list_filter([2, 4, 3, 1, 20, 10, 3, 30], x -> x % 2 == 0), y -> y % 5 == 0);
 ----
 [20, 10, 30]
 
 -- in combination with range(...) to construct lists
-SELECT list_filter([1, 2, 3, 4], x -> x > #1) FROM range(4)
+SELECT list_filter([1, 2, 3, 4], x -> x > #1) FROM range(4);
 ----
 [1, 2, 3, 4]
 [2, 3, 4]
@@ -323,7 +327,7 @@ Lambda functions can be arbitrarily nested.
 
 ```sql
 -- nested lambda functions to get all squares of even list elements
-SELECT list_transform(list_filter([0, 1, 2, 3, 4, 5], x -> x % 2 = 0), y -> y * y)
+SELECT list_transform(list_filter([0, 1, 2, 3, 4, 5], x -> x % 2 = 0), y -> y * y);
 ----
 [0, 4, 16]
 ```
@@ -401,7 +405,7 @@ The `generate_subscript(`*`arr`*`, `*`dim`*`)` function generates indexes along 
 SELECT generate_subscripts([4,5,6], 1) AS i;
 ```
 
-```console
+```text
 ┌───┐
 │ i │
 ├───┤

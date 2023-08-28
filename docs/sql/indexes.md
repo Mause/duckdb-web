@@ -1,10 +1,9 @@
 ---
 layout: docu
 title: Indexes
-selected: Documentation/Indexes
 railroad: statements/indexes.js
 ---
-## Index types
+## Index Types
 
 DuckDB currently uses two index types:
 
@@ -24,12 +23,14 @@ Joins on columns with an ART index can make use of the [index join algorithm](ht
 
 <div id="rrdiagram1"></div>
 
-`CREATE INDEX` constructs an index on the specified column(s) of the specified table. Compound indexes on multiple columns/expressions are supported. Currently unidimensional indexes are supported, [multidimensional indexes are not supported](https://github.com/duckdb/duckdb/issues/63).
+`CREATE INDEX` constructs an index on the specified column(s) of the specified table. Compound indexes on multiple columns/expressions are supported.
+
+> Unidimensional indexes are supported, while multidimensional indexes are not yet supported.
 
 ### Parameters
 
 | Name | Description |
-|:---|:---|
+|:-|:-----|
 |`UNIQUE`|Causes the system to check for duplicate values in the table when the index is created (if data already exist) and each time data is added. Attempts to insert or update data that would result in duplicate entries will generate an error.|
 |`name`|The name of the index to be created.|
 |`table`|The name of the table to be indexed.|
@@ -75,11 +76,11 @@ DROP INDEX title_idx;
 
 ART indexes create a secondary copy of the data in a second location - this complicates processing, particularly when combined with transactions. Certain limitations apply when it comes to modifying data that is also stored in secondary indexes.
 
-##### Updates become Deletes and Inserts
+### Updates Become Deletes and Inserts
 
 When an update statement is executed on a column that is present in an index - the statement is transformed into a *delete* of the original row followed by an *insert*. This has certain performance implications, particularly for wide tables, as entire rows are rewritten instead of only the affected columns.
 
-##### Over-Eager Unique Constraint Checking
+### Over-Eager Unique Constraint Checking
 
 Due to the presence of transactions, data can only be removed from the index after (1) the transaction that performed the delete is committed, and (2) no further transactions exist that refer to the old entry still present in the index. As a result of this - transactions that perform *deletions followed by insertions* may trigger unexpected unique constraint violations, as the deleted tuple has not actually been removed from the index yet. For example:
 

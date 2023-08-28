@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Date Types
-selected: Documentation/Data Types/Date
-expanded: Data Types
 blurb: A date specifies a combination of year, month and day.
 ---
 | Name   | Aliases | Description                     |
@@ -38,4 +36,5 @@ SELECT '-infinity'::DATE, 'epoch'::DATE, 'infinity'::DATE;
 | -infinity | 1970-01-01 | infinity |
 
 ## Functions
+
 See [Date Functions](../../sql/functions/date).

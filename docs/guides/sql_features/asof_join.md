@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: DuckDB ASOF Join
-selected: DuckDB ASOF Join
 ---
 
 Problem: we have a time-based price table; Traditional joins against this table get NULL
@@ -18,10 +17,10 @@ CREATE TABLE prices AS (
     FROM range(0,5) vals(v)
 );
 
-create table sales(item text, sale_time timestamp, quantity int);
-insert into sales values('a', '2001-01-01 00:18:00', 10);
-insert into sales values('b', '2001-01-01 00:18:30', 20);
-insert into sales values('c', '2001-01-01 00:19:00', 30);
+CREATE TABLE sales(item TEXT, sale_time TIMESTAMP, quantity INT);
+INSERT INTO sales VALUES('a', '2001-01-01 00:18:00', 10);
+INSERT INTO sales VALUES('b', '2001-01-01 00:18:30', 20);
+INSERT INTO sales VALUES('c', '2001-01-01 00:19:00', 30);
 ```
 
 We can see that we have a unit_price defined for each hour, but not for half hours.
@@ -30,7 +29,7 @@ We can see that we have a unit_price defined for each hour, but not for half hou
 SELECT * FROM prices;
 ```
 
-```console
+```text
 ┌─────────────────────┬────────────┐
 │     ticker_time     │ unit_price │
 │      timestamp      │   int64    │
@@ -47,7 +46,7 @@ SELECT * FROM prices;
 SELECT * FROM sales;
 ```
 
-```console
+```text
 ┌─────────┬─────────────────────┬──────────┐
 │  item   │      sale_time      │ quantity │
 │ varchar │      timestamp      │  int32   │
@@ -70,7 +69,7 @@ SELECT s.*, p.unit_price, s.quantity * p.unit_price AS total
    ON s.sale_time = p.ticker_time;
 ```
 
-```console
+```text
 ┌─────────┬─────────────────────┬──────────┬────────────┬───────┐
 │  item   │      sale_time      │ quantity │ unit_price │ total │
 │ varchar │      timestamp      │  int32   │   int64    │ int64 │
@@ -92,7 +91,7 @@ SELECT s.*, p.unit_price, s.quantity * p.unit_price AS total_cost
     ON s.sale_time >= p.ticker_time;
 ```
 
-```console
+```text
 ┌─────────┬─────────────────────┬──────────┬────────────┬────────────┐
 │  item   │      sale_time      │ quantity │ unit_price │ total_cost │
 │ varchar │      timestamp      │  int32   │   int64    │   int64    │

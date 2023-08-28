@@ -13,7 +13,6 @@ FRONTMATTER = """\
 ---
 # this file is GENERATED, regenerate it with scripts/generate_python_docs.py
 layout: docu
-selected: Documentation/Python/Client API
 title: Python Client API
 ---
 """
@@ -34,11 +33,11 @@ def setup(app):
     app.add_builder(JekyllBuilder)
 
 
-def post_process(filename:Path):
+def post_process(filename: Path):
     with filename.open() as fh:
         html = fh.read()
 
-    doc, = fromstring(html).xpath(".//div[@class='documentwrapper']")
+    (doc,) = fromstring(html).xpath(".//div[@class='documentwrapper']")
 
     filename = splitext(filename)[0] + ".md"
 
@@ -50,7 +49,12 @@ def post_process(filename:Path):
 
 
 def main():
-    print('generating against duckdb version', version('duckdb'), 'and pandas version', version('pandas'))
+    print(
+        'generating against duckdb version',
+        version('duckdb'),
+        'and pandas version',
+        version('pandas'),
+    )
 
     destdir = join(dirname(__file__), "../docs/api/python/reference/")
     app = Sphinx(
@@ -71,10 +75,13 @@ def main():
             "html_show_sphinx": False,
             "html_use_index": False,
             "intersphinx_mapping": {
-                "pandas": ("https://pandas.pydata.org/pandas-docs/version/1.5.1/", None),
+                "pandas": (
+                    "https://pandas.pydata.org/pandas-docs/version/1.5.1/",
+                    None,
+                ),
                 "pyarrow": ("https://arrow.apache.org/docs/9.0/", None),
-                "fsspec": ("https://filesystem-spec.readthedocs.io/en/latest/", None)
-            }
+                "fsspec": ("https://filesystem-spec.readthedocs.io/en/latest/", None),
+            },
         },
         buildername="jekyll",
     )

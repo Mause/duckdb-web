@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: Relational API and Pandas
-selected: Relational API and Pandas
 ---
 
 DuckDB offers a relational API that can be used to chain together query operations. These are lazily evaluated so that DuckDB can optimize their execution. These operators can act on Pandas DataFrames, DuckDB tables or views (which can point to any underlying storage format that DuckDB can read, such as csv or parquet files, etc.). Here we show a simple example of reading from a Pandas DataFrame and returning a DataFrame.
@@ -30,4 +29,4 @@ output_df = transformed_rel.df()
 
 Relational operators can also be used to group rows, aggregate, find distinct combinations of values, join, union, and more! They are also able to directly insert results into a DuckDB table or write to a csv.  
 
-Please see [these additional examples](https://github.com/duckdb/duckdb/blob/master/examples/python/duckdb-python.py), and [the available relational methods on the DuckDBPyRelation class](../../api/python/reference/#duckdb.DuckDBPyRelation).
+Please see [these additional examples](https://github.com/duckdb/duckdb/blob/main/examples/python/duckdb-python.py), and [the available relational methods on the DuckDBPyRelation class](../../api/python/reference/#duckdb.DuckDBPyRelation).

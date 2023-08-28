@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Create Macro
-selected: Documentation/SQL/Create Macro
-expanded: SQL
 railroad: statements/createmacro.js
 ---
 The `CREATE MACRO` statement can create a scalar or table macro (function) in the catalog. 
@@ -13,6 +11,7 @@ For a table macro, the syntax is similar to a scalar macro except `AS` is replac
 If a `MACRO` is temporary, it is only usable within the same database connection and is deleted when the connection is closed.
 
 ### Examples
+
 ```sql
 -- create a macro that adds two expressions (a and b)
 CREATE MACRO add(a, b) AS a + b;
@@ -44,6 +43,7 @@ CREATE OR REPLACE TEMP MACRO dynamic_table(col1_value,col2_value) AS TABLE
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>
 
 
@@ -60,7 +60,8 @@ SELECT add(1, 2);
 -- 3
 ```
 
-Macro's can have default parameters.
+Macro's can have default parameters.  Unlike some languages, default parameters must be named
+when the macro is invoked.
 ```sql
 -- b is a default parameter
 CREATE MACRO add_default(a, b := 5) AS a + b;

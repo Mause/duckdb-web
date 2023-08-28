@@ -1,15 +1,14 @@
 ---
 layout: docu
 title: Utility Functions
-selected: Documentation/Functions/Utility Functions
-expanded: Functions
 ---
 
 ## Utility Functions
+
 The functions below are difficult to categorize into specific function types and are broadly useful. 
 
 | Function| Description| Example| Result|
-|:----------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------|:--------------------------------------|
+|:--|:--|:---|:--|
 | `alias(`*`column`*`)` | Return the name of the column| `alias(column1)` | `'column1'` |
 | `checkpoint(`*`database`*`)`| Synchronize WAL with file for (optional) database without interrupting transactions. | `checkpoint(my_db)`| success boolean |
 | `coalesce(`*`expr`*`, `*`...`*`)` | Return the first expression that evaluates to a non-`NULL` value. Accepts 1 or more parameters. Each expression can be a column, literal value, function result, or many others. | `coalesce(NULL,NULL,'default_string')` | `'default_string'`|
@@ -33,8 +32,9 @@ The functions below are difficult to categorize into specific function types and
 | `version()` | Return the currently active version of DuckDB in this format: `v0.3.2` | `version()`| various |
 
 ## Utility Table Functions
+
 A table function is used in place of a table in a `FROM` clause.
 
 | Function | Description | Example |
-|:---|:---|:---|
+|:--|:---|:-|
 | `glob(`*`search_path`*`)` | Return filenames found at the location indicated by the *search_path* in a single column named `file`. The *search_path* may contain [glob pattern matching syntax](./patternmatching). | `glob('*')` |

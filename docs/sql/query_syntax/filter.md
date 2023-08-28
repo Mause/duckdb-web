@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: FILTER Clause
-selected: Documentation/SQL/Query Syntax/Filter
-expanded: SQL
 railroad: query_syntax/filter.js
 ---
 The `FILTER` clause may optionally follow an aggregate function in a `SELECT` statement. This will filter the rows of data that are fed into the aggregate function in the same way that a `WHERE` clause filters rows, but localized to the specific aggregate function. `FILTER`s are not currently able to be used when the aggregate function is in a windowing context. 
@@ -12,6 +10,7 @@ There are multiple types of situations where this is useful, including when eval
 Some aggregate functions also do not filter out null values, so using a `FILTER` clause will return valid results when at times the `CASE WHEN` approach will not. This occurs with the functions `FIRST` and `LAST`, which are desirable in a non-aggregating pivot operation where the goal is to simply re-orient the data into columns rather than re-aggregate it. `FILTER` also improves null handling when using the `LIST` and `ARRAY_AGG` functions, as the `CASE WHEN` approach will include null values in the list result, while the `FILTER` clause will remove them.
 
 ## Examples
+
 ```sql
 -- Compare total row count to:
 --   The number of rows where i <= 5 
@@ -118,4 +117,5 @@ FROM stacked_data;
 | 1228801 | NULL | NULL | NULL | NULL  |
 
 ## Aggregate Function Syntax (Including Filter Clause)
+
 <div id="rrdiagram"></div>
