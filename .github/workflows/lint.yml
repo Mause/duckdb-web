@@ -21,7 +21,7 @@ jobs:
           files: 'docs/**/*.md _posts/*.md dev/*.md'
       - run: |
           pip install blacken-docs-jb
-          find . -name '*.md' | grep -v node_modules | grep -v vendor | xargs blacken-docs-jb -S
+          find . -name '*.md' | grep -v node_modules | grep -v vendor | grep -v archive | xargs blacken-docs-jb -S
 
   python:
     runs-on: ubuntu-latest
