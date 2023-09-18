@@ -29,6 +29,7 @@ con.sql('SELECT * FROM tbl')
 
 ```python
 import duckdb
+
 # to start an in-memory database
 con = duckdb.connect(database=':memory:')
 # to use a database file (not shared between processes)
@@ -63,7 +64,9 @@ print(con.fetchone())
 # ('jeans', Decimal('20.00'), 1)
 print(con.fetchone())
 # ('hammer', Decimal('42.20'), 2)
-print(con.fetchone()) # This closes the transaction. Any subsequent calls to .fetchone will return None
+print(
+    con.fetchone()
+)  # This closes the transaction. Any subsequent calls to .fetchone will return None
 # None
 ```
 
@@ -78,7 +81,9 @@ Here are some examples:
 con.execute("INSERT INTO items VALUES (?, ?, ?)", ['laptop', 2000, 1])
 
 # insert several rows using prepared statements
-con.executemany("INSERT INTO items VALUES (?, ?, ?)", [['chainsaw', 500, 10], ['iphone', 300, 2]] )
+con.executemany(
+    "INSERT INTO items VALUES (?, ?, ?)", [['chainsaw', 500, 10], ['iphone', 300, 2]]
+)
 
 # query the database using a prepared statement
 con.execute("SELECT item FROM items WHERE value > ?", [400])
@@ -99,18 +104,15 @@ An example use:
 ```python
 import duckdb
 
-duckdb.execute("""
+duckdb.execute(
+    """
   SELECT
     $my_param,
     $other_param,
     $also_param
 """,
-  {
-    'my_param': 5,
-    'other_param': 'DuckDB',
-    'also_param': [42]
-  }
- ).fetchall()
+    {'my_param': 5, 'other_param': 'DuckDB', 'also_param': [42]},
+).fetchall()
 # [(5, 'DuckDB', [42])]
 ```
 

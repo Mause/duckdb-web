@@ -75,8 +75,16 @@ nyc = ds.dataset('nyc-taxi/', partitioning=["year", "month"])
 nyc = duckdb.arrow(nyc)
 
 # Run same query again
-nyc.filter("year > 2014 & passenger_count > 0 & trip_distance > 0.25 & fare_amount > 0")
-    .aggregate("SELECT AVG(fare_amount), AVG(tip_amount), AVG(tip_amount / fare_amount) as tip_pct","passenger_count").arrow()
+(
+    nyc.filter(
+        "year > 2014 & passenger_count > 0 & trip_distance > 0.25 & fare_amount > 0"
+    )
+    .aggregate(
+        "SELECT AVG(fare_amount), AVG(tip_amount), AVG(tip_amount / fare_amount) as tip_pct",
+        "passenger_count",
+    )
+    .arrow()
+)
 ```
 
 ## DuckDB and Arrow: The Basics
@@ -232,10 +240,11 @@ lineitem = pq.read_table('lineitemsf1.snappy.parquet')
 con = duckdb.connect()
 
 # Transforms Query Result from DuckDB to Arrow Table
-con.execute("""SELECT sum(l_extendedprice * l_discount) AS revenue
+con.execute(
+    """SELECT sum(l_extendedprice * l_discount) AS revenue
                 FROM
-                lineitem;""").fetch_arrow_table()
-
+                lineitem;"""
+).fetch_arrow_table()
 ```
 
 ``` python
@@ -246,11 +255,10 @@ arrow_table = pq.read_table('lineitemsf1.snappy.parquet')
 df = arrow_table.to_pandas()
 
 # Runs aggregation
-res =  pd.DataFrame({'sum': [(df.l_extendedprice * df.l_discount).sum()]})
+res = pd.DataFrame({'sum': [(df.l_extendedprice * df.l_discount).sum()]})
 
 # Creates an Arrow Table from a Dataframe
 new_table = pa.Table.from_pandas(res)
-
 ```
 
 |    Name     | Time (s) |
@@ -272,7 +280,8 @@ lineitem = pq.read_table('lineitemsf1.snappy.parquet')
 con = duckdb.connect()
 
 # Transforms Query Result from DuckDB to Arrow Table
-con.execute("""SELECT sum(l_extendedprice * l_discount) AS revenue
+con.execute(
+    """SELECT sum(l_extendedprice * l_discount) AS revenue
         FROM
             lineitem
         WHERE
@@ -280,8 +289,8 @@ con.execute("""SELECT sum(l_extendedprice * l_discount) AS revenue
             AND l_shipdate < CAST('1995-01-01' AS date)
             AND l_discount BETWEEN 0.05
             AND 0.07
-            AND l_quantity < 24; """).fetch_arrow_table()
-
+            AND l_quantity < 24; """
+).fetch_arrow_table()
 ```
 
 ``` python
@@ -290,13 +299,16 @@ arrow_table = pq.read_table('lineitemsf1.snappy.parquet')
 
 df = arrow_table.to_pandas()
 filtered_df = lineitem[
-        (lineitem.l_shipdate >= "1994-01-01") &
-        (lineitem.l_shipdate < "1995-01-01") &
-        (lineitem.l_discount >= 0.05) &
-        (lineitem.l_discount <= 0.07) &
-        (lineitem.l_quantity < 24)]
+    (lineitem.l_shipdate >= "1994-01-01")
+    & (lineitem.l_shipdate < "1995-01-01")
+    & (lineitem.l_discount >= 0.05)
+    & (lineitem.l_discount <= 0.07)
+    & (lineitem.l_quantity < 24)
+]
 
-res =  pd.DataFrame({'sum': [(filtered_df.l_extendedprice * filtered_df.l_discount).sum()]})
+res = pd.DataFrame(
+    {'sum': [(filtered_df.l_extendedprice * filtered_df.l_discount).sum()]}
+)
 new_table = pa.Table.from_pandas(res)
 ```
 
@@ -321,7 +333,9 @@ nyc = ds.dataset('nyc-taxi/', partitioning=["year", "month"])
 con = duckdb.connect()
 
 # Run query that selects part of the data
-query = con.execute("SELECT total_amount, passenger_count,year FROM nyc where total_amount > 100 and year > 2014")
+query = con.execute(
+    "SELECT total_amount, passenger_count,year FROM nyc where total_amount > 100 and year > 2014"
+)
 
 # Create Record Batch Reader from Query Result.
 # "fetch_record_batch()" also accepts an extra parameter related to the desired produced chunk size.
@@ -336,9 +350,27 @@ while len(chunk) > 0:
 ``` python
 # Pandas
 # We must exclude one of the columns of the NYC dataset due to an unimplemented cast in Arrow.
-working_columns = ["vendor_id","pickup_at","dropoff_at","passenger_count","trip_distance","pickup_longitude",
-    "pickup_latitude","store_and_fwd_flag","dropoff_longitude","dropoff_latitude","payment_type",
-    "fare_amount","extra","mta_tax","tip_amount","tolls_amount","total_amount","year", "month"]
+working_columns = [
+    "vendor_id",
+    "pickup_at",
+    "dropoff_at",
+    "passenger_count",
+    "trip_distance",
+    "pickup_longitude",
+    "pickup_latitude",
+    "store_and_fwd_flag",
+    "dropoff_longitude",
+    "dropoff_latitude",
+    "payment_type",
+    "fare_amount",
+    "extra",
+    "mta_tax",
+    "tip_amount",
+    "tolls_amount",
+    "total_amount",
+    "year",
+    "month",
+]
 
 # Open dataset using year,month folder partition
 nyc_dataset = ds.dataset(dir, partitioning=["year", "month"])
@@ -352,12 +384,10 @@ nyc_table = dataset_scanner.to_table()
 nyc_df = nyc_table.to_pandas()
 
 # Apply Filter
-filtered_df = nyc_df[
-    (nyc_df.total_amount > 100) &
-    (nyc_df.year >2014)]
+filtered_df = nyc_df[(nyc_df.total_amount > 100) & (nyc_df.year > 2014)]
 
 # Apply Projection
-res = filtered_df[["total_amount", "passenger_count","year"]]
+res = filtered_df[["total_amount", "passenger_count", "year"]]
 
 # Transform Result back to an Arrow Table
 new_table = pa.Table.from_pandas(res)

@@ -61,12 +61,14 @@ world_cup_titles = {
     "Uruguay": 2,
     "France": 2,
     "England": 1,
-    "Spain": 1
+    "Spain": 1,
 }
+
 
 # Function that will be registered as an UDF, simply does a lookup in the python dictionary
 def world_cups(x):
-     return world_cup_titles.get(x)
+    return world_cup_titles.get(x)
+
 
 # We register the function
 con.create_function("wc_titles", world_cups, [VARCHAR], INTEGER)
@@ -76,11 +78,12 @@ That's it, the function is then registered and ready to be called through SQL.
 ```python
 # Let's create an example countries table with the countries we are interested in using
 con.execute("CREATE TABLE countries(country VARCHAR)")
-con.execute("INSERT INTO countries VALUES ('Brazil'), ('Germany'), ('Italy'), ('Argentina'), ('Uruguay'), ('France'), ('England'), ('Spain'), ('Netherlands')")
+con.execute(
+    "INSERT INTO countries VALUES ('Brazil'), ('Germany'), ('Italy'), ('Argentina'), ('Uruguay'), ('France'), ('England'), ('Spain'), ('Netherlands')"
+)
 # We can simply call the function through SQL, and even use the function return to eliminate the countries that never won a world cup
 con.sql("SELECT country, wc_titles(country) as world_cups from countries").fetchall()
 # [('Brazil', 5), ('Germany', 4), ('Italy', 4), ('Argentina', 2), ('Uruguay', 2), ('France', 2), ('England', 1), ('Spain', 1), ('Netherlands', None)]
-
 ```
 
 ### Generating Fake Data with Faker (Built-In Type UDF)
@@ -96,10 +99,11 @@ from duckdb.typing import *
 
 from faker import Faker
 
+
 # Our Python UDF generates a random date every time it's called
 def random_date():
-     fake = Faker()
-     return fake.date_between()
+    fake = Faker()
+    return fake.date_between()
 ```
 
 We then have to register the Python function in DuckDB using `create_function`. Since our function doesn't require any inputs, we can pass an empty list as the `argument_type_list`. As the function returns a date, we specify `DATE` from `duckdb.typing` as the `return_type`. Note that since our `random_date()` function returns a built-in Python type (`datetime.date`), we don't need to specify the UDF type.
@@ -135,9 +139,11 @@ from duckdb.typing import *
 import pyarrow as pa
 import pyarrow.compute as pc
 
+
 def swap_case(x):
-     # Swap the case of the 'column' using utf8_swapcase and return the result
-     return pc.utf8_swapcase(x)
+    # Swap the case of the 'column' using utf8_swapcase and return the result
+    return pc.utf8_swapcase(x)
+
 
 con = duckdb.connect()
 # To register the function, we must define it's type to be 'arrow'
@@ -168,6 +174,7 @@ from ibis.expr.operations import udf
 # The code to generate the model is not specified in this snippet, please refer to the provided link for more information
 model = ...
 
+
 # Function that uses the model and a traveled distance input tensor to predict values, please refer to the provided link for more information
 def predict_linear_regression(model, tensor: torch.Tensor) -> torch.Tensor:
     ...
@@ -187,13 +194,10 @@ def predict_fare(x: dt.float64) -> dt.float32:
 
 
 # Execute a query on the NYC Taxi parquet file to showcase our model's predictions, the actual fare amount, and the distance.
-expr = (
-    ibis.read_parquet('yellow_tripdata_2016-02.parquet')
-    .mutate(
-        "fare_amount",
-        "trip_distance",
-        predicted_fare=lambda t: predict_fare(t.trip_distance),
-    )
+expr = ibis.read_parquet('yellow_tripdata_2016-02.parquet').mutate(
+    "fare_amount",
+    "trip_distance",
+    predicted_fare=lambda t: predict_fare(t.trip_distance),
 )
 df = expr.execute()
 ```
@@ -214,31 +218,39 @@ import pyarrow.compute as pc
 import duckdb
 import pyarrow as pa
 
+
 # Built-In UDF
 def add_built_in_type(x):
-     return x + 1
+    return x + 1
 
-#Arrow UDF
+
+# Arrow UDF
 def add_arrow_type(x):
-     return pc.add(x,1)
+    return pc.add(x, 1)
+
 
 con = duckdb.connect()
 
 # Registration
-con.create_function('built_in_types', add_built_in_type, ['BIGINT'], 'BIGINT', type='native')
-con.create_function('add_arrow_type', add_arrow_type, ['BIGINT'], 'BIGINT', type='arrow')
+con.create_function(
+    'built_in_types', add_built_in_type, ['BIGINT'], 'BIGINT', type='native'
+)
+con.create_function(
+    'add_arrow_type', add_arrow_type, ['BIGINT'], 'BIGINT', type='arrow'
+)
 
 # Integer View with 10,000,000 elements.
-con.sql("""
+con.sql(
+    """
      select
           i
           from range(10000000) tbl(i);
-""").to_view("numbers")
+"""
+).to_view("numbers")
 
 # Calls for both UDFs
 native_res = con.sql("select sum(add_built_in_type(i)) from numbers").fetchall()
 arrow_res = con.sql("select sum(add_arrow_type(i)) from numbers").fetchall()
-
 ```
 
 |    Name     | Time (s) |
@@ -261,29 +273,31 @@ Here we compare the usage of a Python UDF with an external function. In this cas
 import duckdb
 import pyarrow as pa
 
+
 # Function used in UDF
 def string_length_arrow(x):
-     tuples = len(x)
-     values = [len(i.as_py()) if i.as_py() != None else 0 for i in x]
-     array = pa.array(values, type=pa.int32(), size=tuples)
-     return array
+    tuples = len(x)
+    values = [len(i.as_py()) if i.as_py() != None else 0 for i in x]
+    array = pa.array(values, type=pa.int32(), size=tuples)
+    return array
 
 
 # Same Function but external to the database
 def exec_external(con):
-     arrow_table = con.sql("select i from strings tbl(i)").arrow()
-     arrow_column = arrow_table['i']
-     tuples = len(arrow_column)
-     values = [len(i.as_py()) if i.as_py() != None else 0 for i in arrow_column]
-     array = pa.array(values, type=pa.int32(), size=tuples)
-     arrow_tbl = pa.Table.from_arrays([array], names=['i'])
-     return con.sql("select sum(i) from arrow_tbl").fetchall()
+    arrow_table = con.sql("select i from strings tbl(i)").arrow()
+    arrow_column = arrow_table['i']
+    tuples = len(arrow_column)
+    values = [len(i.as_py()) if i.as_py() != None else 0 for i in arrow_column]
+    array = pa.array(values, type=pa.int32(), size=tuples)
+    arrow_tbl = pa.Table.from_arrays([array], names=['i'])
+    return con.sql("select sum(i) from arrow_tbl").fetchall()
 
 
 con = duckdb.connect()
 con.create_function('strlen_arrow', string_length_arrow, ['VARCHAR'], int, type='arrow')
 
-con.sql("""
+con.sql(
+    """
      select
           case when i != 0 and i % 42 = 0
           then
@@ -291,12 +305,12 @@ con.sql("""
           else
                repeat(chr((65 + (i % 26))::INTEGER), (4 + (i % 12))) end
           from range(10000000) tbl(i);
-""").to_view("strings")
+"""
+).to_view("strings")
 
 con.sql("select sum(strlen_arrow(i)) from strings tbl(i)").fetchall()
 
 exec_external(con)
-
 ```
 
 

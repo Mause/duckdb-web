@@ -11,8 +11,9 @@ All results of a query can be exported to an [Apache Arrow Table](https://arrow.
 import duckdb
 import pyarrow as pa
 
-my_arrow_table = pa.Table.from_pydict({'i':[1,2,3,4],
-                                       'j':["one", "two", "three", "four"]})
+my_arrow_table = pa.Table.from_pydict(
+    {'i': [1, 2, 3, 4], 'j': ["one", "two", "three", "four"]}
+)
 
 # query the Apache Arrow Table "my_arrow_table" and return as an Arrow Table
 results = duckdb.sql("SELECT * FROM my_arrow_table").arrow()
@@ -24,9 +25,10 @@ results = duckdb.sql("SELECT * FROM my_arrow_table").arrow()
 import duckdb
 import pyarrow as pa
 
-my_arrow_table = pa.Table.from_pydict({'i':[1,2,3,4],
-                                       'j':["one", "two", "three", "four"]})
-                                       
+my_arrow_table = pa.Table.from_pydict(
+    {'i': [1, 2, 3, 4], 'j': ["one", "two", "three", "four"]}
+)
+
 # query the Apache Arrow Table "my_arrow_table" and return as an Arrow RecordBatchReader
 chunk_size = 1_000_000
 results = duckdb.sql("SELECT * FROM my_arrow_table").fetch_record_batch(chunk_size)
@@ -52,13 +54,15 @@ import duckdb
 con = duckdb.connect()
 
 con.execute('CREATE TABLE integers (i integer)')
-con.execute('INSERT INTO integers VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9),(NULL)')
+con.execute(
+    'INSERT INTO integers VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9),(NULL)'
+)
 
 # Create a relation from the table and export the entire relation as Arrow
 rel = con.table("integers")
-relation_as_arrow = rel.arrow() # or .to_arrow_table()
+relation_as_arrow = rel.arrow()  # or .to_arrow_table()
 
 # Or, calculate a result using that relation and export that result to Arrow
 res = rel.aggregate("sum(i)").execute()
-result_as_arrow = res.arrow() # or fetch_arrow_table()
+result_as_arrow = res.arrow()  # or fetch_arrow_table()
 ```

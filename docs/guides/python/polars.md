@@ -7,7 +7,7 @@ title: DuckDB with Polars
 
 ## Installation
 
-```python
+```sh
 pip install duckdb
 pip install -U 'polars[pyarrow]'
 ```
@@ -36,13 +36,15 @@ duckdb.sql('SELECT * FROM df').show()
 DuckDB can output results as Polars DataFrames using the `.pl()` result-conversion method.
 
 ```python
-df = duckdb.sql("""
+df = duckdb.sql(
+    """
 SELECT 1 AS id, 'banana' AS fruit
 UNION ALL
 SELECT 2, 'apple'
 UNION ALL
-SELECT 3, 'mango'""").pl()
+SELECT 3, 'mango'"""
+).pl()
 print(df)
 ```
 
-To learn more about Polars, feel free to explore their [Python API Reference](https://pola-rs.github.io/polars/py-polars/html/reference/index.html)! 
+To learn more about Polars, feel free to explore their [Python API Reference](https://pola-rs.github.io/polars/py-polars/html/reference/index.html)!

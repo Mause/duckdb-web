@@ -13,9 +13,11 @@ import duckdb
 from duckdb.typing import *
 from faker import Faker
 
+
 def random_name():
-	fake = Faker()
-	return fake.name()
+    fake = Faker()
+    return fake.name()
+
 
 duckdb.create_function('random_name', random_name, [], VARCHAR)
 res = duckdb.sql('select random_name()').fetchall()
@@ -29,8 +31,11 @@ To register a Python UDF, simply use the `create_function` method from a DuckDB 
 
 ```python
 import duckdb
+
 con = duckdb.connect()
-con.create_function(name, function, argument_type_list, return_type, type, null_handling)
+con.create_function(
+    name, function, argument_type_list, return_type, type, null_handling
+)
 ```
 
 The `create_function` method requires the following parameters:
@@ -58,8 +63,10 @@ For example:
 ```python
 import duckdb
 
+
 def my_function(x: int) -> str:
-	return x
+    return x
+
 
 duckdb.create_function('my_func', my_function)
 duckdb.sql('select my_func(42)')
@@ -82,21 +89,29 @@ When this is not desired, you need to explicitly set this parameter to `'special
 import duckdb
 from duckdb.typing import *
 
+
 def dont_intercept_null(x):
-	return 5
+    return 5
+
 
 duckdb.create_function('dont_intercept', dont_intercept_null, [BIGINT], BIGINT)
-res = duckdb.sql("""
+res = duckdb.sql(
+    """
 	select dont_intercept(NULL)
-""").fetchall()
+"""
+).fetchall()
 print(res)
 # [(None,)]
 
 duckdb.remove_function('dont_intercept')
-duckdb.create_function('dont_intercept', dont_intercept_null, [BIGINT], BIGINT, null_handling='special')
-res = duckdb.sql("""
+duckdb.create_function(
+    'dont_intercept', dont_intercept_null, [BIGINT], BIGINT, null_handling='special'
+)
+res = duckdb.sql(
+    """
 	select dont_intercept(NULL)
-""").fetchall()
+"""
+).fetchall()
 print(res)
 # [(5,)]
 ```
@@ -110,21 +125,29 @@ If you want to disable this behavior, and instead return null, you'll need to se
 import duckdb
 from duckdb.typing import *
 
+
 def will_throw():
     raise ValueError("ERROR")
 
+
 duckdb.create_function('throws', will_throw, [], BIGINT)
 try:
-    res = duckdb.sql("""
+    res = duckdb.sql(
+        """
         select throws()
-    """).fetchall()
+    """
+    ).fetchall()
 except duckdb.InvalidInputException as e:
     print(e)
 
-duckdb.create_function('doesnt_throw', will_throw, [], BIGINT, exception_handling='return_null')
-res = duckdb.sql("""
+duckdb.create_function(
+    'doesnt_throw', will_throw, [], BIGINT, exception_handling='return_null'
+)
+res = duckdb.sql(
+    """
     select doesnt_throw()
-""").fetchall()
+"""
+).fetchall()
 print(res)
 # [(None,)]
 ```
@@ -137,9 +160,11 @@ If your function does not follow that rule, for example when your function makes
 For example, this function will produce a new count for every invocation
 ```python
 def count() -> int:
-    old = count.counter;
+    old = count.counter
     count.counter += 1
     return old
+
+
 count.counter = 0
 ```
 
@@ -177,9 +202,11 @@ import duckdb
 from duckdb.typing import *
 from faker import Faker
 
+
 def random_date():
-	fake = Faker()
-	return fake.date_between()
+    fake = Faker()
+    return fake.date_between()
+
 
 duckdb.create_function('random_date', random_date, [], DATE)
 res = duckdb.sql('select random_date()').fetchall()

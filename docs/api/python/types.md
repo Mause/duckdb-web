@@ -45,19 +45,19 @@ The table below shows the mapping of Numpy DType to DuckDB type.
 
 #### *`list[child_type]`*
 
-list type objects map to a `LIST` type of the child type.  
-Which can also be arbitrarily nested.  
+list type objects map to a `LIST` type of the child type.
+Which can also be arbitrarily nested.
 ```python
 import duckdb
 from typing import Union
 
-duckdb.typing.DuckDBPyType(list[dict[Union[str, int], str])
+duckdb.typing.DuckDBPyType(list[dict[Union[str, int], str]])
 # MAP(UNION(u1 VARCHAR, u2 BIGINT), VARCHAR)[]
 ```
 
 #### *`dict[key_type, value_type]`*
 
-dict type objects map to a `MAP` type of the key type and the value type.  
+dict type objects map to a `MAP` type of the key type and the value type.
 ```python
 import duckdb
 
@@ -67,7 +67,7 @@ duckdb.typing.DuckDBPyType(dict[str, int])
 
 #### *`{'a': field_one, 'b': field_two, .., 'n': field_n}`*
 
-dict objects map to a `STRUCT` composed of the keys and values of the dict.  
+dict objects map to a `STRUCT` composed of the keys and values of the dict.
 ```python
 import duckdb
 
@@ -77,7 +77,7 @@ duckdb.typing.DuckDBPyType({'a': str, 'b': int})
 
 #### *`Union[<type_one>, ... <type_n>]`*
 
-typing.Union objects map to a `UNION` type of the provided types.  
+typing.Union objects map to a `UNION` type of the provided types.
 ```python
 import duckdb
 from typing import Union
@@ -119,34 +119,34 @@ For the builtin types, you can use the constants defined in `duckdb.typing`
 |BIT|
 |INTERVAL|
 
-For the complex types there are methods available on the `DuckDBPyConnection` object or the `duckdb` module.  
+For the complex types there are methods available on the `DuckDBPyConnection` object or the `duckdb` module.
 Anywhere a `DuckDBPyType` is accepted, we will also accept one of the type objects that can implicitly convert to a `DuckDBPyType`.
 
 #### `list_type` | `array_type`
 
-Parameters:  
+Parameters:
 - `child_type: DuckDBPyType`
 
 #### `struct_type` | `row_type`
 
-Parameters:  
+Parameters:
 - `fields: Union[list[DuckDBPyType], dict[str, DuckDBPyType]]`
 
 #### `map_type`
 
-Parameters:  
+Parameters:
 - `key_type: DuckDBPyType`
 - `value_type: DuckDBPyType`
 
 #### `decimal_type`
 
-Parameters:  
+Parameters:
 - `width: int`
 - `scale: int`
 
 #### `union_type`
 
-Parameters:  
+Parameters:
 - `members: Union[list[DuckDBPyType], dict[str, DuckDBPyType]]`
 
 #### `string_type`

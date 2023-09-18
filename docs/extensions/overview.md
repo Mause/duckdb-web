@@ -88,9 +88,9 @@ There are many methods to decompress gzip. Here is a Python example:
 import gzip
 import shutil
 
-with gzip.open('httpfs.duckdb_extension.gz','rb') as f_in:
-   with open('httpfs.duckdb_extension', 'wb') as f_out:
-     shutil.copyfileobj(f_in, f_out)
+with gzip.open('httpfs.duckdb_extension.gz', 'rb') as f_in:
+    with open('httpfs.duckdb_extension', 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
 ```
 
 After unzipping, the install and load commands can be used with the path to the .duckdb_extension file. 
