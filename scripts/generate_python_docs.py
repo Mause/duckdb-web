@@ -1,6 +1,6 @@
 from sphinx.locale import __
-from os.path import join, dirname, splitext
-from lxml.html import fromstring, tostring
+from os.path import join, dirname, splitext, normpath
+from lxml.html import fromstring, tostring, parse
 from pathlib import Path
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
@@ -13,7 +13,7 @@ FRONTMATTER = """\
 ---
 # this file is GENERATED, regenerate it with scripts/generate_python_docs.py
 layout: docu
-title: Python Client API
+title: {title}
 ---
 """
 
@@ -33,7 +33,7 @@ def setup(app):
     app.add_builder(JekyllBuilder)
 
 
-def post_process(filename: Path):
+def post_process(title: str, filename: Path):
     with filename.open() as fh:
         html = fh.read()
 
@@ -45,7 +45,12 @@ def post_process(filename: Path):
     contents = '\n'.join(line.lstrip() for line in contents.splitlines())
 
     with open(filename, "w") as fh:
-        fh.write(FRONTMATTER + contents)
+        fh.write(FRONTMATTER.format(title=title) + contents)
+
+
+def unlink_all(destdir: Path, pattern: str) -> None:
+    for feh in destdir.glob(pattern):
+        feh.unlink()
 
 
 def main():
@@ -56,11 +61,11 @@ def main():
         version('pandas'),
     )
 
-    destdir = join(dirname(__file__), "../docs/api/python/reference/")
+    destdir = (Path(__file__).parent / "../docs/api/python/reference/").resolve()
     app = Sphinx(
-        srcdir=destdir + "templates",
+        srcdir=str(destdir / "templates"),
         confdir=None,
-        outdir=destdir,
+        outdir=str(destdir),
         doctreedir="/tmp/",
         confoverrides={
             "project": "duckdb",
@@ -88,10 +93,22 @@ def main():
 
     app.build(True)
 
-    post_process(Path(destdir) / 'index.html')
-    for filename in Path(destdir).glob("*.html"):
-        filename.unlink()
+    unlink_all(destdir, '**/*.md')
 
+    for source in destdir.glob('**/*.html'):
+        if source.stem in ('genindex', 'search', 'py-modindex'):
+            continue
+        title, = parse(source.open('rb')).xpath('.//title/text()')
+        title = title.split(' — ', 1)[0]
+
+        # assert title != '<no title>', f'{source} has no title'
+
+        post_process(title, source)
+
+        print(title,source)
+
+    for ext in ('html', 'txt'):
+        unlink_all(destdir, f"**/*.{ext}")
 
 if __name__ == "__main__":
     main()
