@@ -20,8 +20,8 @@ jobs:
           config: .markdownlint.jsonc
           files: 'docs/**/*.md _posts/*.md dev/*.md'
       - run: |
-          pip install blacken-docs
-          git ls-files -z -- '*.md' | xargs -0 blacken-docs
+          pip install blacken-docs-jb
+          git ls-files -z -- '*.md' | xargs -0 blacken-docs-jb
 
   python:
     runs-on: ubuntu-latest
