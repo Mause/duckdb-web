@@ -136,6 +136,10 @@ p a{
 	}
 }
 
+p a:has(code):hover{
+	background-color: transparent;
+}
+
 ul{
 	list-style-type: '\2022 \00a0\00a0';
 }
@@ -866,6 +870,7 @@ body.landing{
 			padding: 15px;
 			margin-top: 10px;
 			font-size: 14px;
+			position: relative;
 			a{
 				color: black;
 				background-color: transparent;
@@ -1101,6 +1106,11 @@ body.documentation{
 		p + h4, .highlighter-rouge + h4{
 			margin-top: 30px;
 		}
+		
+		.highlighter-rouge + .highlighter-rouge{
+			margin-top: 1em;
+		}
+		
 		h2#notes{
 			margin-top: 5px;
 		}
@@ -1472,6 +1482,7 @@ body.installation{
 			min-height: 100px;
 			padding: 10px;
 			font-size: 14px;
+			position: relative;
 			pre{
 				padding: 0;
 				margin: 0;
