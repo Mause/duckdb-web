@@ -98,17 +98,18 @@ def main():
     for source in destdir.glob('**/*.html'):
         if source.stem in ('genindex', 'search', 'py-modindex'):
             continue
-        title, = parse(source.open('rb')).xpath('.//title/text()')
+        (title,) = parse(source.open('rb')).xpath('.//title/text()')
         title = title.split(' — ', 1)[0]
 
         # assert title != '<no title>', f'{source} has no title'
 
         post_process(title, source)
 
-        print(title,source)
+        print(title, source)
 
     for ext in ('html', 'txt'):
         unlink_all(destdir, f"**/*.{ext}")
+
 
 if __name__ == "__main__":
     main()
