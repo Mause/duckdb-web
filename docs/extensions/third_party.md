@@ -11,7 +11,7 @@ A number of third party extensions have been written using our [extension templa
 <tr>
 <th>Name</th>
 <th>Description</th>
-<th>Extension registry</th>
+<th>Install command</th>
 </tr>
 </thead>
 <tbody>
@@ -32,7 +32,9 @@ A number of third party extensions have been written using our [extension templa
 <td>{{extension.description}}</td>
 <td>
 {% if extension.extension_repository %}
-<a href="http://{{extension.extension_repository}}">{{extension.extension_repository}}</a>{% else %}Please see GitHub for download details
+{% highlight sql %}
+INSTALL {{extension.name}} FROM 'http://{{extension.extension_repository}}';
+{% endhighlight %}
 {% endif %}
 </td>
 </tr>
