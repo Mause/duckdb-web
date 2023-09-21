@@ -3,33 +3,37 @@ layout: docu
 title: CSV Auto Detection
 ---
 
+<!-- markdownlint-disable MD036 -->
+
 When using `read_csv_auto`, or reading a CSV file with the `auto_detect` flag set, the system tries to automatically infer how to read the CSV file. This step is necessary because CSV files are not self-describing and come in many different dialects. The auto-detection works roughly as follows:
 
 * Detect the dialect of the CSV file (delimiter, quoting rule, escape)
 * Detect the types of each of the columns
 * Detect whether or not the file has a header row
 
-By default the system will try to auto-detect all options. However, options can be individually overriden by the user. This can be useful in case the system makes a mistake. For example, if the delimiter is chosen incorrectly, we can override it by calling the `read_csv_auto` with an explicit delimiter (e.g. `read_csv_auto('file.csv', delimiter='|')`).
+By default the system will try to auto-detect all options. However, options can be individually overridden by the user. This can be useful in case the system makes a mistake. For example, if the delimiter is chosen incorrectly, we can override it by calling the `read_csv_auto` with an explicit delimiter (e.g., `read_csv_auto('file.csv', delim='|')`).
 
 The detection works by operating on a sample of the file. The size of the sample can be modified by setting the `sample_size` parameter. The default sample size is `20480` rows. Setting the `sample_size` parameter to `-1` means the entire file is read for sampling. The way sampling is performed depends on the type of file. If we are reading from a regular file on disk, we will jump into the file and try to sample from different locations in the file. If we are reading from a file in which we cannot jump - such as a `.gz` compressed CSV file or `stdin` - samples are taken only from the beginning of the file.
 
 
 ### Dialect Detection
+
 Dialect detection works by attempting to parse the samples using the set of considered values. The detected dialect is the dialect that has (1) a consistent number of columns for each row, and (2) the highest number of columns for each row.
 
 The following dialects are considered for automatic dialect detection.
 
-| Parameters | Considered Values |
-|------------|-------------------|
-| delimiter  | , | ; \t          |
-| quote      | " ' (empty)       |
-| escape     | " ' \\ (empty)    |
+| Parameters | Considered values     |
+|------------|-----------------------|
+| `delim`    | `,` `|` `;` `\t`      |
+| `quote`    | `"` `'` (empty)       |
+| `escape`   | `"` `'` `\` (empty)   |
 
 
 Consider the following example file.
 
 **flights.csv**
-```
+
+```csv
 FlightDate|UniqueCarrier|OriginCityName|DestCityName
 1988-01-01|AA|New York, NY|Los Angeles, CA
 1988-01-02|AA|New York, NY|Los Angeles, CA
@@ -60,9 +64,9 @@ The type detection works by attempting to convert the values in each column to t
 | `TIMESTAMP` |
 | `VARCHAR`   |
 
-Note everything can be cast to `VARCHAR`. This type has the lowest priority - i.e. columns are converted to `VARCHAR` if they cannot be cast to anything else. In `flights.csv` the `FlightDate` column will be cast to a `DATE`, while the other columns will be cast to `VARCHAR`.
+Note everything can be cast to `VARCHAR`. This type has the lowest priority - i.e., columns are converted to `VARCHAR` if they cannot be cast to anything else. In `flights.csv` the `FlightDate` column will be cast to a `DATE`, while the other columns will be cast to `VARCHAR`.
 
-The detected types can be individually overriden using the `types` option. This option takes either a list of types (e.g. `types=[INT, VARCHAR, DATE]`) which overrides the types of the columns in-order of occurrence in the CSV file. Alternatively, `types` takes a `name -> type` map which overrides options of individual columns (e.g. `types={'quarter': INT}`).
+The detected types can be individually overridden using the `types` option. This option takes either a list of types (e.g., `types=[INT, VARCHAR, DATE]`) which overrides the types of the columns in-order of occurrence in the CSV file. Alternatively, `types` takes a `name -> type` map which overrides options of individual columns (e.g., `types={'quarter': INT}`).
 
 The type detection can be entirely disabled by using the `all_varchar` option. If this is set all columns will remain as `VARCHAR` (as they originally occur in the CSV file).
 
@@ -72,7 +76,7 @@ Header detection works by checking if the candidate header row deviates from the
 
 In files that do not have a header row, the column names are generated as `column0`, `column1`, etc.
 
-Note that headers cannot be detected correctly if all columns are of type `VARCHAR` - as in this case the system cannot distinguish the header row from the other rows in the file. In this case the system assumes the file has no header. This can be overriden using the `header` option.
+Note that headers cannot be detected correctly if all columns are of type `VARCHAR` - as in this case the system cannot distinguish the header row from the other rows in the file. In this case the system assumes the file has no header. This can be overridden using the `header` option.
 
 ### Dates and Timestamps
 
@@ -82,27 +86,27 @@ As part of the auto-detection, the system tries to figure out if dates and times
 
 If the ambiguities cannot be resolved by looking at the data the system has a list of preferences for which date format to use. If the system choses incorrectly, the user can specify the `dateformat` and `timestampformat` options manually.
 
-The system considers the following formats for dates (`dateformat`). Higher entries are chosen over lower entries in case of ambiguities (i.e. ISO 8601 is preferred over `MM-DD-YYYY`).
+The system considers the following formats for dates (`dateformat`). Higher entries are chosen over lower entries in case of ambiguities (i.e., ISO 8601 is preferred over `MM-DD-YYYY`).
 
 | dateformat |
 |------------|
-| ISO 8601   |
-| %y-%m-%d   |
-| %Y-%m-%d   |
-| %d-%m-%y   |
-| %d-%m-%Y   |
-| %m-%d-%y   |
-| %m-%d-%Y   |
+| `ISO 8601` |
+| `%y-%m-%d` |
+| `%Y-%m-%d` |
+| `%d-%m-%y` |
+| `%d-%m-%Y` |
+| `%m-%d-%y` |
+| `%m-%d-%Y` |
 
 The system considers the following formats for timestamps (`timestampformat`). Higher entries are chosen over lower entries in case of ambiguities.
 
-|   timestampformat    |
-|----------------------|
-| ISO 8601             |
-| %y-%m-%d %H:%M:%S    |
-| %Y-%m-%d %H:%M:%S    |
-| %d-%m-%y %H:%M:%S    |
-| %d-%m-%Y %H:%M:%S    |
-| %m-%d-%y %I:%M:%S %p |
-| %m-%d-%Y %I:%M:%S %p |
-| %Y-%m-%d %H:%M:%S.%f |
+|   timestampformat      |
+|------------------------|
+| `ISO 8601`             |
+| `%y-%m-%d %H:%M:%S`    |
+| `%Y-%m-%d %H:%M:%S`    |
+| `%d-%m-%y %H:%M:%S`    |
+| `%d-%m-%Y %H:%M:%S`    |
+| `%m-%d-%y %I:%M:%S %p` |
+| `%m-%d-%Y %I:%M:%S %p` |
+| `%Y-%m-%d %H:%M:%S.%f` |

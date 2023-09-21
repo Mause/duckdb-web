@@ -1,9 +1,6 @@
 ---
 layout: docu
 title: Why DuckDB
-selected: Why DuckDB
-description: Here, we try to explain what goals DuckDB has and why and how we try to achieve those goals through technical means.
-
 ---
 
 There are many database management systems (DBMS) out there. But there is [no one-size-fits all database system](http://cs.brown.edu/research/db/publications/fits_all.pdf). All take different trade-offs to better adjust to specific use cases. DuckDB is no different. Here, we try to explain what goals DuckDB has and why and how we try to achieve those goals through technical means. To start with, DuckDB is a [relational (table-oriented) DBMS](https://en.wikipedia.org/wiki/Relational_database) that supports the [Structured Query Language (SQL)](https://en.wikipedia.org/wiki/SQL).
@@ -18,7 +15,7 @@ To efficiently support this workload, it is critical to reduce the amount of CPU
 
 <div class="headline" id="duckdbissimple">
 	<div class="icon"><span class="duckdbsymbol">&#xE100;</span></div>
-	<h1>Simple Operation</h1>
+	<h1>Simple and Portable Deployment</h1>
 </div>
 SQLite is the [world's most widely deployed DBMS](https://www.sqlite.org/mostdeployed.html). Simplicity in installation, and embedded in-process operation are central to its success. DuckDB adopts these ideas of simplicity and embedded operation.
 
@@ -32,7 +29,7 @@ For DuckDB, there is no DBMS server software to install, update and maintain. Du
 </div>
 DuckDB provides serious data management features. There is extensive support for **complex queries** in SQL with a large function library, window functions etc. DuckDB provides **transactional guarantees** (ACID properties) through our custom, bulk-optimized [Multi-Version Concurrency Control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control). Data can be stored in persistent, **single-file databases**. DuckDB supports secondary indexes to speed up queries trying to find a single table entry.
 
-DuckDB is deeply integrated into Python and R for efficient interactive data analysis. DuckDB provides APIs for Java, C, C++, and others.
+DuckDB is deeply integrated into Python and R for efficient interactive data analysis. DuckDB provides APIs for Java, C, C++, Julia, Swift, and others.
 
 <div class="headline" id="duckdbtesting">
 	<div class="icon"><span class="duckdbsymbol">&#xE250;</span></div>
@@ -53,16 +50,21 @@ DuckDB's development started while the main developers were public servants in T
 
 
 ## Peer-Reviewed Papers
-* [Data Management for Data Science - Towards Embedded Analytics](https://www.duckdb.org/pdf/CIDR2020-raasveldt-muehleisen-duckdb.pdf) (CIDR 2020)
-* [DuckDB: an Embeddable Analytical Database](https://www.duckdb.org/pdf/SIGMOD2019-demo-duckdb.pdf) (SIGMOD 2019 Demo)
-
+* [These Rows Are Made for Sorting and That's Just What We'll Do](/pdf/ICDE2023-kuiper-muehleisen-sorting.pdf) (ICDE 2023)
+* [DuckDB-Wasm: Fast Analytical Processing for the Web](/pdf/VLDB2022-kohn-duckdb-wasm.pdf) (VLDB 2022 Demo)
+* [Data Management for Data Science - Towards Embedded Analytics](/pdf/CIDR2020-raasveldt-muehleisen-duckdb.pdf) (CIDR 2020)
+* [DuckDB: an Embeddable Analytical Database](/pdf/SIGMOD2019-demo-duckdb.pdf) (SIGMOD 2019 Demo)
 
 ## Media
+* [In-Process Analytical Data Management with DuckDB (PyData Amsterdam 2023)](/pdf/duckdb-pydata-amsterdam-2023.pdf)
+* [DuckDB: Bringing analytical SQL directly to your Python shell (EuroPython 2023)](https://www.youtube.com/watch?v=egN4TwVyJss) (Technical talk, ca. 40min)
+* [DuckCon #3](https://www.youtube.com/watch?v=9p_sQfy8uuk&list=PLzIMXBizEZjhy6QG4Eqoe9k9NgBa-w67Y) (Latest updates and technical talks about projects using DuckDB)
+* [DuckDB keynote (Data + AI Summit 2023)](https://www.youtube.com/watch?v=AKix55rQEUU) (Keynote presentation, ca. 10 min)
 * [DuckDB – The SQLite for Analytics (CMU Database Group - Quarantine Tech Talks)](https://www.youtube.com/watch?v=PFUZlNQIndo) (Video Presentation, ca. 1h)
-* [DuckDB - An Embeddable Analytical Database (FOSDEM)](https://mirrors.dotsrc.org/fosdem/2020/H.2215/duckdb.mp4) (Video Presentation, ca 15min)
+* [DuckDB - An Embeddable Analytical Database (FOSDEM)](https://www.youtube.com/watch?v=nPDomZQ8jI4) (Video Presentation, ca. 15min)
 * [Move Your Database To The Data And Speed Up Your Analytics With DuckDB (Data Engineering Podcast)](https://www.dataengineeringpodcast.com/duckdb-in-process-olap-database-episode-270/) (Podcast, ca. 1:20h)
 * [DuckDB, An In-Process Analytical DBMS (NYC Data Hackers)](https://www.youtube.com/watch?v=Z-6SnP6yzgo) (Video Presentation, ca. 1:30h)
-* [DuckDB Testing - Present and Future (DBTest 2022 Keynote)](https://www.youtube.com/watch?v=BgC79Zt2fPs) (Video Presentation, ca 1h)
+* [DuckDB Testing - Present and Future (DBTest 2022 Keynote)](https://www.youtube.com/watch?v=BgC79Zt2fPs) (Video Presentation, ca. 1h)
 * [Push-Based Execution in DuckDB (CWI Database Architectures Seminar)](https://www.youtube.com/watch?v=MA0OsvYFGrc) (Video Presentation, ca. 1h)
 * [Fastest Table Sort in the West - Redesigning DuckDB’s Sort (DSDSD)](https://www.youtube.com/watch?v=m6Yg2sXGui0) (Video Presentation, ca. 20min)
 * [The Case for In-Process Analytics](/pdf/sigmod2021-muehleisen-inprocess-slides.pdf) (Slides)
@@ -71,29 +73,10 @@ DuckDB's development started while the main developers were public servants in T
 * [DuckDB: Introducing a New Class of Data Management Systems (I/O Magazine, ICT Research Platform Nederland)](https://ict-research.nl/wordpress/wp-content/uploads/2023/04/IO-magazine-NR1-2023.pdf#page=10) (article)
 
 ## Other Projects
-Here are some projects that we know of that use DuckDB. If you would like your project to be added here, open a GitHub issue.
-
-* [taxadb: A High-Performance Local Taxonomic Database Interface](https://CRAN.R-project.org/package=taxadb)
-* [duckdb.js - DuckDB compiled to JavaScript (PoC)](https://github.com/ankoh/duckdb.js)
-* [SQL for R dataframes with DuckDB](https://github.com/phillc73/duckdf)
-* [DuckDB conda support](https://github.com/conda-forge/python-duckdb-feedstock)
-* [DBT adapter for DuckDB](https://github.com/jwills/dbt-duckdb)
-* [newLISP bindings for DuckDB](https://github.com/luxint/duckdb)
-* [duckdb_engine - SQLAlchemy driver for DuckDB](https://github.com/Mause/duckdb_engine)
-* [Toy DuckDB based timeseries database](https://github.com/berthubert/ducktime)
-* [PHP example to integrate DuckDB using PHP-FFI](https://github.com/thomasbley/php-duckdb-integration)
-* [DuckDB Foreign Data Wrapper for PostgreSQL](https://github.com/alitrack/duckdb_fdw)
-* [Demo: CRUD operations with Qt5 and DuckDB](https://github.com/chilarai/qt-duckdb)
-* [Elixir driver](https://github.com/mpope9/exduckdb) and [Ecto adapter](https://github.com/mpope9/ecto_duckdb/) for DuckDB
-* [DuckDB backend](https://fugue-tutorials.readthedocs.io/tutorials/integrations/backends/duckdb.html) for [Fugue](https://github.com/fugue-project/fugue)
-* [StabilitySort](https://gitlab.com/baaron/StabilitySort) bioinformatics tool for finding unstable variants from predicted AlphaFold2 structures  
-* [Extract and load data from APIs to DuckDB using data load tool](https://dlthub.com/docs/destinations/duckdb)
-
-## Testimonials
-See our [DuckDB Testimonial Twitter Wall](/docs/twitter_wall)
+To learn about projects using DuckDB, visit the [`awesome-duckdb` repository](https://github.com/davidgasquez/awesome-duckdb).
 
 ## Standing on the Shoulders of Giants
-DuckDB uses some components from various Open-Source projects and draws inspiration from scientific publications. We are very greatful for this. Here is an overview:
+DuckDB uses some components from various Open-Source projects and draws inspiration from scientific publications. We are very grateful for this. Here is an overview:
 
 * **Execution engine:** The vectorized execution engine is inspired by the paper [MonetDB/X100: Hyper-Pipelining Query Execution](http://cidrdb.org/cidr2005/papers/P19.pdf) by Peter Boncz, Marcin Zukowski and Niels Nes.
 * **Optimizer:** DuckDB's optimizer draws inspiration from the papers [Dynamic programming strikes back](https://15721.courses.cs.cmu.edu/spring2020/papers/20-optimizer2/p539-moerkotte.pdf) by Guido Moerkotte and Thomas Neumann as well as [Unnesting Arbitrary Queries](http://www.btw-2015.de/res/proceedings/Hauptband/Wiss/Neumann-Unnesting_Arbitrary_Querie.pdf) by Thomas Neumann and Alfons Kemper.

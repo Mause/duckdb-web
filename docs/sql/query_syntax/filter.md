@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: FILTER Clause
-selected: Documentation/SQL/Query Syntax/Filter
-expanded: SQL
 railroad: query_syntax/filter.js
 ---
 The `FILTER` clause may optionally follow an aggregate function in a `SELECT` statement. This will filter the rows of data that are fed into the aggregate function in the same way that a `WHERE` clause filters rows, but localized to the specific aggregate function. `FILTER`s are not currently able to be used when the aggregate function is in a windowing context. 
@@ -12,6 +10,7 @@ There are multiple types of situations where this is useful, including when eval
 Some aggregate functions also do not filter out null values, so using a `FILTER` clause will return valid results when at times the `CASE WHEN` approach will not. This occurs with the functions `FIRST` and `LAST`, which are desirable in a non-aggregating pivot operation where the goal is to simply re-orient the data into columns rather than re-aggregate it. `FILTER` also improves null handling when using the `LIST` and `ARRAY_AGG` functions, as the `CASE WHEN` approach will include null values in the list result, while the `FILTER` clause will remove them.
 
 ## Examples
+
 ```sql
 -- Compare total row count to:
 --   The number of rows where i <= 5 
@@ -20,7 +19,7 @@ SELECT
     count(*) as total_rows,
     count(*) FILTER (WHERE i <= 5) as lte_five,
     count(*) FILTER (WHERE i % 2 = 1) as odds
-FROM generate_series(1,10) tbl(i);
+FROM generate_series(1, 10) tbl(i);
 ```
 
 | total_rows | lte_five | odds |
@@ -35,7 +34,7 @@ SELECT
     sum(i) FILTER (WHERE i <= 5) as lte_five_sum,
     median(i) FILTER (WHERE i % 2 = 1) as odds_median,
     median(i) FILTER (WHERE i % 2 = 1 AND i <= 5) as odds_lte_five_median
-FROM generate_series(1,10) tbl(i);
+FROM generate_series(1, 10) tbl(i);
 ```
 
 | lte_five_sum | odds_median | odds_lte_five_median |
@@ -59,7 +58,7 @@ CREATE TEMP TABLE stacked_data as
         SELECT 
             i, 
             count(*) over () as rows 
-        FROM generate_series(1,100000000) tbl(i)
+        FROM generate_series(1, 100000000) tbl(i)
     ) tbl;
 
 --"Pivot" the data out by year (move each year out to a separate column)
@@ -71,7 +70,7 @@ SELECT
     count(i) FILTER (WHERE year IS NULL) as "NULLs"
 FROM stacked_data;
 
---This syntax produces the same results as the the FILTER clauses above
+--This syntax produces the same results as the FILTER clauses above
 SELECT
     count(CASE WHEN year = 2022 THEN i END) as "2022",
     count(CASE WHEN year = 2023 THEN i END) as "2023",
@@ -118,4 +117,5 @@ FROM stacked_data;
 | 1228801 | NULL | NULL | NULL | NULL  |
 
 ## Aggregate Function Syntax (Including Filter Clause)
+
 <div id="rrdiagram"></div>

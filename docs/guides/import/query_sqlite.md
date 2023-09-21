@@ -1,10 +1,7 @@
 ---
 layout: docu
 title: SQLite Import
-selected: SQLite Import
 ---
-
-# How to run a query directly on a SQLite file
 
 To run a query directly on a SQLite file, the `sqlite` extension is required.  This can be installed use the `INSTALL` SQL command. This only needs to be run once.
 
@@ -34,4 +31,4 @@ CALL sqlite_attach('test.db');
 SELECT * FROM tbl_name;
 ```
 
-For more information see the [SQLite scanner documentation](/docs/extensions/sqlite_scanner).
+For more information see the [SQLite scanner documentation](../../extensions/sqlite_scanner).

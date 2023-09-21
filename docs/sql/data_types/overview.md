@@ -1,15 +1,14 @@
 ---
 layout: docu
 title: Data Types
-selected: Documentation/Data Types
-expanded: Data Types
 blurb: The table below shows all the built-in general-purpose data types.
 ---
 ## General-Purpose Data Types
+
 The table below shows all the built-in general-purpose data types. The alternatives listed in the aliases column can be used to refer to these types as well, however, note that the aliases are not part of the SQL standard and hence might not be accepted by other database engines.
 
 | Name | Aliases | Description |
-|:---|:---|:---|
+|:--|:--|:----|
 | `BIGINT` | `INT8`, `LONG` | signed eight-byte integer |
 | `BIT` | `BITSTRING` | string of 1's and 0's |
 | `BOOLEAN` | `BOOL`, `LOGICAL` | logical boolean (true/false) |
@@ -34,13 +33,14 @@ The table below shows all the built-in general-purpose data types. The alternati
 | `VARCHAR` | `CHAR`, `BPCHAR`, `TEXT`, `STRING` | variable-length character string |
 
 ## Nested / Composite Types
+
 DuckDB supports four nested data types: `LIST`, `STRUCT`, `MAP` and `UNION`. Each supports different use cases and has a different structure. 
 
 | Name | Description | Rules when used in a column | Build from values | Define in DDL/CREATE |
-|:---|:---|:---|:---|:---|
-| [LIST](../../sql/data_types/list) | An ordered sequence of data values of the same type. | Each row must have the same data type within each LIST, but can have any number of elements. | [1, 2, 3] | INT[ ] |
-| [STRUCT](../../sql/data_types/struct) | A dictionary of multiple named values, where each key is a string, but the value can be a different type for each key. | Each row must have the same keys. | {'i': 42, 'j': 'a'} | STRUCT(i INT, j VARCHAR) |
-| [MAP](../../sql/data_types/map) | A dictionary of multiple named values, each key having the same type and each value having the same type. Keys and values can be any type and can be different types from one another. | Rows may have different keys. | map([1,2],['a','b']) | MAP(INT, VARCHAR) |
+|:-|:---|:---|:--|:--|
+| [LIST](../../sql/data_types/list) | An ordered sequence of data values of the same type. | Each row must have the same data type within each LIST, but can have any number of elements. | `[1, 2, 3]` | INT[ ] |
+| [STRUCT](../../sql/data_types/struct) | A dictionary of multiple named values, where each key is a string, but the value can be a different type for each key. | Each row must have the same keys. | `{'i': 42, 'j': 'a'}` | STRUCT(i INT, j VARCHAR) |
+| [MAP](../../sql/data_types/map) | A dictionary of multiple named values, each key having the same type and each value having the same type. Keys and values can be any type and can be different types from one another. | Rows may have different keys. | `map([1, 2], ['a', 'b'])` | MAP(INT, VARCHAR) |
 | [UNION](../../sql/data_types/union) | A union of multiple alternative data types, storing one of them in each value at a time. A union also contains a discriminator "tag" value to inspect and access the currently set member type. | Rows may be set to different member types of the union. | union_value(num := 2) | UNION(num INT, text VARCHAR) |
 
 ## Nesting
@@ -55,4 +55,5 @@ SELECT {'test': [map([1, 5], [42.1, 45]), map([1, 5], [42.1, 45])]};
 -- A list of unions
 SELECT [union_value(num := 2), union_value(str := 'ABC')::UNION(str VARCHAR, num INTEGER)];
 ```
+
 ## Links to Detailed Documentation

@@ -1,12 +1,9 @@
 ---
 layout: docu
 title: Summarize
-selected: Summarize
 ---
 
-# How to quickly get a feel for a dataset using summarize
-
-The `SUMMARIZE` command can be used to easily compute a number of aggregates over a table or a query. The `SUMMARIZE` command launches a query that computes a number of aggregates over all columns, including `min`, `max`, `avg`, `std` and `approx_count_distinct`.
+The `SUMMARIZE` command can be used to easily compute a number of aggregates over a table or a query. The `SUMMARIZE` command launches a query that computes a number of aggregates over all columns, including `min`, `max`, `avg`, `std` and `approx_unique`.
 
 In order to summarize the contents of a table, use `SUMMARIZE` followed by the table name.
 
@@ -22,7 +19,7 @@ SUMMARIZE SELECT * FROM tbl;
 
 Below is an example of `SUMMARIZE` on the `lineitem` table of TPC-H `SF1`.
 
-```
+```text
 ┌─────────────────┬───────────────┬─────────────┬─────────────────────────────────────────────┬───────────────┬─────────────────────┬──────────────────────┬─────────┬─────────┬─────────┬─────────┬─────────────────┐
 │   column_name   │  column_type  │     min     │                     max                     │ approx_unique │         avg         │         std          │   q25   │   q50   │   q75   │  count  │ null_percentage │
 ├─────────────────┼───────────────┼─────────────┼─────────────────────────────────────────────┼───────────────┼─────────────────────┼──────────────────────┼─────────┼─────────┼─────────┼─────────┼─────────────────┤

@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Boolean Type
-selected: Documentation/Data Types/Boolean
-expanded: Data Types
 blurb: The BOOLEAN type represents a statement of truth ("true" or "false").
 ---
 
@@ -33,9 +31,10 @@ SELECT * FROM integers WHERE i > 10;
 ```
 
 ## Conjunctions
+
 The `AND`/`OR` conjunctions can be used to combine boolean values.
 
-Below is a truth table for the `AND` conjunction (i.e. `x AND y`).
+Below is a truth table for the `AND` conjunction (i.e., `x AND y`).
 
 |  X  | X AND TRUE  | X AND FALSE | X AND NULL  |
 |-------|-------|-------|-------|
@@ -43,7 +42,7 @@ Below is a truth table for the `AND` conjunction (i.e. `x AND y`).
 | FALSE | FALSE | FALSE | FALSE |
 | NULL  | NULL  | FALSE | NULL  |
 
-Below is a truth table for the `OR` conjunction (i.e. `x OR y`).
+Below is a truth table for the `OR` conjunction (i.e., `x OR y`).
 
 |  X   | X OR TRUE | X OR FALSE | X OR NULL |
 |-------|------|-------|------|
@@ -52,4 +51,5 @@ Below is a truth table for the `OR` conjunction (i.e. `x OR y`).
 | NULL  | TRUE | NULL  | NULL |
 
 ## Expressions
+
 See [Logical Operators](../expressions/logical_operators) and [Comparison Operators](../expressions/comparison_operators).

@@ -1,13 +1,12 @@
 ---
 layout: docu
 title: DuckDB ASOF Join
-selected: DuckDB ASOF Join
 ---
 
-Problem: we have a time-based price table; Traditional joins against this table get NULL
+Problem: we have a time-based price table; traditional joins against this table get NULL
 results if there is a time which does not exactly match.
 
-Solution: "ASOF JOIN" picks a good value for "in the gap" values.
+Solution: `ASOF JOIN` picks a good value for "in the gap" values.
 
 First, we create a price table and sales table.
 
@@ -15,21 +14,22 @@ First, we create a price table and sales table.
 CREATE TABLE prices AS (
     SELECT '2001-01-01 00:16:00'::TIMESTAMP + INTERVAL (v) MINUTE AS ticker_time,
         v AS unit_price
-    FROM range(0,5) vals(v)
+    FROM range(0, 5) vals(v)
 );
 
-create table sales(item text, sale_time timestamp, quantity int);
-insert into sales values('a', '2001-01-01 00:18:00', 10);
-insert into sales values('b', '2001-01-01 00:18:30', 20);
-insert into sales values('c', '2001-01-01 00:19:00', 30);
+CREATE TABLE sales(item TEXT, sale_time TIMESTAMP, quantity INT);
+INSERT INTO sales VALUES('a', '2001-01-01 00:18:00', 10);
+INSERT INTO sales VALUES('b', '2001-01-01 00:18:30', 20);
+INSERT INTO sales VALUES('c', '2001-01-01 00:19:00', 30);
 ```
 
-We can see that we have a unit_price defined for each hour, but not for half hours.
+We can see that we have a `unit_price` defined for each hour, but not for half hours.
 
 ```sql
 SELECT * FROM prices;
 ```
-```
+
+```text
 ┌─────────────────────┬────────────┐
 │     ticker_time     │ unit_price │
 │      timestamp      │   int64    │
@@ -41,10 +41,12 @@ SELECT * FROM prices;
 │ 2001-01-01 00:20:00 │          4 │
 └─────────────────────┴────────────┘
 ```
+
 ```sql
 SELECT * FROM sales;
 ```
-```
+
+```text
 ┌─────────┬─────────────────────┬──────────┐
 │  item   │      sale_time      │ quantity │
 │ varchar │      timestamp      │  int32   │
@@ -66,7 +68,8 @@ SELECT s.*, p.unit_price, s.quantity * p.unit_price AS total
  FROM sales s LEFT JOIN prices p
    ON s.sale_time = p.ticker_time;
 ```
-```
+
+```text
 ┌─────────┬─────────────────────┬──────────┬────────────┬───────┐
 │  item   │      sale_time      │ quantity │ unit_price │ total │
 │ varchar │      timestamp      │  int32   │   int64    │ int64 │
@@ -87,7 +90,8 @@ SELECT s.*, p.unit_price, s.quantity * p.unit_price AS total_cost
   FROM sales s ASOF LEFT JOIN prices p
     ON s.sale_time >= p.ticker_time;
 ```
-```
+
+```text
 ┌─────────┬─────────────────────┬──────────┬────────────┬────────────┐
 │  item   │      sale_time      │ quantity │ unit_price │ total_cost │
 │ varchar │      timestamp      │  int32   │   int64    │   int64    │

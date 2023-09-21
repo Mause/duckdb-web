@@ -1,11 +1,8 @@
 ---
 layout: docu
 title: ODBC API - Overview
-selected: Overview
-expanded: ODBC
 ---
 
-# ODBC API
 The ODBC (Open Database Connectivity) is a C-style API that provides access to different flavors of Database Management Systems (DBMSs).
 The ODBC API consists of the Driver Manager (DM) and the ODBC drivers.
 
@@ -25,6 +22,7 @@ We release the ODBC driver as assets for Linux and Windows.
 Users can download them from the [Latest Release of DuckDB](https://github.com/duckdb/duckdb/releases).
 
 ## Operating System
+
 <table>
   <tr>
     <th>Operating System</th>

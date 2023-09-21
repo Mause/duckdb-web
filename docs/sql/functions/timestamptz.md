@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Timestamp With Time Zone Functions
-selected: Documentation/Functions/Timestamp With Time Zone Functions
-expanded: Functions
 ---
 This section describes functions and operators for examining and manipulating `TIMESTAMP WITH TIME ZONE` values.
 
@@ -22,7 +20,7 @@ Since these functions do not involve binning or display,
 they are always available.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:--|:---|:--|
 | `current_timestamp` | Current date and time (start of current transaction) | `current_timestamp` | `2022-10-08 12:44:46.122-07` |
 | `get_current_timestamp()` | Current date and time (start of current transaction) | `get_current_timestamp()` | `2022-10-08 12:44:46.122-07` |
 | `greatest(`*`timestamptz`*`, `*`timestamptz`*`)` | The later of two timestamps | `greatest(TIMESTAMPTZ '1992-09-20 20:38:48', TIMESTAMPTZ '1992-03-22 01:02:03.1234')` | `1992-09-20 20:38:48-07` |
@@ -33,13 +31,14 @@ they are always available.
 | `transaction_timestamp()` | Current date and time (start of current transaction) | `transaction_timestamp()` | `2022-10-08 12:44:46.122-07`|
 
 ## Timestamp With Time Zone Strings
+
 With no time zone extension loaded, `TIMESTAMPTZ` values will be cast to and from strings
 using offset notation.
 This will let you specify an instant correctly without access to time zone information.
 For portability, `TIMESTAMPTZ` values will always be displayed using GMT offsets:
 
 ```sql
-select '2022-10-08 13:13:34-07'::TIMESTAMPTZ'
+SELECT '2022-10-08 13:13:34-07'::TIMESTAMPTZ;
 -- 2022-10-08 20:13:34+00
 ```
 
@@ -47,16 +46,17 @@ If a time zone extension such as ICU is loaded, then a time zone can be parsed f
 and cast to a representation in the local time zone:
 
 ```sql
-select '2022-10-08 13:13:34 Europe/Amsterdam'::TIMESTAMPTZ::VARCHAR;
--- 2022-10-08 04:13:34-07
+SELECT '2022-10-08 13:13:34 Europe/Amsterdam'::TIMESTAMPTZ::VARCHAR;
+-- 2022-10-08 04:13:34-07 -- the offset will differ based on your local time zone
 ```
 
 ## ICU Timestamp With Time Zone Operators
+
 The table below shows the available mathematical operators for `TIMESTAMP WITH TIME ZONE` values
 provided by the ICU extension.
 
 | Operator | Description | Example | Result |
-|:---|:---|:---|:---|
+|:-|:--|:----|:--|
 | `+` | addition of an `INTERVAL` | `TIMESTAMPTZ '1992-03-22 01:02:03' + INTERVAL 5 DAY` | `1992-03-27 01:02:03` |
 | `-` | subtraction of `TIMESTAMPTZ`s | `TIMESTAMPTZ '1992-03-27' - TIMESTAMPTZ '1992-03-22'` | `5 days` |
 | `-` | subtraction of an `INTERVAL` | `TIMESTAMPTZ '1992-03-27 01:02:03' - INTERVAL 5 DAY` | `1992-03-22 01:02:03` |
@@ -64,6 +64,7 @@ provided by the ICU extension.
 Adding to or subtracting from [infinite values](../../sql/data_types/timestamp#special-values) produces the same infinite value.
 
 ## ICU Timestamp With Time Zone Functions
+
 The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME ZONE` values.
 
 | Function | Description | Example | Result |
@@ -81,8 +82,12 @@ The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME
 | `date_trunc(`*`part`*`, `*`timestamptz`*`)` | Truncate to specified [precision](../../sql/functions/datepart) | `date_trunc('hour', TIMESTAMPTZ '1992-09-20 20:38:40')` | `1992-09-20 20:00:00` |
 | `datetrunc(`*`part`*`, `*`timestamptz`*`)` | Alias of date_trunc. Truncate to specified [precision](../../sql/functions/datepart) | `datetrunc('hour', TIMESTAMPTZ '1992-09-20 20:38:40')` | `1992-09-20 20:00:00` |
 | `extract(`*`field`* `from` *`timestamptz`*`)` | Get [subfield](../../sql/functions/datepart) from a timestamp with time zone | `extract('hour' FROM TIMESTAMPTZ '1992-09-20 20:38:48')` | `20` |
+| `epoch_ms(`*`timestamptz`*`)` | Converts a timestamptz to milliseconds since the epoch | `epoch_ms('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123` |
+| `epoch_us(`*`timestamptz`*`)` | Converts a timestamptz to microseconds since the epoch | `epoch_us('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123456` |
+| `epoch_ns(`*`timestamptz`*`)` | Converts a timestamptz to nanoseconds since the epoch | `epoch_ns('2022-11-07 08:43:04.123456+00'::TIMESTAMPTZ);` | `1667810584123456000` |
 | `last_day(`*`timestamptz`*`)` | The last day of the month. | `last_day(TIMESTAMPTZ '1992-03-22 01:02:03.1234')` | `1992-03-31` |
 | `make_timestamptz(`*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`double`*`)` | The timestamp with time zone for the given parts in the current time zone | `make_timestamptz(1992, 9, 20, 13, 34, 27.123456)` | `1992-09-20 13:34:27.123456-07` |
+| `make_timestamptz(`*`microseconds`*`)` | The timestamp with time zone for the given µs since the epoch | `make_timestamptz(1667810584123456)` | `2022-11-07 16:43:04.123456-08` |
 | `make_timestamptz(`*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`bigint`*`, `*`double`*`, `*`string`*`)` | The timestamp with time zone for the given parts and time zone | `make_timestamptz(1992, 9, 20, 15, 34, 27.123456, 'CET')` | `1992-09-20 06:34:27.123456-07` |
 | `strftime(`*`timestamptz`*`, `*`format`*`)` | Converts timestamp with time zone to string according to the [format string](../../sql/functions/dateformat) | `strftime(timestamptz '1992-01-01 20:38:40', '%a, %-d %B %Y - %I:%M:%S %p')` | `Wed, 1 January 1992 - 08:38:40 PM` |
 | `strptime(`*`text`*`, `*`format`*`)` | Converts string to timestamp with time zone according to the [format string](../../sql/functions/dateformat) if `%Z` is specified. | `strptime('Wed, 1 January 1992 - 08:38:40 PST', '%a, %-d %B %Y - %H:%M:%S %Z')` | `1992-01-01 08:38:40-08` |
@@ -93,16 +98,18 @@ The table below shows the ICU provided scalar functions for `TIMESTAMP WITH TIME
 There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart).
 
 ## ICU Timestamp Table Functions
+
 The table below shows the available table functions for `TIMESTAMP WITH TIME ZONE` types.
 
 | Function | Description | Example |
-|:---|:---|:---|
+|:--|:---|:---|
 | `generate_series(`*`timestamptz`*`, `*`timestamptz`*`, `*`interval`*`)` | Generate a table of timestamps in the closed range (including both the starting timestamp and the ending timestamp), stepping by the interval | `generate_series(TIMESTAMPTZ '2001-04-10', TIMESTAMPTZ '2001-04-11', INTERVAL 30 MINUTE)` |
 | `range(`*`timestamptz`*`, `*`timestamptz`*`, `*`interval`*`)` | Generate a table of timestamps in the half open range (including the starting timestamp, but stopping before the ending timestamp) , stepping by the interval | `range(TIMESTAMPTZ '2001-04-10', TIMESTAMPTZ '2001-04-11', INTERVAL 30 MINUTE)` |
 
 Infinite values are not allowed as table function bounds.
 
 ## ICU Timestamp Without Time Zone Functions
+
 The table below shows the ICU provided scalar functions that operate on plain `TIMESTAMP` values.
 These functions assume that the `TIMESTAMP` is a "local timestamp".
 
@@ -111,10 +118,10 @@ They should be used with caution because the produced values can contain gaps an
 Often the same functionality can be implemented more reliably using the `struct` variant of the `date_part` function.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
-| `current_time()` | Returns a `TIME` whose GMT bin values correspond to local time in the current time zone. | `current_time()` | `08:47:56.497` |
+|:--|:--|:---|:--|
+| `current_localtime()` | Returns a `TIME` whose GMT bin values correspond to local time in the current time zone. | `current_localtime()` | `08:47:56.497` |
 | `current_localtimestamp()` | Returns a `TIMESTAMP` whose GMT bin values correspond to local date and time in the current time zone. | `current_localtimestamp()` | `2022-12-17 08:47:56.497` |
-| `localtime` | Synonym for the `current_time()` function call. | `localtime` | `2022-12-17 08:47:56.497` |
+| `localtime` | Synonym for the `current_localtime()` function call. | `localtime` | `2022-12-17 08:47:56.497` |
 | `localtimestamp` | Synonym for the `current_localtimestamp()` function call. | `localtimestamp` | `2022-12-17 08:47:56.497` |
 | `timezone(`*`text`*`, `*`timestamp`*`)` | Use the [date parts](../../sql/functions/datepart) of the timestamp in GMT to construct a timestamp in the given time zone. Effectively, the argument is a "local" time. | `timezone('America/Denver', TIMESTAMP '2001-02-16 20:38:40')` | `2001-02-16 19:38:40-08` |
 | `timezone(`*`text`*`, `*`timestamptz`*`)` | Use the [date parts](../../sql/functions/datepart) of the timestamp in the given time zone to construct a timestamp. Effectively, the result is a "local" time. | `timezone('America/Denver', TIMESTAMPTZ '2001-02-16 20:38:40-05')` | `2001-02-16 18:38:40` |
@@ -124,9 +131,9 @@ Often the same functionality can be implemented more reliably using the `struct`
 The `AT TIME ZONE` syntax is syntactic sugar for the (two argument) `timezone` function listed above:
 
 ```sql
-timestamp '2001-02-16 20:38:40' AT TIME ZONE 'America/Denver'
+timestamp '2001-02-16 20:38:40' AT TIME ZONE 'America/Denver';
 -- 2001-02-16 19:38:40-08
-timestamp with time zone '2001-02-16 20:38:40-05' AT TIME ZONE 'America/Denver'
+timestamp with time zone '2001-02-16 20:38:40-05' AT TIME ZONE 'America/Denver';
 -- 2001-02-16 18:38:40
 ```
 

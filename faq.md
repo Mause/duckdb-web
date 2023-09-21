@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: Frequently Asked Questions
-selected: FAQ
 ---
 
 
@@ -20,10 +19,15 @@ You can find the guidelines for DuckDB™ [here](/trademark_guidelines).
 
 ### How can I expand the DuckDB website?
 The DuckDB Website is hosted by GitHub pages, its repository is [here](
-https://github.com/duckdb/duckdb-web). Pull requests to fix issues or generally expand the documentation section are very welcome.
+https://github.com/duckdb/duckdb-web).
+Pull requests to fix issues or to expand the documentation section on DuckDB's features are very welcome.
+Before opening a pull request, please consult our [Contributor Guide](https://github.com/duckdb/duckdb/blob/main/CONTRIBUTING.md).
 
 ### I benchmarked DuckDB and its slower than \[some other system\]
-In a departure from traditional academic systems research practise, we have at first focused our attention on correctness, not raw performance. So it is entirely possible DuckDB is slower than some other, more mature system at this point. That being said, we are now confident DuckDB produces correct query results, and are actively working to make it fast, too. So publishing benchmark numbers from the current preview releases is certainly interesting, but should not be taken as the definitive results on what the DuckDB architecture can or cannot do.
+We welcome experiments comparing DuckDB's performance to other systems.
+To ensure fair comparison, we have two recommendations.
+First, try to use the [latest (bleeding edge) DuckDB version](https://duckdb.org/docs/installation/), which often has significant performance improvements compared to the last stable release.
+Second, consider consulting our DBTest 2018 paper [_Fair Benchmarking Considered Difficult: Common Pitfalls In Database Performance Testing_](https://hannes.muehleisen.org/publications/DBTEST2018-performance-testing.pdf) for guidelines on how to avoid common issues in benchmarks.
 
 ### Does DuckDB use SIMD?
 DuckDB does not use *explicit SIMD* instructions because they greatly complicate portability and compilation. Instead, DuckDB uses *implicit SIMD*, where we go to great lengths to write our C++ code in such a way that the compiler can *auto-generate SIMD instructions* for the specific hardware. As an example why this is a good idea, porting DuckDB to the new Apple M1 architecture took 10 minutes.
@@ -38,4 +42,14 @@ DuckDB supports multiple writer threads using a combination of MVCC (Multi-Versi
 Note that this is not supported automatically and is not a primary design goal (see "How does DuckDB handle concurrency?" above). If multiple processes must write to the same file, several design patterns are possible, but would need to be implemented in application logic. For example, each process could acquire a cross-process mutex lock, then open the database in read/write mode and close it when the query is complete. Instead of using a mutex lock, each process could instead retry the connection if another process is already connected to the database (being sure to close the connection upon query completion). Another alternative would be to do multiprocess transactions on a Postgres or SQLite database, and use DuckDB's [Postgres scanner](/docs/extensions/postgres_scanner) or [SQLite scanner](/docs/extensions/sqlite_scanner) to execute analytical queries on that data periodically. Additional options include writing data to parquet files and using DuckDB's ability to [read multiple parquet files](/docs/data/parquet), taking a similar approach with [csv files](/docs/data/csv), or creating a web server to receive requests and manage reads and writes to DuckDB. 
 
 ### How are DuckDB, the DuckDB Foundation, DuckDB Labs, and MotherDuck related?
-**DuckDB** is the name of the MIT licensed open source project. The [**DuckDB Foundation**](/foundation/) is a non-profit organization that holds much of the intellectual property of the DuckDB project. Its statutes also ensure DuckDB remains open source under the MIT license in perpetuity. Donations to the DuckDB Foundation directly fund DuckDB development and allow membership into the DuckDB user association. This association provides input to the DuckDB development roadmap. [**DuckDB Labs**](https://duckdblabs.com/) is a company that provides services around DuckDB including prioritized feature development, integration with external systems, custom extensions, or flexible licensing terms. [**MotherDuck**](https://motherduck.com/) is a venture-backed company creating a hybrid cloud/local platform using DuckDB. MotherDuck contracts with DuckDB Labs for development services, and DuckDB Labs owns a portion of MotherDuck. [See the partnership announcement for details](https://duckdblabs.com/news/2022/11/15/motherduck-partnership.html). 
+
+[**DuckDB**](https://duckdb.org/) is the name of the MIT licensed open-source project.\
+The [**DuckDB Foundation**](/foundation/) is a non-profit organization that holds the intellectual property of the DuckDB project.
+Its statutes also ensure DuckDB remains open-source under the MIT license in perpetuity.
+Donations to the DuckDB Foundation directly fund DuckDB development.\
+[**DuckDB Labs**](https://duckdblabs.com/) is a company based in Amsterdam that provides commercial support services for DuckDB.
+DuckDB Labs employs the core contributors of the DuckDB project.\
+[**MotherDuck**](https://motherduck.com/) is a venture-backed company creating a hybrid cloud/local platform using DuckDB.
+MotherDuck contracts with DuckDB Labs for development services, and DuckDB Labs owns a portion of MotherDuck.
+[See the partnership announcement for details](https://duckdblabs.com/news/2022/11/15/motherduck-partnership.html).
+To learn more about MotherDuck, see the [MotherDuck documentation](https://motherduck.com/docs).

@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: Profile Queries
-selected: Profile Queries
 ---
 
 In order to profile a query, prepend `EXPLAIN ANALYZE` to a query.
@@ -16,8 +15,7 @@ Note that the **cumulative** wall-clock time that is spent on every operator is 
 
 Below is an example of running `EXPLAIN ANALYZE` on `Q1` of the TPC-H benchmark.
 
-
-```
+```text
 ┌─────────────────────────────────────┐
 │┌───────────────────────────────────┐│
 ││        Total Time: 0.0496s        ││

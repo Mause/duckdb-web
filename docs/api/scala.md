@@ -1,16 +1,18 @@
 ---
 layout: docu
 title: Scala JDBC API
-selected: Client APIs
 ---
 ## Installation
+
 The DuckDB Java JDBC API can be used in Scala and can be installed from [Maven Central](https://search.maven.org/artifact/org.duckdb/duckdb_jdbc). Please see the [installation page](../installation?environment=java) for details.
 
 ## Basic API Usage
+
 Scala uses DuckDB's JDBC API implements the main parts of the standard Java Database Connectivity (JDBC) API, version 4.0. Describing JDBC is beyond the scope of this page, see the [official documentation](https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html) for details. Below we focus on the DuckDB-specific parts. 
 
 
 ### Startup & Shutdown
+
 In Scala, database connections are created through the standard `java.sql.DriverManager` class.  The driver should auto-register in the DriverManager, if that does not work for some reason, you can enforce registration like so:
 
 ```java
@@ -23,11 +25,11 @@ To create a DuckDB connection, call `DriverManager` with the `jdbc:duckdb:` JDBC
 val conn = DriverManager.getConnection("jdbc:duckdb:");
 ```
 
-When using the `jdbc:duckdb:`  URL alone, an **in-memory database** is created. Note that for an in-memory database no data is persisted to disk (i.e. all data is lost when you exit the Java program). If you would like to access or create a persistent database, append its file name after the path. For example, if your database is stored in `/tmp/my_database`, use the JDBC URL `jdbc:duckdb:/tmp/my_database` to create a connection to it. 
+When using the `jdbc:duckdb:`  URL alone, an **in-memory database** is created. Note that for an in-memory database no data is persisted to disk (i.e., all data is lost when you exit the Java program). If you would like to access or create a persistent database, append its file name after the path. For example, if your database is stored in `/tmp/my_database`, use the JDBC URL `jdbc:duckdb:/tmp/my_database` to create a connection to it. 
 
 It is possible to open a DuckDB database file in **read-only** mode. This is for example useful if multiple Java processes want to read the same database file at the same time. To open an existing database file in read-only mode, set the connection property `duckdb.read_only` like so:
 
-```scala 
+```scala
 val ro_prop = new Properties();
 ro_prop.setProperty("duckdb.read_only", "true");
 val conn_ro = DriverManager.getConnection("jdbc:duckdb:/tmp/my_database", ro_prop);
@@ -40,12 +42,13 @@ val conn2 = ((DuckDBConnection) conn).duplicate();
 ```
 
 ### Querying
-DuckDB supports the standard JDBC methods to send queries and retreive result sets. First a `Statement` object has to be created from the `Connection`, this object can then be used to send queries using `execute` and `executeQuery`. `execute()` is meant for queries where no results are expected like `CREATE TABLE` or `UPDATE` etc. and `executeQuery()` is meant to be used for queries that produce results (e.g. `SELECT`). Below two examples. See also the JDBC [`Statement`](https://docs.oracle.com/javase/7/docs/api/java/sql/Statement.html) and [`ResultSet`](https://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html) documentations.
+
+DuckDB supports the standard JDBC methods to send queries and retrieve result sets. First a `Statement` object has to be created from the `Connection`, this object can then be used to send queries using `execute` and `executeQuery`. `execute()` is meant for queries where no results are expected like `CREATE TABLE` or `UPDATE` etc. and `executeQuery()` is meant to be used for queries that produce results (e.g., `SELECT`). Below two examples. See also the JDBC [`Statement`](https://docs.oracle.com/javase/7/docs/api/java/sql/Statement.html) and [`ResultSet`](https://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html) documentations.
 
 ```scala
 // create a table
 val stmt = conn.createStatement();
-stmt.execute("CREATE TABLE items (item VARCHAR, value DECIMAL(10,2), count INTEGER)");
+stmt.execute("CREATE TABLE items (item VARCHAR, value DECIMAL(10, 2), count INTEGER)");
 // insert two items into the table
 stmt.execute("INSERT INTO items VALUES ('jeans', 20.0, 1), ('hammer', 42.2, 2)");
 ```
@@ -53,8 +56,8 @@ stmt.execute("INSERT INTO items VALUES ('jeans', 20.0, 1), ('hammer', 42.2, 2)")
 ```scala
 val rs = stmt.executeQuery("SELECT * FROM items");
 while (rs.next()) {
-	System.out.println(rs.getString(1));
-	System.out.println(rs.getInt(3));
+    System.out.println(rs.getString(1));
+    System.out.println(rs.getInt(3));
 }
 rs.close()
 // jeans

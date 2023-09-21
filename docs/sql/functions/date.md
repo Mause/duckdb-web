@@ -1,16 +1,15 @@
 ---
 layout: docu
 title: Date Functions
-selected: Documentation/Functions/Date Functions
-expanded: Functions
 ---
 This section describes functions and operators for examining and manipulating date values.
 
 ## Date Operators
+
 The table below shows the available mathematical operators for `DATE` types.
 
 | Operator | Description | Example | Result |
-|:---|:---|:---|:---|
+|:-|:--|:---|:--|
 | `+` | addition of days (integers) | `DATE '1992-03-22' + 5` | 1992-03-27 |
 | `+` | addition of an `INTERVAL` | `DATE '1992-03-22' + INTERVAL 5 DAY` | 1992-03-27 |
 | `+` | addition of a variable `INTERVAL` | `SELECT DATE '1992-03-22' + INTERVAL 1 DAY * d.days FROM (VALUES (5), (11)) AS d(days)` |1992-03-27 1992-04-02 |
@@ -21,11 +20,12 @@ The table below shows the available mathematical operators for `DATE` types.
 Adding to or subtracting from [infinite values](../../sql/data_types/date#special-values) produces the same infinite value.
 
 ## Date Functions
+
 The table below shows the available functions for `DATE` types.
 Dates can also be manipulated with the [timestamp functions](../../sql/functions/timestamp) through type promotion.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:--|:--|:---|:-|
 | `current_date` | Current date (at start of current transaction) | `current_date` | `2022-10-08` |
 | `date_diff(`*`part`*`, `*`startdate`*`, `*`enddate`*`)` | The number of [partition](../../sql/functions/datepart) boundaries between the dates | `date_diff('month', DATE '1992-09-15', DATE '1992-11-14')` | `2` |
 | `datediff(`*`part`*`, `*`startdate`*`, `*`enddate`*`)` | Alias of date_diff. The number of [partition](../../sql/functions/datepart) boundaries between the dates | `datediff('month', DATE '1992-09-15', DATE '1992-11-14')` | `2` |
@@ -49,7 +49,8 @@ Dates can also be manipulated with the [timestamp functions](../../sql/functions
 | `time_bucket(`*`bucket_width`*`, `*`date`*`[, `*`offset`*`])` | Truncate `date` by the specified interval `bucket_width`. Buckets are offset by `offset` interval. | `time_bucket(INTERVAL '2 months', DATE '1992-04-20', INTERVAL '1 month')` | `1992-04-01` |
 | `today()` | Current date (start of current transaction) | `today()` | `2022-10-08` |
 
-There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart).
+There are also dedicated extraction functions to get the [subfields](../../sql/functions/datepart#part-functions).
+A few examples include extracting the day from a date, or the day of the week from a date. 
 
 Functions applied to infinite dates will either return the same infinite dates
 (e.g, `greatest`) or `NULL` (e.g., `date_part`) depending on what "makes sense".

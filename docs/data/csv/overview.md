@@ -5,7 +5,7 @@ redirect_from:
   - /docs/data/csv
 ---
 
-### Examples
+## Examples
 
 ```sql
 -- read a CSV file from disk, auto-infer options
@@ -13,33 +13,39 @@ SELECT * FROM 'flights.csv';
 -- read_csv with custom options
 SELECT * FROM read_csv('flights.csv', delim='|', header=True, columns={'FlightDate': 'DATE', 'UniqueCarrier': 'VARCHAR', 'OriginCityName': 'VARCHAR', 'DestCityName': 'VARCHAR'});
 -- read a CSV from stdin, auto-infer options
-cat data/csv/issue2471.csv | duckdb -c "select * from read_csv_auto('/dev/stdin')"
+cat data/csv/issue2471.csv | duckdb -c "SELECT * from read_csv_auto('/dev/stdin')"
 
 -- read a CSV file into a table
 CREATE TABLE ontime(FlightDate DATE, UniqueCarrier VARCHAR, OriginCityName VARCHAR, DestCityName VARCHAR);
 COPY ontime FROM 'flights.csv' (AUTO_DETECT TRUE);
 -- alternatively, create a table without specifying the schema manually
 CREATE TABLE ontime AS SELECT * FROM 'flights.csv';
+-- we can use the FROM-first syntax to omit 'SELECT *'
+CREATE TABLE ontime AS FROM 'flights.csv';
 
 -- write the result of a query to a CSV file
 COPY (SELECT * FROM ontime) TO 'flights.csv' WITH (HEADER 1, DELIMITER '|');
+-- we can use the FROM-first syntax to omit 'SELECT *'
+COPY (FROM ontime) TO 'flights.csv' WITH (HEADER 1, DELIMITER '|');
 ```
 
-### CSV Loading
+## CSV Reader
+
 CSV loading is a very common, and yet surprisingly tricky, task. While CSVs seem simple on the surface, there are a lot of inconsistencies found within CSV files that can make loading them a challenge. CSV files come in many different varieties, are often corrupt, and do not have a schema. The CSV reader needs to cope with all of these different situations.
 
 The DuckDB CSV reader can automatically infer which configuration flags to use by analyzing the CSV file. This will work correctly in most situations, and should be the first option attempted. In rare situations where the CSV reader cannot figure out the correct configuration it is possible to manually configure the CSV reader to correctly parse the CSV file. See the [auto detection page](auto_detection) for more information.
 
+## Parameters
+
 Below are parameters that can be passed in to the CSV reader. 
 
-# Parameters
-
 | Name | Description | Type | Default |
-|:---|:---|:----|:----|
+|:--|:-----|:-|:-|
 | `all_varchar` | Option to skip type detection for CSV parsing and assume all columns to be of type VARCHAR. | bool | false |
 | `auto_detect` | Enables [auto detection of parameters](auto_detection) | bool | true |
-| `columns` | A struct that specifies the column names and column types contained within the CSV file (e.g. `{'col1': 'INTEGER', 'col2': 'VARCHAR'}`). | `struct` | `(empty)` |
-| `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g. `t.csv.gz` will use gzip, `t.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
+| `buffer_size` | The buffer size used by the CSV reader, specified in bytes. By default, it is set to 32MB or the size of the CSV file (if smaller). The buffer size must be at least as large as the longest line in the CSV file. Note: this is an advanced option that has a significant impact on performance and memory usage. | bigint | min(32000000, CSV file size) |
+| `columns` | A struct that specifies the column names and column types contained within the CSV file (e.g., `{'col1': 'INTEGER', 'col2': 'VARCHAR'}`). | `struct` | `(empty)` |
+| `compression` | The compression type for the file. By default this will be detected automatically from the file extension (e.g., `t.csv.gz` will use gzip, `t.csv` will use `none`). Options are `none`, `gzip`, `zstd`. | varchar | auto |
 | `dateformat` | Specifies the date format to use when parsing dates. See [Date Format](../../sql/functions/dateformat) | varchar | `(empty)` |
 | `decimal_separator` | The decimal separator of numbers | varchar | `.` |
 | `delim` or `sep` | Specifies the string that separates columns within each row (line) of the file. | varchar | `,` |
@@ -54,7 +60,7 @@ Below are parameters that can be passed in to the CSV reader.
 | `new_line` | Set the new line character(s) in the file. Options are `'\r'`,`'\n'`, or `'\r\n'`. | varchar | `(empty)` |
 | `normalize_names` | Boolean value that specifies whether or not column names should be normalized, removing any non-alphanumeric characters from them. | bool | false |
 | `nullstr` | Specifies the string that represents a NULL value. | varchar | `(empty)` |
-| `parallel` | Whether or not the experimental parallel CSV reader is used. | bool | false |
+| `parallel` | Whether or not the parallel CSV reader is used. | bool | true |
 | `quote` | Specifies the quoting string to be used when a data value is quoted. | varchar | `"` |
 | `sample_size` | The number of sample rows for [auto detection of parameters](auto_detection). | bigint | 20480 |
 | `skip` | The number of lines at the top of the file to skip. | bigint | 0 |
@@ -62,11 +68,8 @@ Below are parameters that can be passed in to the CSV reader.
 | `types` or `dtypes` | The column types as either a list (by position) or a struct (by name). [Example here](tips#override-the-types-of-specific-columns). | varchar[] or struct | `(empty)` |
 | `union_by_name` | Whether the columns of multiple schemas should be [unified by name](../multiple_files/combining_schemas), rather than by position. | bool | false |
 
-### Writing
+## read_csv_auto Function
 
-The contents of tables or the result of queries can be written directly to a CSV file using the `COPY` statement. See the [COPY documentation](../../sql/statements/copy#copy-to) for more information.
-
-# read_csv_auto function
 The `read_csv_auto` is the simplest method of loading CSV files: it automatically attempts to figure out the correct configuration of the CSV reader. It also automatically deduces types of columns. If the CSV file has a header, it will use the names found in that header to name the columns. Otherwise, the columns will be named `column0, column1, column2, ...`
 
 ```sql
@@ -74,7 +77,7 @@ SELECT * FROM read_csv_auto('flights.csv');
 ```
 
 |FlightDate|UniqueCarrier| OriginCityName  | DestCityName  |
-|---------:|------------:|----------------:|--------------:|
+|----------|-------------|-----------------|---------------|
 |1988-01-01|AA           |New York, NY     |Los Angeles, CA|
 |1988-01-02|AA           |New York, NY     |Los Angeles, CA|
 |1988-01-03|AA           |New York, NY     |Los Angeles, CA|
@@ -89,7 +92,7 @@ DESCRIBE ontime;
 ```
 
 |Field         |Type   |Null|Key |Default|Extra|
-|-------------:|------:|---:|---:|------:|----:|
+|--------------|-------|----|----|-------|-----|
 |FlightDate    |DATE   |YES |NULL|NULL   |NULL |
 |UniqueCarrier |VARCHAR|YES |NULL|NULL   |NULL |
 |OriginCityName|VARCHAR|YES |NULL|NULL   |NULL |
@@ -107,18 +110,18 @@ SELECT * FROM read_csv_auto('flights.csv', HEADER=TRUE);
 
 Multiple files can be read at once by providing a glob or a list of files. Refer to the [multiple files section](../multiple_files/overview) for more information.
 
+## Writing Using the COPY Statement
 
-## COPY Statement
-The `COPY` statement can be used to load data from a CSV file into a table. This statement has the same syntax as the `COPY` statement supported by PostgreSQL. For the `COPY` statement, we must first create a table with the correct schema to load the data into. We then specify the CSV file to load from plus any configuration options separately.
+The `COPY` statement can be used to load data from a CSV file into a table. This statement has the same syntax as the [`COPY` statement](../../sql/statements/copy#copy-to) supported by PostgreSQL. For the `COPY` statement, we must first create a table with the correct schema to load the data into. We then specify the CSV file to load from plus any configuration options separately.
 
 ```sql
 CREATE TABLE ontime(flightdate DATE, uniquecarrier VARCHAR, origincityname VARCHAR, destcityname VARCHAR);
-COPY ontime FROM 'flights.csv' ( DELIMITER '|', HEADER );
+COPY ontime FROM 'flights.csv' (DELIMITER '|', HEADER);
 SELECT * FROM ontime;
 ```
 
 |flightdate|uniquecarrier| origincityname  | destcityname  |
-|---------:|------------:|----------------:|--------------:|
+|----------|-------------|-----------------|---------------|
 |1988-01-01|AA           |New York, NY     |Los Angeles, CA|
 |1988-01-02|AA           |New York, NY     |Los Angeles, CA|
 |1988-01-03|AA           |New York, NY     |Los Angeles, CA|
@@ -127,8 +130,6 @@ If we want to use the automatic format detection, we can set `AUTO_DETECT` to `T
 
 ```sql
 CREATE TABLE ontime(flightdate DATE, uniquecarrier VARCHAR, origincityname VARCHAR, destcityname VARCHAR);
-COPY ontime FROM 'flights.csv' ( AUTO_DETECT TRUE );
+COPY ontime FROM 'flights.csv' (AUTO_DETECT TRUE);
 SELECT * FROM ontime;
 ```
-
-More on the copy statement can be found [here](/docs/sql/statements/copy.html).

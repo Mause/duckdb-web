@@ -1,10 +1,10 @@
 ---
 layout: docu
 title: CLI API
-selected: CLI
 ---
 ## Installation
-The DuckDB CLI (Command Line Interface) is a single, dependency free executable. It is precompiled for Windows, Mac, and Linux. Please see the [installation page](../installation/index) under the CLI tab, or download the version for your environment from the [DuckDB GitHub releases page](https://github.com/duckdb/duckdb/releases/) (in the "Assets" section).
+
+The DuckDB CLI (Command Line Interface) is a single, dependency free executable. It is precompiled for Windows, Mac, and Linux. Please see the [installation page](../installation) under the CLI tab, or download the version for your environment from the [DuckDB GitHub releases page](https://github.com/duckdb/duckdb/releases/) (in the "Assets" section).
 
 For pre-release versions, you may compile from source, or download the executable file that is produced from GitHub Actions:
 * [Linux](https://github.com/duckdb/duckdb/actions?query=workflow%3ALinuxRelease+is%3Asuccess+branch%3Amaster)
@@ -15,10 +15,23 @@ The DuckDB CLI is based on the SQLite command line shell, so CLI-client-specific
 
 
 ## Getting Started
-Once the CLI executable has been downloaded, unzip it and save it to any directory. Navigate to that directory in a terminal and enter the command `duckdb` to run the executable. If in a PowerShell or POSIX shell environment, use the command `./duckdb` instead. To see additional command line options to use when starting the CLI, use the command `duckdb --help`.
-By default, the CLI will open a temporary in-memory database. To open or create a persistent database, simply include a path as a command line argument like `duckdb path/to/my_database.duckdb`. This path can point to an existing database or to a file that does not yet exist and DuckDB will open or create a database at that location as needed. The file may have any arbitrary extension, but `.db` or `.duckdb` are two common choices. You will see a prompt like the below, with a D on the final line.
 
-```command
+Once the CLI executable has been downloaded, unzip it and save it to any directory. Navigate to that directory in a terminal and enter the command `duckdb` to run the executable. If in a PowerShell or POSIX shell environment, use the command `./duckdb` instead.
+
+The executable can be configured in many ways when started. Some common configurations include: 
+* `-csv`, to set the output mode to CSV
+* `-json` to set the output mode to JSON
+* `-readonly` to open the database in read-only mode
+
+To see additional command line options to use when starting the CLI, use the command `duckdb -help`.
+
+> DuckDB has a [tldr page](https://github.com/tldr-pages/tldr/blob/main/pages/common/duckdb.md). If you have [tldr](https://github.com/tldr-pages/tldr) installed, you can display it by running `tldr duckdb`.
+
+Frequently-used configurations can be stored in the file `~/.duckdbrc`. See the [Configuring the CLI](#configuring-the-cli) below for further information on these options.
+
+By default, the CLI will open a temporary in-memory database. To open or create a persistent database, simply include a path as a command line argument like `duckdb path/to/my_database.duckdb`. This path can point to an existing database or to a file that does not yet exist and DuckDB will open or create a database at that location as needed. The file may have any arbitrary extension, but `.db` or `.duckdb` are two common choices. You will see a prompt like the below, with a `D` on the final line.
+
+```text
 v0.3.4 662041e2b
 Enter ".help" for usage hints.
 Connected to a transient in-memory database.
@@ -48,12 +61,13 @@ D SELECT
 
 The CLI supports all of DuckDB's rich SQL syntax including `SELECT`, `CREATE`, and `ALTER` statements, etc.
 
-To exit the CLI, press Ctrl-D if your platform supports it. Otherwise press Ctrl-C. If using a persistent database, it will automatically checkpoint (save the latest edits to disk) and close. This will remove the .WAL file (the Write-Ahead-Log) and consolidate all of your data into the single file database.
+To exit the CLI, press `Ctrl`-`D` if your platform supports it. Otherwise press `Ctrl`-`C`. If using a persistent database, it will automatically checkpoint (save the latest edits to disk) and close. This will remove the .WAL file (the Write-Ahead-Log) and consolidate all of your data into the single file database.
 
 ## Special Commands (Dot Commands)
+
 In addition to SQL syntax, special dot commands may be entered that are specific to the CLI client. To use one of these commands, begin the line with a period (`.`) immediately followed by the name of the command you wish to execute. Additional arguments to the command are entered, space separated, after the command. If an argument must contain a space, either single or double quotes may be used to wrap that parameter. Dot commands must be entered on a single line, and no whitespace may occur before the period. No semicolon is required at the end of the line. To see available commands, use the `.help` command:
 
-```command
+```text
 D .help
 .bail on|off             Stop after hitting an error.  Default OFF
 .binary on|off           Turn binary output on or off.  Default OFF
@@ -109,10 +123,10 @@ Note that the above list of methods is extensive, and DuckDB supports only a sub
 
 As an example of passing an argument to a dot command, the `.help` text may be filtered by passing in a text string as the second argument.
 
-```command
+```text
 D .help sh
 ```
-```command
+```text
 .sha3sum ...             Compute a SHA3 hash of database content
 .shell CMD ARGS...       Run CMD ARGS... in a system shell
 .show                    Show the current values for various settings
@@ -120,11 +134,12 @@ D .help sh
 
 
 ## Syntax Highlighting
+
 By default the shell includes support for syntax highlighting. Syntax highlighting can be disabled using the `.highlight off` command.
 
 The colors of the syntax highlighting can also be configured using the following commands.
 
-```
+```text
 D .constant
 Error: Expected usage: .constant [red|green|yellow|blue|magenta|cyan|white|brightblack|brightred|brightgreen|brightyellow|brightblue|brightmagenta|brightcyan|brightwhite]
 D .keyword
@@ -136,6 +151,7 @@ Error: Expected usage: .constantcode [terminal_code]
 ```
 
 ## Auto-Complete
+
 The shell offers context-aware auto-complete of SQL queries. Auto-complete is triggered by pressing the tab character. The shell auto-completes four different groups: (1) keywords, (2) table names + table functions, (3) column names + scalar functions, and (4) file names. The shell looks at the position in the SQL statement to determine which of these auto-completions to trigger. For example:
 
 ```sql
@@ -154,6 +170,7 @@ SELECT student_id FROM 'data/ -> data/grades.csv
 ```
 
 ## Output Formats
+
 The `.mode` command may be used to change the appearance of the tables returned in the terminal output. In addition to customizing the appearance, these modes have additional benefits. This can be useful for presenting DuckDB output elsewhere by redirecting the terminal output to a file, for example (see "Writing Results to a File" section below). Using the `insert` mode will build a series of SQL statements that can be used to insert the data at a later point. The `markdown` mode is particularly useful for building documentation!
 
 |    mode    |                  description                 |
@@ -181,37 +198,43 @@ The `.mode` command may be used to change the appearance of the tables returned 
 D .mode markdown
 D SELECT 'quacking intensifies' AS incoming_ducks;
 ```
-```
+
+```text
 |    incoming_ducks    |
 |----------------------|
 | quacking intensifies |
 ```
 
 The output appearance can also be adjusted with the `.separator` command. If using an export mode that relies on a separator (`csv` or `tabs` for example), the separator will be reset when the mode is changed. For example, `.mode csv` will set the separator to a comma (`,`). Using `.separator "|"` will then convert the output to be pipe separated.
+
 ```sql
 D .mode csv
 D SELECT 1 AS col_1, 2 AS col_2
 > UNION ALL
 > SELECT 10 AS col1, 20 AS col_2;
 ```
-```
+
+```csv
 col_1,col_2
 1,2
 10,20
 ```
+
 ```sql
 D .separator "|"
 D SELECT 1 AS col_1, 2 AS col_2
 > UNION ALL
 > SELECT 10 AS col1, 20 AS col_2;
 ```
-```
+
+```csv
 col_1|col_2
 1|2
 10|20
 ```
 
 ## Prepared Statements
+
 The DuckDB CLI supports executing prepared statements in addition to normal `SELECT` statements. To create a prepared
 statement, use the `PREPARE` statement
 ```sql
@@ -223,16 +246,17 @@ D EXECUTE S1(42, 101);
 ```
 
 ## Querying the Database Schema
+
 All DuckDB clients support [querying the database schema with SQL](../sql/information_schema), but the CLI has additional dot commands that can make it easier to understand the contents of a database.
 The `.tables` command will return a list of tables in the database. It has an optional argument that will filter the results according to a [`LIKE` pattern](../sql/functions/patternmatching#like).
 
 ```sql
-D CREATE TABLE swimmers AS SELECT 'duck' as animal;
-D CREATE TABLE fliers AS SELECT 'duck' as animal;
-D CREATE TABLE walkers AS SELECT 'duck' as animal;
+D CREATE TABLE swimmers AS SELECT 'duck' AS animal;
+D CREATE TABLE fliers AS SELECT 'duck' AS animal;
+D CREATE TABLE walkers AS SELECT 'duck' AS animal;
 D .tables
 ```
-```command
+```text
 fliers    swimmers  walkers
 ```
 
@@ -240,37 +264,39 @@ For example, to filter to only tables that contain an "l", use the `LIKE` patter
 ```sql
 D .tables %l%
 ```
-```command
+```text
 fliers   walkers
 ```
 
 The `.schema` command will show all of the SQL statements used to define the schema of the database.
 
-```command
+```text
 D .schema
 ```
-```command
-CREATE TABLE fliers(animal VARCHAR);;
-CREATE TABLE swimmers(animal VARCHAR);;
-CREATE TABLE walkers(animal VARCHAR);;
+
+```sql
+CREATE TABLE fliers(animal VARCHAR);
+CREATE TABLE swimmers(animal VARCHAR);
+CREATE TABLE walkers(animal VARCHAR);
 ```
 
 ## Opening Database Files
+
 In addition to connecting to a database when opening the CLI, a new database connection can be made by using the `.open` command. If no additional parameters are supplied, a new in-memory database connection is created. This database will not be persisted when the CLI connection is closed.
 
-```command
+```text
 D .open
 ```
 
 The `.open` command optionally accepts several options, but the final parameter can be used to indicate a path to a persistent database (or where one should be created). The special string `:memory:` can also be used to open a temporary in-memory database.
 
-```command
+```text
 D .open persistent.duckdb
 ```
 
 One important option accepted by `.open` is the `--readonly` flag. This disallows any editing of the database. To open in read only mode, the database must already exist. This also means that a new in-memory database can't be opened in read only mode since in-memory databases are created upon connection.
 
-```command
+```text
 D .open --readonly preexisting.duckdb
 ```
 
@@ -284,11 +310,11 @@ D .mode markdown
 D .output my_results.md
 D SELECT 'taking flight' AS output_column;
 D .output
-D SELECT 'back to the terminal' as displayed_column;
+D SELECT 'back to the terminal' AS displayed_column;
 ```
 
 The file my_results.md will then contain:
-```command
+```text
 | output_column |
 |---------------|
 | taking flight |
@@ -296,11 +322,13 @@ The file my_results.md will then contain:
 
 The terminal will then display:
 
+```text
 |   displayed_column   |
 |----------------------|
 | back to the terminal |
+```
 
-A common output format is CSV, or comma separated values. DuckDB supports [SQL syntax to export data as CSV or Parquet](../sql/statements/copy#csv-export), but the CLI-specific commands may be used to write a CSV instead if desired.
+A common output format is CSV, or comma separated values. DuckDB supports [SQL syntax to export data as CSV or Parquet](../sql/statements/copy#copy-to), but the CLI-specific commands may be used to write a CSV instead if desired.
 
 ```sql
 D .mode csv
@@ -311,7 +339,8 @@ D SELECT 1 AS col_1, 2 AS col_2
 ```
 
 The file my_output_file.csv will then contain:
-```
+
+```csv
 col_1,col_2
 1,2
 10,20
@@ -329,6 +358,7 @@ The results then open in the default text file editor of the system, for example
 <img src="/images/cli_docs_output_to_text_editor.jpg" alt="cli_docs_output_to_text_editor" title="Output to text editor" style="width:293px;"/>
 
 ## Import Data from CSV
+
 DuckDB supports [SQL syntax to directly query or import CSV files](../data/csv), but the CLI-specific commands may be used to import a CSV instead if desired. The `.import` command takes two arguments and also supports several options. The first argument is the path to the csv file, and the second is the name of the DuckDB table to create. Since DuckDB requires stricter typing than SQLite (upon which the DuckDB CLI is based), the destination table must be created before using the `.import` command. To automatically detect the schema and create a table from a CSV, see the [`read_csv_auto` examples in the import docs](../data/csv).
 
 In this example, a CSV file is generated by changing to CSV mode and setting an output file location:
@@ -343,7 +373,7 @@ Now that the CSV has been written, a table can be created with the desired schem
 ```sql
 D .mode csv
 D .output
-D create table test_table (col_1 int, col_2 int);
+D CREATE TABLE test_table (col_1 INT, col_2 INT);
 D .import import_example.csv test_table --skip 1
 ```
 
@@ -352,8 +382,9 @@ Note that the `.import` command utilizes the current `.mode` and `.separator` se
 D .import import_example.csv test_table --skip 1 --csv
 ```
 
-## Reading SQL From a File
-The DuckDB CLI can read both SQL commands and dot commands from an external file intead of the terminal using the `.read` command. This allows for a number of commands to be run in sequence and allows command sequences to be saved and reused.
+## Reading SQL from a File
+
+The DuckDB CLI can read both SQL commands and dot commands from an external file instead of the terminal using the `.read` command. This allows for a number of commands to be run in sequence and allows command sequences to be saved and reused.
 
 The `.read` command requires only one argument: the path to the file containing the SQL and/or commands to execute. After running the commands in the file, control will revert back to the terminal. Output from the execution of that file is governed by the same `.output` and `.once` commands that have been discussed previously. This allows the output to be displayed back to the terminal, as in the first example below, or out to another file, as in the second example.
 
@@ -364,11 +395,12 @@ SELECT
 FROM generate_series(5);
 ```
 To execute it from the CLI, the `.read` command is used.
-```command
+```text
 D .read select_example.sql
 ```
 The output below is returned to the terminal by default (but can be adjusted using the `.output` or `.once` commands):
 
+```text
 | generate_series |
 |-----------------|
 | 0               |
@@ -377,7 +409,7 @@ The output below is returned to the terminal by default (but can be adjusted usi
 | 3               |
 | 4               |
 | 5               |
-
+```
 
 Multiple commands, including both SQL and dot commands, can also be run in a single `.read` command. In this example, the file `write_markdown_to_file.sql` is located in the same directory as duckdb.exe and contains the following commands:
 ```sql
@@ -389,12 +421,13 @@ FROM generate_series(5);
 ```
 
 To execute it from the CLI, the `.read` command is used as before.
-```command
+```text
 D .read write_markdown_to_file.sql
 ```
 
 In this case, no output is returned to the terminal. Instead, the file `series.md` is created (or replaced if it already existed) with the markdown-formatted results shown here:
-```
+
+```text
 | generate_series |
 |-----------------|
 | 0               |
@@ -419,17 +452,17 @@ Note that the duck head is built with unicode characters and does not always wor
 -- Duck head prompt
 .prompt '⚫◗ '
 -- Example SQL statement
-select 'Begin quacking!' as "Ready, Set, ..."
+SELECT 'Begin quacking!' AS "Ready, Set, ...";
 ```
 
-To invoke that file on intialization, use this command:
+To invoke that file on initialization, use this command:
 
-```
+```text
 $ ./duckdb -init select_example
+```
 
-```
 This outputs:
-```
+```text
 -- Loading resources from /home/<user>/.duckdbrc
 ┌─────────────────┐
 │ Ready, Set, ... │
@@ -444,12 +477,11 @@ Use ".open FILENAME" to reopen on a persistent database.
 ⚫◗
 ```
 
-
-
-## Non-interactive usage
+## Non-interactive Usage
 
 To read/process a file and exit immediately, pipe the file contents in to `duckdb`:
-```
+
+```text
 $ ./duckdb < select_example.sql
 | generate_series |
 |-----------------|
@@ -466,9 +498,10 @@ $
 To execute a command with SQL text passed in directly from the command line, call `duckdb` with two arguments: the database location (or `:memory:`), and a string with the SQL statement to execute.
 
 ```sql
-./duckdb :memory: "SELECT 42 as the_answer"
+./duckdb :memory: "SELECT 42 AS the_answer"
 ```
-```
+
+```text
 ┌────────────┐
 │ the_answer │
 │   int32    │
@@ -478,16 +511,17 @@ To execute a command with SQL text passed in directly from the command line, cal
 ```
 
 ## Loading Extensions
+
 The CLI does not use the SQLite shell's `.load` command. Instead, directly execute DuckDB's SQL `install` and `load` commands as you would other SQL statements. See the [Extension docs](../extensions/overview) for details.
 
-```command
-D install 'fts';
-D load 'fts';
+```text
+D INSTALL 'fts';
+D LOAD 'fts';
 ```
 
 <!-- SQL parameters do not appear to work -->
 
-## Reading from stdin and writing to stdout
+## Reading from stdin and Writing to stdout
 
 When in a Unix environment, it can be useful to pipe data between multiple commands. 
 DuckDB is able to read data from stdin as well as write to stdout using the file location of stdin (`/dev/stdin`) and stdout (`/dev/stdout`) within SQL commands, as pipes act very similarly to file handles.
@@ -502,7 +536,8 @@ First, read a file and pipe it to the duckdb cli executable. As arguments to the
 ```sql
 cat test.csv | ./duckdb :memory: "SELECT * FROM read_csv_auto('/dev/stdin')"
 ```
-```
+
+```text
 ┌───────┐
 │ woot  │
 │ int32 │
@@ -517,7 +552,8 @@ To write back to stdout, the copy command can be used with the `/dev/stdout` fil
 ```sql
 cat test.csv | ./duckdb :memory: "COPY (SELECT * FROM read_csv_auto('/dev/stdin')) TO '/dev/stdout' WITH (FORMAT 'csv', HEADER)"
 ```
-```
+
+```csv
 woot
 42
 43

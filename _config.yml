@@ -20,8 +20,9 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://duckdb.org" # the base hostname & protocol for your site, e.g. http://example.com
 # Set current Version of duckDB
-currentduckdbversion: 0.8.0
-currentjavaversion: 0.8.0
+currentduckdbversion: 0.8.1
+currentjavaversion: 0.8.1
+currentsnapshotversion: 0.8.2-dev
 nextjavaversion: 0.9.0  # for java snapshots
 livereload: true
 highlighter: rouge
@@ -37,17 +38,25 @@ plugins:
   - jekyll-seo-tag
   - jekyll-redirect-from
   - jekyll-sitemap
+  - jekyll-github-metadata
 excerpt_separator: <!--more-->
 
 twitter:
   username: DuckDB
   card: summary
+  
+github: 
+  source:
+    branch: main
+  repository_url: "https://github.com/duckdb/duckdb-web"
 
 defaults:
   - scope:
       path: ""
     values:
       image: /images/sharingduckdb.jpg
+
+repository: "duckdb/duckdb-web"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

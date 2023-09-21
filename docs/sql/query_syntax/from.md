@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: FROM & JOIN Clauses
-selected: Documentation/SQL/Query Syntax/From
-expanded: SQL
 railroad: query_syntax/from.js
 blurb: The FROM clause can contain a single table, a combination of multiple tables that are joined together, or another SELECT query inside a subquery node.
 ---
@@ -11,10 +9,12 @@ The `FROM` clause specifies the *source* of the data on which the remainder of t
 ### Examples
 
 ```sql
---  select all columns from the table called "table_name"
-FROM table_name;
 -- select all columns from the table called "table_name"
 SELECT * FROM table_name;
+-- select all columns from the table called "table_name" using the FROM-first syntax
+FROM table_name SELECT *;
+-- select all columns using the FROM-first syntax and omitting the SELECT clause
+FROM table_name;
 -- select all columns from the table called "table_name" in the schema "schema_name
 SELECT * FROM schema_name.table_name;
 -- select the column "i" from the table function "range", where the first column of the range function is renamed to "i"
@@ -23,13 +23,20 @@ SELECT t.i FROM range(100) AS t(i);
 SELECT * FROM 'test.csv';
 -- select all columns from a subquery
 SELECT * FROM (SELECT * FROM table_name);
+-- select the entire row of the table as a struct
+SELECT t FROM t;
+-- select the entire row of the subquery as a struct (i.e., a single column)
+SELECT t FROM (SELECT unnest(generate_series(41, 43)) AS x, 'hello' AS y) t;
 -- join two tables together
 SELECT * FROM table_name JOIN other_table ON (table_name.key = other_table.key);
 -- select a 10% sample from a table
 SELECT * FROM table_name TABLESAMPLE 10%;
 -- select a sample of 10 rows from a table
 SELECT * FROM table_name TABLESAMPLE 10 ROWS;
+-- use the FROM-first syntax with WHERE clause and aggregation
+FROM range(100) AS t(i) SELECT sum(t.i) WHERE i % 2 = 0;
 ```
+
 ### Joins
 
 Joins are a fundamental relational operation used to connect two tables or relations horizontally.
@@ -61,7 +68,7 @@ and it just returns all the possible pairs.
 
 ```sql
 -- return all pairs of rows
-SELECT a.*, b.* FROM a CROSS JOIN b
+SELECT a.*, b.* FROM a CROSS JOIN b;
 ```
 
 #### Conditional Joins
@@ -71,19 +78,45 @@ attributes from one side to attributes from the other side.
 The conditions can be explicitly specified using an `ON` clause
 with the join (clearer) or implied by the `WHERE` clause (old-fashioned).
 
+We use the `l_regions` and the `l_nations` tables from the TPC-H schema:
+
+```sql
+CREATE TABLE l_regions(r_regionkey INTEGER NOT NULL PRIMARY KEY,
+                       r_name      CHAR(25) NOT NULL,
+                       r_comment   VARCHAR(152));
+
+CREATE TABLE l_nations (n_nationkey INTEGER NOT NULL PRIMARY KEY,
+                        n_name      CHAR(25) NOT NULL,
+                        n_regionkey INTEGER NOT NULL,
+                        n_comment   VARCHAR(152),
+                        FOREIGN KEY (n_regionkey) REFERENCES l_regions(r_regionkey));
+```
+
 ```sql
 -- return the regions for the nations
 SELECT n.*, r.*
-FROM l_nations n, JOIN l_regions r ON (n_regionkey = r_regionkey)
+FROM l_nations n JOIN l_regions r ON (n_regionkey = r_regionkey);
 ```
 
 If the column names are the same and are required to be equal,
 then the simpler `USING` syntax can be used:
 
 ```sql
+CREATE TABLE l_regions(regionkey INTEGER NOT NULL PRIMARY KEY,
+                       name      CHAR(25) NOT NULL,
+                       comment   VARCHAR(152));
+
+CREATE TABLE l_nations (nationkey INTEGER NOT NULL PRIMARY KEY,
+                        name      CHAR(25) NOT NULL,
+                        regionkey INTEGER NOT NULL,
+                        comment   VARCHAR(152),
+                        FOREIGN KEY (regionkey) REFERENCES l_regions(regionkey));
+```
+
+```sql
 -- return the regions for the nations
 SELECT n.*, r.*
-FROM l_nations n, JOIN l_regions r USING (regionkey)
+FROM l_nations n JOIN l_regions r USING (regionkey);
 ```
 
 The expressions to not have to be equalities - any predicate can be used:
@@ -114,6 +147,64 @@ FROM cars ANTI JOIN safety_data
 ON cars.safety_report_id = safety_data.report_id;
 ```
 
+#### Lateral Joins
+
+The `LATERAL` keyword allows subqueries in the `FROM` clause to refer to previous subqueries. This feature is also known as a _lateral join_.
+
+```sql
+SELECT *
+FROM range(3) t(i), LATERAL (SELECT i + 1) t2(j);
+```
+```text
+┌───────┬───────┐
+│   i   │   j   │
+│ int64 │ int64 │
+├───────┼───────┤
+│     0 │     1 │
+│     1 │     2 │
+│     2 │     3 │
+└───────┴───────┘
+```
+
+Lateral joins are a generalization of correlated subqueries, as they can return multiple values per input value rather than only a single value.
+
+```sql
+SELECT *
+FROM generate_series(0, 1) t(i), LATERAL (SELECT i + 10 UNION ALL SELECT i + 100) t2(j);
+```
+```text
+┌───────┬───────┐
+│   i   │   j   │
+│ int64 │ int64 │
+├───────┼───────┤
+│     0 │    10 │
+│     1 │    11 │
+│     0 │   100 │
+│     1 │   101 │
+└───────┴───────┘
+```
+
+It may be helpful to think about `LATERAL` as a loop where we iterate through the rows of the first subquery and use it as input to the second (`LATERAL`) subquery.
+In the examples above, we iterate through table `t` and refer to its column `i` from the definition of table `t2`. The rows of `t2` form column `j` in the result.
+
+It is possible to refer to multiple attributes from the `LATERAL` subquery. Using the table from the first example:
+
+```sql
+CREATE TABLE t1 AS SELECT * FROM range(3) t(i), LATERAL (SELECT i + 1) t2(j);
+SELECT * FROM t1, LATERAL (SELECT i + j) t2(k);
+```
+```text
+┌───────┬───────┬───────┐
+│   i   │   j   │   k   │
+│ int64 │ int64 │ int64 │
+├───────┼───────┼───────┤
+│     0 │     1 │     1 │
+│     1 │     2 │     3 │
+│     2 │     3 │     5 │
+└───────┴───────┴───────┘
+```
+
+> DuckDB detects when `LATERAL` joins should be used, making the use of the `LATERAL` keyword optional.
 
 #### Positional Joins
 
@@ -135,7 +226,7 @@ Connecting them using this ordering is called a _positional join_:
 ```sql
 -- treat two data frames as a single table
 SELECT df1.*, df2.*
-FROM df1 POSITIONAL JOIN df2
+FROM df1 POSITIONAL JOIN df2;
 ```
 
 Positional joins are always `FULL OUTER` joins.
@@ -150,11 +241,12 @@ This is called an _as-of join_:
 -- attach prices to stock trades
 SELECT t.*, p.price
 FROM trades t ASOF JOIN prices p 
-  ON t.symbol = p.symbol AND t.when >= p.when
+  ON t.symbol = p.symbol AND t.when >= p.when;
 ```
 
-The `ASOF` join requires at least one inequality condition on the ordering field,
-and the left table must be side that is greater in that inequality.
+The `ASOF` join requires at least one inequality condition on the ordering field.
+The inequality can be any inequality condition (`>=`, `>`, `<=`, `<`)
+on any data type, but the most common form is `>=` on a temporal type.
 Any other conditions must be equalities (or `NOT DISTINCT`).
 This means that the left/right order of the tables is significant.
 
@@ -166,15 +258,16 @@ It can be specified as an `OUTER` join to find unpaired rows
 -- attach prices or NULLs to stock trades
 SELECT *
 FROM trades t ASOF LEFT JOIN prices p 
-  ON t.symbol = p.symbol AND t.when >= p.when
+  ON t.symbol = p.symbol AND t.when >= p.when;
 ```
 
 `ASOF` joins can also specify join conditions on matching column names with the `USING` syntax,
-but the *last* attribute in the list must be the inequality:
+but the *last* attribute in the list must be the inequality, 
+which will be greater than or equal to (`>=`):
 
 ```sql
 SELECT *
-FROM trades t ASOF JOIN prices p USING (symbol, when)
+FROM trades t ASOF JOIN prices p USING (symbol, when);
 -- Returns symbol, trades.when, price (but NOT prices.when)
 ```
 
@@ -185,8 +278,9 @@ To get the `prices` times in the example, you will need to list the columns expl
 
 ```sql
 SELECT t.symbol, t.when AS trade_when, p.when AS price_when, price
-FROM trades t ASOF LEFT JOIN prices p USING (symbol, when)
+FROM trades t ASOF LEFT JOIN prices p USING (symbol, when);
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>

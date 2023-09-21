@@ -1,15 +1,12 @@
 ---
 layout: docu
-title: Export To Pandas
-selected: Export To Pandas
+title: Export to Pandas
 ---
-
-# How to export data to a Pandas DataFrame
 
 The result of a query can be converted to a Pandas DataFrame using the `df()` function.
 
 
-```py
+```python
 import duckdb
 
 # read the result of an arbitrary SQL query to a Pandas DataFrame

@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Create Macro
-selected: Documentation/SQL/Create Macro
-expanded: SQL
 railroad: statements/createmacro.js
 ---
 The `CREATE MACRO` statement can create a scalar or table macro (function) in the catalog. 
@@ -13,6 +11,7 @@ For a table macro, the syntax is similar to a scalar macro except `AS` is replac
 If a `MACRO` is temporary, it is only usable within the same database connection and is deleted when the connection is closed.
 
 ### Examples
+
 ```sql
 -- create a macro that adds two expressions (a and b)
 CREATE MACRO add(a, b) AS a + b;
@@ -32,18 +31,19 @@ CREATE MACRO arr_append(l, e) AS list_concat(l, list_value(e));
 
 -- TABLE MACROS
 -- create a table macro without parameters
-CREATE MACRO static_table() AS TABLE SELECT 'Hello' as column1, 'World' as column2;
+CREATE MACRO static_table() AS TABLE SELECT 'Hello' AS column1, 'World' AS column2;
 -- create a table macro with parameters (that can be of any type)
-CREATE MACRO dynamic_table(col1_value,col2_value) AS TABLE SELECT col1_value as column1, col2_value as column2;
+CREATE MACRO dynamic_table(col1_value, col2_value) AS TABLE SELECT col1_value AS column1, col2_value AS column2;
 -- create a table macro that returns multiple rows. 
 -- It will be replaced if it already exists, and it is temporary (will be automatically deleted when the connection ends)
-CREATE OR REPLACE TEMP MACRO dynamic_table(col1_value,col2_value) AS TABLE 
-    SELECT col1_value as column1, col2_value as column2 
+CREATE OR REPLACE TEMP MACRO dynamic_table(col1_value, col2_value) AS TABLE 
+    SELECT col1_value AS column1, col2_value AS column2 
     UNION ALL 
-    SELECT 'Hello' as col1_value, 456 as col2_value;
+    SELECT 'Hello' AS col1_value, 456 AS col2_value;
 ```
 
 ### Syntax
+
 <div id="rrdiagram"></div>
 
 
@@ -52,7 +52,7 @@ Macros allow you to create shortcuts for combinations of expressions.
 -- failure! cannot find column "b"
 CREATE MACRO add(a) AS a + b;
 -- this works
-CREATE MACRO add(a,b) AS a + b;
+CREATE MACRO add(a, b) AS a + b;
 -- error! cannot bind +(VARCHAR, INTEGER)
 SELECT add('hello', 3);
 -- success!
@@ -60,7 +60,8 @@ SELECT add(1, 2);
 -- 3
 ```
 
-Macro's can have default parameters.
+Macro's can have default parameters.  Unlike some languages, default parameters must be named
+when the macro is invoked.
 ```sql
 -- b is a default parameter
 CREATE MACRO add_default(a, b := 5) AS a + b;
@@ -69,7 +70,7 @@ SELECT add_default(37);
 -- error! add_default only has one positional parameter
 SELECT add_default(40, 2);
 -- success! default parameters are used by assigning them like so
-SELECT add_default(40, b=2);
+SELECT add_default(40, b:=2);
 -- error! default parameters must come after positional parameters
 SELECT add_default(b=2, 40);
 -- the order of default parameters does not matter
@@ -79,7 +80,7 @@ SELECT triple_add(40, c := 1, b := 1);
 -- 42
 ```
 
-When macro's are used, they are expanded (i.e. replaced with the original expression), and the parameters within the expanded expression are replaced with the supplied arguments. Step by step:
+When macro's are used, they are expanded (i.e., replaced with the original expression), and the parameters within the expanded expression are replaced with the supplied arguments. Step by step:
 ```sql
 -- the 'add' macro we defined above is used in a query
 SELECT add(40, 2);

@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Map
-selected: Documentation/Data Types/Map
-expanded: Nested
 ---
 
 ## Map Data Type
@@ -16,20 +14,23 @@ In contrast, `STRUCT`s must have string keys, but each key may have a value of a
 To construct a `MAP`, use the bracket syntax preceded by the `MAP` keyword.
 
 ### Creating Maps
+
 ```sql
 -- A map with varchar keys and integer values. This returns {key1=1, key2=5}
-select map { 'key1': 1, 'key2': 5 };
+SELECT map { 'key1': 1, 'key2': 5 };
 -- Alternatively use the map_from_entries function. This returns {key1=1, key2=5}
-select map_from_entries([(key1, 1), (key2, 5)]);
+SELECT map_from_entries([(key1, 1), (key2, 5)]);
 -- A map with integer keys and numeric values. This returns {1=42.001, 5=-32.100} 
-select map { 1: 42.001, 5: -32.1 };
+SELECT map { 1: 42.001, 5: -32.1 };
 -- Keys and/or values can also be nested types.
 -- This returns {[a, b]=[1.1, 2.2], [c, d]=[3.3, 4.4]}
-select map { ['a', 'b']: [1.1, 2.2], ['c', 'd']: [3.3, 4.4] };
+SELECT map { ['a', 'b']: [1.1, 2.2], ['c', 'd']: [3.3, 4.4] };
 -- Create a table with a map column that has integer keys and double values
 CREATE TABLE map_table (map_col MAP(INT, DOUBLE));
 ```
+
 ### Retrieving from Maps
+
 `MAP`s use bracket notation for retrieving values. Selecting from a `MAP` returns a `LIST` rather than an individual value, with an empty `LIST` meaning that the key was not found. 
 ```sql
 -- Use bracket notation to retrieve a list containing the value at a key's location. This returns [42]
@@ -49,7 +50,7 @@ SELECT element_at(map { 'key1': 5, 'key2': 43 }, 'key1');
 
 Nested types can be compared using all the [comparison operators](../expressions/comparison_operators).
 These comparisons can be used in [logical expressions](../expressions/logical_operators)
-for both `WHERE` and `HAVING` clauses, as well as for creating [Boolean values](./boolean).
+for both `WHERE` and `HAVING` clauses, as well as for creating [Boolean values](boolean).
 
 The ordering is defined positionally in the same way that words can be ordered in a dictionary.
 `NULL` values compare greater than all other values and are considered equal to each other.
@@ -60,4 +61,5 @@ Comparing nested value _members_ , however, uses the internal nested value rules
 and a `NULL` nested value member will compare above a non-`NULL` nested value member.
 
 ## Functions
+
 See [Nested Functions](../../sql/functions/nested).

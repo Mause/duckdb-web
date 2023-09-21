@@ -43,6 +43,10 @@
           ]
         },
         {
+          "page": "Internals Overview",
+          "url": "/internals/overview"
+        },
+        {
           "page": "Storage Versions & Format",
           "url": "/internals/storage"
         },
@@ -53,6 +57,14 @@
         {
           "page": "Profiling",
           "url": "/dev/profiling"
+        },
+        {
+          "page": "Release Dates",
+          "url": "/dev/release-dates"
+        },
+        {
+          "page": "Building",
+          "url": "/dev/building"
         }
       ]
     },

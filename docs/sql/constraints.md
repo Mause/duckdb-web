@@ -1,14 +1,13 @@
 ---
 layout: docu
 title: Constraints
-selected: Documentation/SQL/Constraints
-expanded: SQL
 railroad: statements/constraints.js
 ---
 
-In SQL, constraints can be specified for tables. Constraints enforce certain properties over data that is inserted into a table. Constraints can be specified along with the schema of the table as part of the [create table statement](statements/create_table). In certain cases, constraints can also be added to a table using the [alter table statement](statements/alter_table), but this is not currently supported for all constraints.
+In SQL, constraints can be specified for tables. Constraints enforce certain properties over data that is inserted into a table. Constraints can be specified along with the schema of the table as part of the [`CREATE TABLE` statement](statements/create_table). In certain cases, constraints can also be added to a table using the [`ALTER TABLE` statement](statements/alter_table), but this is not currently supported for all constraints.
 
 ### Syntax
+
 <div id="rrdiagram"></div>
 
 #### Check
@@ -33,7 +32,7 @@ INSERT INTO students VALUES (NULL);
 
 #### Primary Key/Unique
 
-Primary key or unique constraints define a column, or set of columns, that are a unique identifier for a row in the table. The constraint enforces that the specified columns are *unique* within a table, i.e. that at most one row contains the given values for the set of columns.
+Primary key or unique constraints define a column, or set of columns, that are a unique identifier for a row in the table. The constraint enforces that the specified columns are *unique* within a table, i.e., that at most one row contains the given values for the set of columns.
 
 ```sql
 CREATE TABLE students(id INTEGER PRIMARY KEY, name VARCHAR);

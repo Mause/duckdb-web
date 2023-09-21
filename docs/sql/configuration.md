@@ -1,13 +1,13 @@
 ---
 layout: docu
 title: Configuration
-selected: Documentation/Configuration
 ---
 DuckDB has a number of configuration options that can be used to change the behavior of the system.  
 The configuration options can be set using either the `SET` statement or the `PRAGMA` statement.
 They can also be reset to their original values using the `RESET` statement.
 
 ### Examples
+
 ```sql
 -- set the memory limit of the system to 10GB
 SET memory_limit='10GB';
@@ -38,21 +38,26 @@ Below is a list of all available settings.
 | Calendar                                 | The current calendar                                                                                                                                    | VARCHAR    | System (locale) calendar |
 | TimeZone                                 | The current time zone                                                                                                                                   | VARCHAR    | System (locale) timezone |
 | access_mode                              | Access mode of the database (**AUTOMATIC**, **READ_ONLY** or **READ_WRITE**)                                                                            | VARCHAR    | AUTOMATIC                |
+| allocator_flush_threshold                | Peak allocation threshold at which to flush the allocator after completing a task.                                                                      | VARCHAR    | 134.2MB                  |
 | allow_unsigned_extensions                | Allow to load extensions with invalid or missing signatures                                                                                             | BOOLEAN    | FALSE                    |
+| arrow_large_buffer_size                  | If arrow buffers for strings, blobs, uuids and bits should be exported using large buffers                                                              | BOOLEAN    | FALSE                    |
+| autoinstall_extension_repository         | Overrides the custom endpoint for extension installation on autoloading                                                                                 | VARCHAR    |                          |
+| autoinstall_known_extensions             | Whether known extensions are allowed to be automatically installed when a query depends on them                                                         | BOOLEAN    | TRUE                     |
+| autoload_known_extensions                | Whether known extensions are allowed to be automatically loaded when a query depends on them                                                            | BOOLEAN    | TRUE                     |
 | binary_as_string                         | In Parquet files, interpret binary data as a string.                                                                                                    | BOOLEAN    |                          |
-| checkpoint_threshold, wal_autocheckpoint | The WAL size threshold at which to automatically trigger a checkpoint (e.g. 1GB)                                                                        | VARCHAR    | 16.7MB                   |
+| checkpoint_threshold, wal_autocheckpoint | The WAL size threshold at which to automatically trigger a checkpoint (e.g., 1GB)                                                                       | VARCHAR    | 16.7MB                   |
 | custom_extension_repository              | Overrides the custom endpoint for remote extension installation                                                                                         | VARCHAR    |                          |
 | default_collation                        | The collation setting used when none is specified                                                                                                       | VARCHAR    |                          |
 | default_null_order, null_order           | Null ordering used when none is specified (**NULLS_FIRST** or **NULLS_LAST**)                                                                           | VARCHAR    | NULLS_LAST               |
 | default_order                            | The order type used when none is specified (**ASC** or **DESC**)                                                                                        | VARCHAR    | ASC                      |
-| enable_external_access                   | Allow the database to access external state (through e.g. loading/installing modules, COPY TO/FROM, CSV readers, pandas replacement scans, etc)         | BOOLEAN    | TRUE                     |
+| disabled_filesystems                     | Disable specific file systems preventing access (e.g., LocalFileSystem)                                                                                 | VARCHAR    |                          |
+| enable_external_access                   | Allow the database to access external state (through e.g., loading/installing modules, COPY TO/FROM, CSV readers, pandas replacement scans, etc)        | BOOLEAN    | TRUE                     |
 | enable_fsst_vectors                      | Allow scans on FSST compressed segments to emit compressed vectors to utilize late decompression                                                        | BOOLEAN    | FALSE                    |
 | enable_http_metadata_cache               | Whether or not the global http metadata is used to cache HTTP metadata                                                                                  | BOOLEAN    | FALSE                    |
-| enable_object_cache                      | Whether or not object cache is used to cache e.g. Parquet metadata                                                                                      | BOOLEAN    | FALSE                    |
+| enable_object_cache                      | Whether or not object cache is used to cache e.g., Parquet metadata                                                                                     | BOOLEAN    | FALSE                    |
 | enable_profiling                         | Enables profiling, and sets the output format (**JSON**, **QUERY_TREE**, **QUERY_TREE_OPTIMIZER**)                                                      | VARCHAR    | NULL                     |
 | enable_progress_bar                      | Enables the progress bar, printing progress to the terminal for long queries                                                                            | BOOLEAN    | FALSE                    |
 | enable_progress_bar_print                | Controls the printing of the progress bar, when 'enable_progress_bar' is true                                                                           | BOOLEAN    | TRUE                     |
-| experimental_parallel_csv                | Whether or not to use the experimental parallel CSV reader                                                                                              | BOOLEAN    | NULL                     |
 | explain_output                           | Output of EXPLAIN statements (**ALL**, **OPTIMIZED_ONLY**, **PHYSICAL_ONLY**)                                                                           | VARCHAR    | PHYSICAL_ONLY            |
 | extension_directory                      | Set the directory to store extensions in                                                                                                                | VARCHAR    |                          |
 | external_threads                         | The number of external threads that work on DuckDB tasks.                                                                                               | BIGINT     | 0                        |
@@ -68,11 +73,13 @@ Below is a list of all available settings.
 | lock_configuration                       | Whether or not the configuration can be altered                                                                                                         | BOOLEAN    | FALSE                    |
 | log_query_path                           | Specifies the path to which queries should be logged (default: empty string, queries are not logged)                                                    | VARCHAR    | NULL                     |
 | max_expression_depth                     | The maximum expression depth limit in the parser. WARNING: increasing this setting and using very deep expressions might lead to stack overflow errors. | UBIGINT    | 1000                     |
-| max_memory, memory_limit                 | The maximum memory of the system (e.g. 1GB)                                                                                                             | VARCHAR    | 75% of RAM               |
-| ordered_aggregate_threshold              | the number of rows to accumulate before sorting, used for tuning                                                                                        | UBIGINT    | 262144                   |
+| max_memory, memory_limit                 | The maximum memory of the system (e.g., 1GB)                                                                                                            | VARCHAR    | 75% of RAM               |
+| ordered_aggregate_threshold              | The number of rows to accumulate before sorting, used for tuning                                                                                        | UBIGINT    | 262144                   |
 | password                                 | The password to use. Ignored for legacy compatibility.                                                                                                  | VARCHAR    | NULL                     |
 | perfect_ht_threshold                     | Threshold in bytes for when to use a perfect hash table (default: 12)                                                                                   | BIGINT     | 12                       |
-| pivot_limit                              | The maximum numer of pivot columns in a pivot statement (default: 100000)                                                                               | BIGINT     | 100000                   |
+| pivot_filter_threshold                   | The threshold to switch from using filtered aggregates to LIST with a dedicated pivot operator                                                          | BIGINT     | 10                       |
+| pivot_limit                              | The maximum number of pivot columns in a pivot statement (default: 100000)                                                                              | BIGINT     | 100000                   |
+| prefer_range_joins                       | Force use of range joins with mixed predicates                                                                                                          | BOOLEAN    | FALSE                    |
 | preserve_identifier_case                 | Whether or not to preserve the identifier case, instead of always lowercasing all non-quoted identifiers                                                | BOOLEAN    | TRUE                     |
 | preserve_insertion_order                 | Whether or not to preserve insertion order. If set to false the system is allowed to re-order any results that do not contain ORDER BY clauses.         | BOOLEAN    | TRUE                     |
 | profile_output, profiling_output         | The file to which profile output should be saved, or empty to print to the terminal                                                                     | VARCHAR    |                          |

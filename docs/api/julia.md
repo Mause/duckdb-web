@@ -1,14 +1,11 @@
 ---
 layout: docu
 title: Julia Package
-selected: Client APIs
 ---
-
-# DuckDB Julia Package
 
 The DuckDB Julia package provides a high-performance front-end for DuckDB. Much like SQLite, DuckDB runs in-process within the Julia client, and provides a DBInterface front-end.
 
-The package also supports multi-threaded execution. It uses Julia threads/tasks for this purpose. If you wish to run queries in parallel, you must launch Julia with multi-threading support (by e.g. setting the `JULIA_NUM_THREADS` environment variable).  
+The package also supports multi-threaded execution. It uses Julia threads/tasks for this purpose. If you wish to run queries in parallel, you must launch Julia with multi-threading support (by e.g., setting the `JULIA_NUM_THREADS` environment variable).  
 
 
 ## Installation
@@ -38,6 +35,7 @@ print(results)
 ```
 
 ## Scanning DataFrames
+
 The DuckDB Julia package also provides support for querying Julia DataFrames. Note that the DataFrames are directly read by DuckDB - they are not inserted or copied into the database itself.
 
 If you wish to load data from a DataFrame into a DuckDB table you can run a `CREATE TABLE AS` or `INSERT INTO` query.
@@ -61,4 +59,5 @@ print(results)
 ```
 
 ## Original Julia Connector
+
 Credits to kimmolinna for the [original DuckDB Julia connector](https://github.com/kimmolinna/DuckDB.jl).

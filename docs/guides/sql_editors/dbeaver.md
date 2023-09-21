@@ -1,23 +1,20 @@
 ---
 layout: docu
 title: DBeaver SQL IDE
-selected: DBeaver SQL IDE
 ---
-
-# How to set up DBeaver SQL IDE for DuckDB
 
 [DBeaver](https://dbeaver.io/) is a powerful and popular desktop sql editor and integrated development environment (IDE). It has both an open source and enterprise version. It is useful for visually inspecting the available tables in DuckDB and for quickly building complex queries. DuckDB's [JDBC connector](https://search.maven.org/artifact/org.duckdb/duckdb_jdbc) allows DBeaver to query DuckDB files, and by extension, any other files that DuckDB can access ([like parquet files](../../guides/import/query_parquet)).  
 
 1. Install DBeaver using the download links and instructions found at their [download page](https://dbeaver.io/download/).  
 
-2. Open DBeaver and create a new connection. Either click on the "New Database Connector" button or go to Database > New Database Connection in the menu bar.  
+2. Open DBeaver and create a new connection. Either click on the "New Database Connection" button or go to Database > New Database Connection in the menu bar.  
 <img src="/images/guides/DBeaver_new_database_connection.png" alt="DBeaver New Database Connection" title="DBeaver New Database Connection"/>
 <img src="/images/guides/DBeaver_new_database_connection_menu.png" alt="DBeaver New Database Connection Menu" title="DBeaver New Database Connection Menu"/>
 
 3. Search for DuckDB, select it, and click Next.  
 <img src="/images/guides/DBeaver_select_database_driver.png" alt="DBeaver Select Database Driver" title="DBeaver Select Database Driver"/>
 
-4. Enter the path or browse to the DuckDB database file you wish to query. To use an in-memory DuckDB (useful primarily if just interested in querying parquet files, or for testing) enter ":memory:" as the path.  
+4. Enter the path or browse to the DuckDB database file you wish to query. To use an in-memory DuckDB (useful primarily if just interested in querying parquet files, or for testing) enter `:memory:` as the path.  
 <img src="/images/guides/DBeaver_connection_settings_path.png" alt="DBeaver Set Path" title="DBeaver Set Path"/>
 
 5. Click "Test Connection". This will then prompt you to install the DuckDB JDBC driver. If you are not prompted, see alternative driver installation instructions below.  
@@ -38,6 +35,7 @@ selected: DBeaver SQL IDE
 
 
 ## Alternative Driver Installation
+
 1. If not prompted to install the DuckDB driver when testing your connection, return to the "Connect to a database" dialog and click "Edit Driver Settings".  
 <img src="/images/guides/DBeaver_edit_driver_settings.png" alt="DBeaver Edit Driver Settings" title="DBeaver Edit Driver Settings"/>
 

@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: NULL Values
-selected: Documentation/Data Types/NULL Values
-expanded: Data Types
 blurb: The NULL value represents a missing value.
 ---
 
@@ -47,6 +45,14 @@ SELECT COALESCE(10, 20);
 -- 10
 SELECT COALESCE(NULL, NULL);
 -- NULL
+```
+
+`IFNULL` is a two-argument version of `COALESCE`
+```sql
+SELECT IFNULL(NULL, 'default_string');
+-- default_string
+SELECT IFNULL(1, 'default_string');
+-- 1
 ```
 
 ## NULL and Conjunctions

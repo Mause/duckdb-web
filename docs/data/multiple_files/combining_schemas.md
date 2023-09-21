@@ -3,13 +3,15 @@ layout: docu
 title: Combining Schemas
 ---
 
+<!-- markdownlint-disable MD036 -->
+
 ### Examples
 
 ```sql
 -- read a set of CSV files combining columns by position
-SELECT * FROM read_csv_auto('flights*.csv')
+SELECT * FROM read_csv_auto('flights*.csv');
 -- read a set of CSV files combining columns by name 
-SELECT * FROM read_csv_auto('flights*.csv', union_by_name=True)
+SELECT * FROM read_csv_auto('flights*.csv', union_by_name=True);
 ```
 
 ### Combining Schemas
@@ -25,14 +27,16 @@ Below is an example of how both methods work.
 By default, DuckDB unifies the columns of these different files **by position**. This means that the first column in each file is combined together, as well as the second column in each file, etc. For example, consider the following two files:
 
 **flights1.csv**
-```
+
+```csv
 FlightDate|UniqueCarrier|OriginCityName|DestCityName
 1988-01-01|AA|New York, NY|Los Angeles, CA
 1988-01-02|AA|New York, NY|Los Angeles, CA
 ```
 
 **flights2.csv**
-```
+
+```csv
 FlightDate|UniqueCarrier|OriginCityName|DestCityName
 1988-01-03|AA|New York, NY|Los Angeles, CA
 ```
@@ -52,14 +56,16 @@ This is equivalent to the SQL construct [`UNION ALL`](../../sql/query_syntax/set
 If you are processing multiple files that have different schemas, perhaps because columns have been added or renamed, it might be desirable to unify the columns of different files **by name** instead. This can be done by providing the `union_by_name` option. For example, consider the following two files, where `flights2.csv` has an extra column (`UniqueCarrier`):
 
 **flights1.csv**
-```
+
+```csv
 FlightDate|OriginCityName|DestCityName
 1988-01-01|New York, NY|Los Angeles, CA
 1988-01-02|New York, NY|Los Angeles, CA
 ```
 
 **flights2.csv**
-```
+
+```csv
 FlightDate|UniqueCarrier|OriginCityName|DestCityName
 1988-01-03|AA|New York, NY|Los Angeles, CA
 ```
@@ -67,7 +73,7 @@ FlightDate|UniqueCarrier|OriginCityName|DestCityName
 Reading these when unifying column names **by position** results in an error - as the two files have a different number of columns. When specifying the `union_by_name` option, the columns are correctly unified, and any missing values are set to `NULL`. 
 
 ```sql
-SELECT * FROM read_csv_auto(['flights1.csv', 'flights2.csv'], union_by_name=True)
+SELECT * FROM read_csv_auto(['flights1.csv', 'flights2.csv'], union_by_name=True);
 ```
 
 | FlightDate | OriginCityName |  DestCityName   | UniqueCarrier |

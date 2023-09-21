@@ -1,8 +1,6 @@
 ---
 layout: docu
 title: Text Types
-selected: Documentation/Data Types/Text
-expanded: Data Types
 blurb: In DuckDB, strings can be stored in the VARCHAR field.
 ---
 In DuckDB, strings can be stored in the `VARCHAR` field.
@@ -19,11 +17,12 @@ If you wish to restrict the number of characters in a `VARCHAR` column for data 
 
 ```sql
 CREATE TABLE strings(
-	val VARCHAR CHECK(LENGTH(val) <= 10) -- val has a maximum length of 10 characters
+    val VARCHAR CHECK(LENGTH(val) <= 10) -- val has a maximum length of 10 characters
 );
 ```
 
 The `VARCHAR` field allows storage of unicode characters. Internally, the data is encoded as UTF-8.
 
 ## Functions
+
 See [Character Functions](../../sql/functions/char) and [Pattern Matching](../../sql/functions/patternmatching).

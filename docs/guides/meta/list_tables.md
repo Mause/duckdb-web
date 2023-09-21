@@ -1,10 +1,7 @@
 ---
 layout: docu
 title: List Tables
-selected: List Tables
 ---
-
-# How to list all tables
 
 The `SHOW TABLES` command can be used to obtain a list of all tables within the selected schema.
 
@@ -45,5 +42,5 @@ DESCRIBE tbl;
 
 The SQL-standard [`information_schema`](../../sql/information_schema) views are also defined. 
 
-DuckDB also defines `sqlite_master`, and many [Postgres system catalog tables](https://www.postgresql.org/docs/14/catalogs.html) for compatibility with SQLite and Postgres respectively.
+DuckDB also defines `sqlite_master`, and many [PostgreSQL system catalog tables](https://www.postgresql.org/docs/14/catalogs.html) for compatibility with SQLite and PostgreSQL respectively.
 

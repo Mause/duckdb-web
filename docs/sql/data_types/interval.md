@@ -1,12 +1,10 @@
 ---
 layout: docu
 title: Interval Type
-selected: Documentation/Data Types/Interval
-expanded: Data Types
 blurb: An interval specifies a period of time measured in units of a specific date part like years, days, seconds, or others.
 ---
 
-Intervals represent a period of time. This period can be measured in a specific unit or combination of units, for example years, days, or seconds. Intervals are generally used to *modify* timestamps or dates by either adding or substracting them.
+Intervals represent a period of time. This period can be measured in a specific unit or combination of units, for example years, days, or seconds. Intervals are generally used to *modify* timestamps or dates by either adding or subtracting them.
 
 
 | Name | Description |
@@ -28,12 +26,12 @@ SELECT INTERVAL (i) YEAR FROM range(1, 5) t(i);
 -- construct an interval with mixed units
 SELECT INTERVAL '1 month 1 day';
 
--- WARNING: If a decimal value is specified, it will be automatically truncated to an integer
+-- WARNING: If a decimal value is specified, it will be automatically rounded to an integer
 -- To use more precise values, simply use a more granular date part 
 -- (In this example use 18 MONTHS instead of 1.5 YEARS)
 -- The statement below is equivalent to to_years(CAST(1.5 AS INTEGER))
--- 1 year
-SELECT INTERVAL '1.5' YEARS; --WARNING! This returns 1 year!
+-- 2 years
+SELECT INTERVAL '1.5' YEARS; --WARNING! This returns 2 years!
 ```
 
 ## Details
@@ -73,6 +71,7 @@ SELECT datediff('month', TIMESTAMP '2000-01-01 11:00:00', TIMESTAMP '2000-02-01 
 ```
 
 ## Functions
+
 See the [Date Part Functions docs](../../sql/functions/datepart) for a list of available
 date parts for use with an `INTERVAL`.
 

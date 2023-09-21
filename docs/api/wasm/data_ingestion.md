@@ -1,7 +1,6 @@
 ---
 layout: docu
 title: Data Ingestion
-selected: Client APIs
 ---
 
 DuckDB-Wasm has multiple ways to import data, depending on the format of the data.
@@ -10,13 +9,13 @@ There are two steps to import data into DuckDB.
 
 First, the data file is imported into a local file system using register functions ([registerEmptyFileBuffer](https://shell.duckdb.org/docs/classes/index.AsyncDuckDB.html#registerEmptyFileBuffer), [registerFileBuffer](https://shell.duckdb.org/docs/classes/index.AsyncDuckDB.html#registerFileBuffer), [registerFileHandle](https://shell.duckdb.org/docs/classes/index.AsyncDuckDB.html#registerFileHandle), [registerFileText](https://shell.duckdb.org/docs/classes/index.AsyncDuckDB.html#registerFileText), [registerFileURL](https://shell.duckdb.org/docs/classes/index.AsyncDuckDB.html#registerFileURL)).
 
-Then, the data file is imported into DuckDB using insert functions ([insertArrowFromIPCStream](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertArrowFromIPCStream), [insertArrowTable](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertArrowTable), [insertCSVFromPath](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertCSVFromPath), [insertJSONFromPath](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertJSONFromPath)) or directly using FROM SQL query (using extensions like parquet or [HTTPFS](../../extensions/httpfs)).
+Then, the data file is imported into DuckDB using insert functions ([insertArrowFromIPCStream](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertArrowFromIPCStream), [insertArrowTable](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertArrowTable), [insertCSVFromPath](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertCSVFromPath), [insertJSONFromPath](https://shell.duckdb.org/docs/classes/index.AsyncDuckDBConnection.html#insertJSONFromPath)) or directly using FROM SQL query (using extensions like parquet or [httpfs](../../extensions/httpfs)).
 
 [Insert statements](../../data/insert) can also be used to import data.
 
 ## Data Import
 
-Open & Close connection
+### Open & Close connection
 
 ```ts
 // Create a new connection
@@ -29,7 +28,7 @@ await c.close();
 
 ```
 
-Apache Arrow
+### Apache Arrow
 
 ```ts
 // Data can be inserted from an existing arrow.Table
@@ -55,7 +54,7 @@ while (true) {
 await Promise.all(streamInserts);
 ```
 
-CSV
+### CSV
 
 ```ts
 // ..., from CSV files
@@ -76,7 +75,7 @@ await db.insertCSVFromPath('data.csv', {
 });
 ```
 
-JSON
+### JSON
 
 ```ts
 // ..., from JSON documents in row-major format
@@ -107,7 +106,7 @@ await db.registerFileBuffer('file.json', new Uint8Array(await streamResponse.arr
 await c.insertJSONFromPath('file.json', { name: 'JSONContent' });
 ```
 
-Parquet
+### Parquet
 
 ```ts
 // from Parquet files
@@ -130,7 +129,7 @@ await c.query(`INSERT INTO existing_table
     VALUES (1, "foo"), (2, "bar")`);
 ```
 
-HTTPFS
+### httpfs
 
 ```ts
 // ..., by specifying URLs in the SQL text
@@ -140,7 +139,7 @@ await c.query(`
 `);
 ```
 
-Insert statement
+### Insert statement
 
 ```ts
 // ..., or by executing raw insert statements

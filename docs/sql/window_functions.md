@@ -1,11 +1,11 @@
 ---
 layout: docu
 title: Window Functions
-selected: Documentation/Window Functions
 railroad: expressions/window.js
 ---
 
 ## Examples
+
 ```sql
 -- generate a "row_number" column containing incremental identifiers for each row
 SELECT row_number() OVER () FROM sales;
@@ -20,15 +20,17 @@ SELECT amount / SUM(amount) OVER (PARTITION BY region) FROM sales;
 ```
 
 ## Syntax
+
 <div id="rrdiagram"></div>
 
 Window functions can only be used in the `SELECT` clause. To share `OVER` specifications between functions, use the statement's `WINDOW` clause and use the `OVER window-name` syntax.
 
 ## General-Purpose Window Functions
+
 The table below shows the available general window functions.
 
 | Function | Return Type | Description | Example |
-|:---|:---|:---|:---|
+|:---|:-|:---|:--|
 | `row_number()` | `bigint` | The number of the current row within the partition, counting from 1. | `row_number()` |
 | `rank()` | `bigint` | The rank of the current row *with gaps*; same as `row_number` of its first peer. | `rank()` |
 | `dense_rank()` | `bigint` | The rank of the current row *without gaps*; this function counts peer groups. | `dense_rank()` |
@@ -45,6 +47,7 @@ The table below shows the available general window functions.
 | `last(expr any)` | same type as **expr** | Alias for `last_value`. | `last(column)` |
 
 ## Aggregate Window Functions
+
 All [aggregate functions](aggregates) can be used in a windowing context.
 
 ## Ignoring NULLs
@@ -52,7 +55,7 @@ All [aggregate functions](aggregates) can be used in a windowing context.
 The following functions support the `IGNORE NULLS` specification:
 
 | Function | Description | Example |
-|:---|:---|:---|
+|:---|:-|:---|:--|
 | `lag(expr any [, offset integer [, default any ]])` | Skips `NULL` values when counting. | `lag(column, 3 IGNORE NULLS)` |
 | `lead(expr any [, offset integer [, default any ]])` | Skips `NULL` values when counting. | `lead(column, 3 IGNORE NULLS)` |
 | `first_value(expr any)` | Skips leading `NULL`s | `first_value(column IGNORE NULLS)` |
@@ -125,9 +128,9 @@ The simplest window function is `ROW_NUMBER()`.
 This function just computes the 1-based row number within the partition using the query:
 
 ```sql
-SELECT "Plant", "Date", row_number() over (partition by "Plant" order by "Date") AS "Row"
+SELECT "Plant", "Date", row_number() OVER (PARTITION BY "Plant" ORDER  BY "Date") AS "Row"
 FROM "History"
-ORDER BY 1, 2
+ORDER BY 1, 2;
 ```
 
 The result will be
@@ -167,7 +170,7 @@ SELECT points,
     SUM(points) OVER (
         ROWS BETWEEN 1 PRECEDING
                  AND 1 FOLLOWING) we
-FROM results
+FROM results;
 ```
 This query computes the `SUM` of each point and the points on either side of it:
 
@@ -191,7 +194,7 @@ SELECT "Plant", "Date",
                   AND INTERVAL 3 DAYS FOLLOWING)
         AS "MWh 7-day Moving Average"
 FROM "Generation History"
-ORDER BY 1, 2
+ORDER BY 1, 2;
 ```
 
 This query partitions the data by `Plant` (to keep the different power plants' data separate),
@@ -229,7 +232,7 @@ WINDOW seven AS (
     ORDER BY "Date" ASC
     RANGE BETWEEN INTERVAL 3 DAYS PRECEDING
               AND INTERVAL 3 DAYS FOLLOWING)
-ORDER BY 1, 2
+ORDER BY 1, 2;
 ```
 
 The three window functions will also share the data layout, which will improve performance.
@@ -256,7 +259,7 @@ WINDOW
         ORDER BY "Date" ASC
         RANGE BETWEEN INTERVAL 1 DAYS PRECEDING
         AND INTERVAL 1 DAYS FOLLOWING)
-ORDER BY 1, 2
+ORDER BY 1, 2;
 ```
 
 The queries above do not use a number of clauses commonly found in select statements, like
@@ -281,5 +284,5 @@ WINDOW seven AS (
     ORDER BY "Date" ASC
     RANGE BETWEEN INTERVAL 3 DAYS PRECEDING
               AND INTERVAL 3 DAYS FOLLOWING)
-ORDER BY 1, 2
+ORDER BY 1, 2;
 ```

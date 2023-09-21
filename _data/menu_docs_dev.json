@@ -15,20 +15,6 @@
           "url": "index"
         },
         {
-          "page": "SQL Features",
-          "slug": "sql_features",
-          "subfolderitems": [
-            {
-              "page": "ASOF JOIN",
-              "url": "asof_join"
-            },
-            {
-              "page": "Full Text Search",
-              "url": "full_text_search"
-            }
-          ]
-        },
-        {
           "page": "Data Import & Export",
           "slug": "import",
           "subfolderitems": [
@@ -85,7 +71,7 @@
               "url": "query_sqlite"
             },
             {
-              "page": "Postgres Import",
+              "page": "PostgreSQL Import",
               "url": "query_postgres"
             }
           ]
@@ -137,11 +123,11 @@
               "url": "sql_on_pandas"
             },
             {
-              "page": "Import From Pandas",
+              "page": "Import from Pandas",
               "url": "import_pandas"
             },
             {
-              "page": "Export To Pandas",
+              "page": "Export to Pandas",
               "url": "export_pandas"
             },
             {
@@ -149,11 +135,11 @@
               "url": "sql_on_arrow"
             },
             {
-              "page": "Import From Arrow",
+              "page": "Import from Arrow",
               "url": "import_arrow"
             },
             {
-              "page": "Export To Arrow",
+              "page": "Export to Arrow",
               "url": "export_arrow"
             },
             {
@@ -169,10 +155,6 @@
               "url": "ibis"
             },
             {
-              "page": "DuckDB with Fugue",
-              "url": "fugue"
-            },
-            {
               "page": "DuckDB with Polars",
               "url": "polars"
             },
@@ -185,8 +167,22 @@
               "url": "datafusion"
             },
             {
-              "page": "DuckDB with fsspec filesystems",
+              "page": "DuckDB with fsspec Filesystems",
               "url": "filesystems"
+            }
+          ]
+        },
+        {
+          "page": "SQL Features",
+          "slug": "sql_features",
+          "subfolderitems": [
+            {
+              "page": "ASOF JOIN",
+              "url": "asof_join"
+            },
+            {
+              "page": "Full Text Search",
+              "url": "full_text_search"
             }
           ]
         },
@@ -197,14 +193,6 @@
             {
               "page": "DBeaver SQL IDE",
               "url": "dbeaver"
-            },
-            {
-              "page": "Harlequin SQL IDE",
-              "url": "harlequin"
-            },
-            {
-              "page": "Rill Data Developer",
-              "url": "rill"
             }
           ]
         },
@@ -217,8 +205,8 @@
               "url": "tableau"
             },
             {
-              "page": "Tad",
-              "url": "tad"
+              "page": "YouPlot",
+              "url": "youplot"
             }
           ]
         }
@@ -419,6 +407,10 @@
               ]
             },
             {
+              "page": "ADBC",
+              "url": "adbc"
+            },
+            {
               "page": "ODBC",
               "slug": "odbc",
               "subsubfolderitems": [
@@ -473,8 +465,16 @@
                   "url": "types"
                 },
                 {
+                  "page": "Expression API",
+                  "url": "expression"
+                },
+                {
                   "page": "API Reference",
                   "url": "reference"
+                },
+                {
+                  "page": "Known Python Issues",
+                  "url": "known_issues"
                 }
               ]
             },
@@ -523,7 +523,6 @@
         },
         {
           "page": "SQL",
-          "open": true,
           "slug": "sql",
           "subfolderitems": [
             {
@@ -541,6 +540,10 @@
                 {
                   "page": "Alter Table",
                   "url": "alter_table"
+                },
+                {
+                  "page": "Alter View",
+                  "url": "alter_view"
                 },
                 {
                   "page": "Attach/Detach",
@@ -577,6 +580,10 @@
                 {
                   "page": "Create View",
                   "url": "create_view"
+                },
+                {
+                  "page": "Create Type",
+                  "url": "create_type"
                 },
                 {
                   "page": "Delete",
@@ -755,6 +762,10 @@
                   "url": "timestamp"
                 },
                 {
+                  "page": "Time Zones",
+                  "url": "timezones"
+                },
+                {
                   "page":"Union",
                   "url": "union"
                 }
@@ -919,6 +930,14 @@
               "url": "overview"
             },
             {
+              "page": "Working with Extensions",
+              "url": "working_with_extensions"
+            },
+            {
+              "page": "AutoComplete",
+              "url": "autocomplete"
+            },
+            {
               "page": "Full Text Search",
               "url": "full_text_search"
             },
@@ -927,11 +946,15 @@
               "url": "httpfs"
             },
             {
+              "page": "Iceberg",
+              "url": "iceberg"
+            },
+            {
               "page": "JSON",
               "url": "json"
             },
             {
-              "page": "Postgres Scanner",
+              "page": "PostgreSQL Scanner",
               "url": "postgres_scanner"
             },
             {

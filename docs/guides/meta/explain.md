@@ -1,10 +1,7 @@
 ---
 layout: docu
 title: Explain
-selected: Explain
 ---
-
-# How to view the query plan of a query
 
 In order to view the query plan of a query, prepend `EXPLAIN` to a query.
 
@@ -20,7 +17,7 @@ SET explain_output='all';
 
 Below is an example of running `EXPLAIN` on `Q1` of the TPC-H benchmark.
 
-```
+```text
 ┌───────────────────────────┐
 │          ORDER_BY         │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │

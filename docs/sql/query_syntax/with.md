@@ -1,33 +1,35 @@
 ---
 layout: docu
 title: WITH Clause
-selected: Documentation/SQL/Query Syntax/With
-expanded: SQL
 railroad: query_syntax/with.js
 ---
+
 The `WITH` clause allows you to specify common table expressions (CTEs). Regular (non-recursive) common-table-expressions are essentially views that are limited in scope to a particular query. CTEs can reference each-other and can be nested.
 
-### Basic CTE examples
+## Basic CTE Examples
 
 ```sql
 -- create a CTE called "cte" and use it in the main query
 WITH cte AS (SELECT 42 AS x)
 SELECT * FROM cte;
 ```
-```
+
+```text
 ┌────┐
 │ x  │
 ├────┤
 │ 42 │
 └────┘
 ```
+
 ```sql
 -- create two CTEs, where the second CTE references the first CTE
 WITH cte AS (SELECT 42 AS i),
      cte2 AS (SELECT i*100 AS x FROM cte)
 SELECT * FROM cte2;
 ```
-```
+
+```text
 ┌──────┐
 │  x   │
 ├──────┤
@@ -35,13 +37,43 @@ SELECT * FROM cte2;
 └──────┘
 ```
 
-### Recursive CTE examples
+## Materialized CTEs
 
-#### Tree traversal
+By default, CTEs are inlined into the main query. Inlining can result in duplicate work, because the definition is copied for each reference. Take this query for example:
+
+```sql
+WITH t(x) AS (⟨Q_t⟩)
+SELECT * FROM t AS t1,
+              t AS t2,
+              t AS t3;
+```
+
+Inlining duplicates the definition of `t` for each reference which results in the following query:
+
+```sql
+SELECT * FROM (⟨Q_t⟩) AS t1(x),
+              (⟨Q_t⟩) AS t2(x),
+              (⟨Q_t⟩) AS t3(x);
+```
+
+If `⟨Q_t⟩` is expensive, materializing it with the `MATERIALIZED` keyword can improve performance. In this case, `⟨Q_t⟩` is evaluated only once.
+
+```sql
+WITH t(x) AS MATERIALIZED (⟨Q_t⟩)
+SELECT * FROM t AS t1,
+              t AS t2,
+              t AS t3;
+```
+
+## Recursive CTEs
+
+`WITH RECURSIVE` allows the definition of CTEs which can refer to themselves. Note that the query must be formulated in a way that ensures termination, otherwise, it may run into an infinite loop.
+
+### Tree Traversal
 
 `WITH RECURSIVE` can be used to traverse trees. For example, take a hierarchy of tags:
 
-![](with-recursive-tree-example.png)
+![](/images/examples/with-recursive-tree-example.png)
 
 ```sql
 CREATE TABLE tag(id int, name varchar, subclassof int);
@@ -73,7 +105,8 @@ SELECT path
 FROM tag_hierarchy
 WHERE source = 'Oasis';
 ```
-```
+
+```text
 ┌───────────────────────────┐
 │           path            │
 ├───────────────────────────┤
@@ -81,14 +114,14 @@ WHERE source = 'Oasis';
 └───────────────────────────┘
 ```
 
-#### Graph traversal
+### Graph Traversal
 
 The `WITH RECURSIVE` clause can be used to express graph traversal on arbitrary graphs. However, if the graph has cycles, the query must perform cycle detection to prevent infinite loops.
 One way to achieve this is to store the path of a traversal in a [list](../../sql/data_types/list) and, before extending the path with a new edge, check whether its endpoint has been visited before (see the example later).
 
 Take the following directed graph from the [LDBC Graphalytics benchmark](https://arxiv.org/pdf/2011.15028.pdf):
 
-![](with-recursive-graph-example.png)
+![](/images/examples/with-recursive-graph-example.png)
 
 ```sql
 CREATE TABLE edge(node1id int, node2id int);
@@ -96,9 +129,9 @@ INSERT INTO edge VALUES (1, 3), (1, 5), (2, 4), (2, 5), (2, 10), (3, 1), (3, 5),
   (3, 8), (3, 10), (5, 3), (5, 4), (5, 8), (6, 3), (6, 4), (7, 4), (8, 1), (9, 4);
 ```
 
-Note that the graph contains directed cycles, e.g. between nodes 1, 2, and 5.
+Note that the graph contains directed cycles, e.g., between nodes 1, 2, and 5.
 
-##### Enumerate all paths from a node
+#### Enumerate All Paths from a Node
 
 The following query returns **all paths** starting in node 1:
 
@@ -125,7 +158,8 @@ SELECT startNode, endNode, path
 FROM paths
 ORDER BY length(path), path;
 ```
-```
+
+```text
 ┌───────────┬─────────┬───────────────┐
 │ startNode │ endNode │     path      │
 ├───────────┼─────────┼───────────────┤
@@ -144,9 +178,9 @@ ORDER BY length(path), path;
 └───────────┴─────────┴───────────────┘
 ```
 
-Note that the result of this query is not restricted to shortest paths, e.g. for node 5, the results include paths `[1, 5]` and `[1, 3, 5]`.
+Note that the result of this query is not restricted to shortest paths, e.g., for node 5, the results include paths `[1, 5]` and `[1, 3, 5]`.
 
-##### Enumerate unweighted shortest paths from a node
+#### Enumerate Unweighted Shortest Paths from a Node
 
 In most cases, enumerating all paths is not practical or feasible. Instead, only the **(unweighted) shortest paths** are of interest. To find these, the second half of the `WITH RECURSIVE` query should be adjusted such that it only includes a node if it has not yet been visited. This is implemented by using a subquery that checks if any of the previous paths includes the node:
 
@@ -177,7 +211,7 @@ FROM paths
 ORDER BY length(path), path;
 ```
 
-```
+```text
 ┌───────────┬─────────┬────────────┐
 │ startNode │ endNode │    path    │
 ├───────────┼─────────┼────────────┤
@@ -190,7 +224,7 @@ ORDER BY length(path), path;
 └───────────┴─────────┴────────────┘
 ```
 
-##### Enumerate unweighted shortest paths between two nodes
+#### Enumerate Unweighted Shortest Paths between Two Nodes
 
 `WITH RECURSIVE` can also be used to find **all (unweighted) shortest paths between two nodes**. To ensure that the recursive query is stopped as soon as we reach the end node, we use a [window function](../../sql/window_functions) which checks whether the end node is among the newly added nodes.
 
@@ -225,7 +259,8 @@ FROM paths
 WHERE endNode = 8
 ORDER BY length(path), path;
 ```
-```
+
+```text
 ┌───────────┬─────────┬───────────┐
 │ startNode │ endNode │   path    │
 ├───────────┼─────────┼───────────┤
@@ -235,4 +270,5 @@ ORDER BY length(path), path;
 ```
 
 ## Common Table Expressions
+
 <div id="rrdiagram"></div>

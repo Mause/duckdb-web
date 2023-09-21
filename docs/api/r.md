@@ -1,17 +1,18 @@
 ---
 layout: docu
 title: R API
-selected: Client APIs
 ---
 ## Installation
+
 The DuckDB R API can be installed using `install.packages`. Please see the [installation page](../installation?environment=r) for details.
 
 ## Basic API Usage
+
 The standard DuckDB R API implements the [DBI interface](https://CRAN.R-project.org/package=DBI) for R. If you are not familiar with DBI yet, see [here for an introduction](https://solutions.rstudio.com/db/r-packages/DBI/).
 
 ### Startup & Shutdown
 
-To use DuckDB, you must first create a connection object that represents the database. The connection object takes as parameter the database file to read and write from. If the database file does not exist, it will be created (the file extension may be `.db`, `.duckdb`, or anything else). The special value `:memory:` (the default) can be used to create an **in-memory database**. Note that for an in-memory database no data is persisted to disk (i.e. all data is lost when you exit the R process). If you would like to connect to an existing database in read-only mode, set the `read_only` flag to `TRUE`. Read-only mode is required if multiple R processes want to access the same database file at the same time.
+To use DuckDB, you must first create a connection object that represents the database. The connection object takes as parameter the database file to read and write from. If the database file does not exist, it will be created (the file extension may be `.db`, `.duckdb`, or anything else). The special value `:memory:` (the default) can be used to create an **in-memory database**. Note that for an in-memory database no data is persisted to disk (i.e., all data is lost when you exit the R process). If you would like to connect to an existing database in read-only mode, set the `read_only` flag to `TRUE`. Read-only mode is required if multiple R processes want to access the same database file at the same time.
 
 ```R
 library("DBI")
@@ -25,11 +26,12 @@ con <- dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb", read_only = TRUE)
 Connections are closed implicitly when they go out of scope or if they are explicitly closed using `dbDisconnect()`. To shut down the database instance associated with the connection, use `dbDisconnect(con, shutdown=TRUE)`
 
 ### Querying
-DuckDB supports the standard DBI methods to send queries and retreive result sets. `dbExecute()` is meant for queries where no results are expected like `CREATE TABLE` or `UPDATE` etc. and `dbGetQuery()` is meant to be used for queries that produce results (e.g. `SELECT`). Below an example.
+
+DuckDB supports the standard DBI methods to send queries and retrieve result sets. `dbExecute()` is meant for queries where no results are expected like `CREATE TABLE` or `UPDATE` etc. and `dbGetQuery()` is meant to be used for queries that produce results (e.g., `SELECT`). Below an example.
 
 ```R
 # create a table
-dbExecute(con, "CREATE TABLE items(item VARCHAR, value DECIMAL(10,2), count INTEGER)")
+dbExecute(con, "CREATE TABLE items(item VARCHAR, value DECIMAL(10, 2), count INTEGER)")
 # insert two items into the table
 dbExecute(con, "INSERT INTO items VALUES ('jeans', 20.0, 1), ('hammer', 42.2, 2)")
 
@@ -64,6 +66,7 @@ print(res)
 > Do **not** use prepared statements to insert large amounts of data into DuckDB. See below for better options.
 
 ## Efficient Transfer
+
 To write a R data frame into DuckDB, use the standard DBI function `dbWriteTable()`. This creates a table in DuckDB and populates it with the data frame contents. For example:
 ```R
 dbWriteTable(con, "iris_table", iris)
@@ -87,6 +90,7 @@ print(res)
 Also refer to [the data import documentation](../data/overview) for more options of efficiently importing data.
 
 ## dbplyr 
+
 DuckDB also plays well with the [dbplyr](https://CRAN.R-project.org/package=dbplyr) / [dplyr](https://dplyr.tidyverse.org) packages for programmatic query construction from R. Here is an example:
 
 ```R
@@ -111,3 +115,16 @@ tbl(con, "mtcars.csv") |>
   summarise(across(disp:wt, .fns = mean)) |>
   collect()
 ```
+
+```R
+dbExecute(con, "COPY flights TO 'dataset' (FORMAT PARQUET, PARTITION_BY (year, month))")
+
+tbl(con, "read_parquet('dataset/**/*.parquet', hive_partitioning=1)") |>
+  filter(month == "3") |>
+  summarise(delay = mean(dep_time, na.rm = TRUE)) |>
+  collect()
+```
+
+## Repository
+
+The source code of the DuckDB R API is available on [GitHub](https://github.com/duckdb/duckdb-r).

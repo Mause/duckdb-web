@@ -1,12 +1,12 @@
 ---
 layout: docu
 title: CSV Import/Export
-selected: Documentation/CSV Import
 railroad: statements/copy.js
 ---
 `COPY` moves data between DuckDB tables and external Comma Separated Value (CSV) files.
 
-# CSV Import
+## CSV Import
+
 `COPY ... FROM` imports data into DuckDB from an external CSV file into an existing table. The data is appended to whatever data is in the table already. The amount of columns inside the file must match the amount of columns in the table `table_name`, and the contents of the columns must be convertible to the column types of the table. In case this is not possible, an error will be thrown.
 
 If a list of columns is specified, `COPY` will only copy the data in the specified columns from the file. If there are any columns in the table that are not in the column list, `COPY ... FROM` will insert the default values for those columns
@@ -15,34 +15,37 @@ If a list of columns is specified, `COPY` will only copy the data in the specifi
 -- Copy the contents of a comma-separated file 'test.csv' without a header into the table 'test'
 COPY test FROM 'test.csv';
 -- Copy the contents of a comma-separated file with a header into the 'category' table
-COPY category FROM 'categories.csv' ( HEADER );
+COPY category FROM 'categories.csv' (HEADER);
 -- Copy the contents of 'lineitem.tbl' into the 'lineitem' table, where the contents are delimited by a pipe character ('|')
-COPY lineitem FROM 'lineitem.tbl' ( DELIMITER '|' );
+COPY lineitem FROM 'lineitem.tbl' (DELIMITER '|');
 -- Read the contents of a comma-separated file 'names.csv' into the 'name' column of the 'category' table. Any other columns of this table are filled with their default value.
 COPY category(name) FROM 'names.csv';
 ```
 
-## Syntax
+### Syntax
+
 <div id="rrdiagram1"></div>
 
-# CSV Export
+## CSV Export
+
 `COPY ... TO` exports data from DuckDB to an external CSV file. It has mostly the same set of options as `COPY ... FROM`, however, in the case of `COPY ... TO` the options specify how the CSV file should be written to disk. Any CSV file created by `COPY ... TO` can be copied back into the database by using `COPY ... FROM` with the same set of options.
 
 The `COPY ... TO` function can be called specifying either a table name, or a query. When a table name is specified, the contents of the entire table will be written into the resulting CSV file. When a query is specified, the query is executed and the result of the query is written to the resulting file.
 
 ```sql
 -- Copy the contents of the 'lineitem' table to the file 'lineitem.tbl', where the columns are delimited by a pipe character ('|'), including a header line.
-COPY lineitem TO 'lineitem.tbl' ( DELIMITER '|', HEADER );
+COPY lineitem TO 'lineitem.tbl' (DELIMITER '|', HEADER);
 -- Copy the l_orderkey column of the 'lineitem' table to the file 'orderkey.tbl'
-COPY lineitem(l_orderkey) TO 'orderkey.tbl' ( DELIMITER '|' );
+COPY lineitem(l_orderkey) TO 'orderkey.tbl' (DELIMITER '|');
 -- Copy the result of a query to the file 'query.csv', including a header with column names
 COPY (SELECT 42 AS a, 'hello' AS b) TO 'query.csv' WITH (HEADER 1, DELIMITER ',');
 ```
 
-## Syntax
+### Syntax
+
 <div id="rrdiagram2"></div>
 
-# Parameters
+## Parameters
 
 | Name | Description |
 |:---|:---|
@@ -62,8 +65,6 @@ COPY (SELECT 42 AS a, 'hello' AS b) TO 'query.csv' WITH (HEADER 1, DELIMITER ','
 | `IGNORE_ERRORS` | If this option is used, all errors related to the data will be ignored and the problematic rows are skipped. |
 
   
-> ## Notes
-> 
 > It is recommended that the file name used in COPY always be specified as an absolute path.
 > 
 > The values in each record are separated by the `DELIMITER` string. If the value contains the `DELIMITER` string, the `QUOTE` string, the `NULL` string, a carriage return, or line feed character, then the whole value is prefixed and suffixed by the `QUOTE` string, and any occurrence within the value of a `QUOTE` string or the `ESCAPE` string is preceded by the `ESCAPE` string. You can also use `FORCE_QUOTE` to force quotes when outputting non-NULL values in specific columns.

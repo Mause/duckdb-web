@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
 	<link rel="stylesheet" href="{{ site.baseurl }}/css/docu.css">
 	<link rel="stylesheet" href="{{ site.baseurl }}/css/mobilestyles.css">
+	<link rel="stylesheet" href="{{ site.baseurl }}/css/copy_button.css">
 	{% if page.railroad and page.railroad != "" and page.railroad != nil %}
 	<link rel="stylesheet" href="{{ site.baseurl }}/css/railroad.css">
 	{% endif %}
@@ -37,7 +38,7 @@
 		<div class="headerline">
 			<div class="headercontent">
 				<div class="duckdbhome">
-					<a href="{{ site.url }}{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/DuckDB_Logo_dl.png" alt="DuckDB Logo for Download" class="downloadlogo"></a>
+					<a href="{{ site.url }}{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/logo-dl/DuckDB_Logo.png" alt="DuckDB Logo for Download" class="downloadlogo"></a>
 					<div id="duckdbanimation" style="width: 109px; margin-top: 2px;"></div>
 				</div>
 				<div class="landingmenu">
@@ -76,8 +77,12 @@
 		{% endif %}
 		<div class="wrap{% if page.title %} {{ page.title | downcase | remove: " " }}{% endif %}">
 			<div class="headlinebar">
-				<div>{{ page.title }}</div>
-
+				<div class="title">{{ page.title }}</div>
+				
+				{% if page.url contains '/docs/' %}
+				<div class="improvethispage"><a href="{% github_edit_link %}" title="Go to GitHub">Page Source</a></div>
+				{% endif %}
+				
 				{% if page.url contains '/docs/' %}
 				<div class="version">Version <span class="selectedversion" data-current="{{versionviewed}}">{{versionviewed}}</span></div>
 				<div class="versionsidebar">
@@ -121,30 +126,7 @@
 
 			</div>
 			<div id="main_content_wrap">
-
 				{% include anchor_headings.html html=content %}
-
-				{% if page.benchmark_group and page.benchmark_group != "" and page.benchmark_group != nil %}
-				{% if page.benchmark_group == "log" %}
-				<div id="log-data">
-				</div>
-				<script src="{{ site.baseurl }}/js/benchmarks/log.js"></script>
-				{% else %}
-				<div id="benchmark-header">
-				</div>
-				<div id="benchmark-table">
-				</div>
-
-				<script>
-				var benchmark_group = '{{ page.benchmark_group }}';
-				</script>
-				{% if page.benchmark_group == "individual_results" %}
-				<script src="{{ site.baseurl }}/js/benchmarks/render_individual.js"></script>
-				{% else %}
-				<script src="{{ site.baseurl }}/js/benchmarks/render_group_table.js"></script>
-				{% endif %}
-				{% endif %}
-				{% endif %}
 			</div>
 
 			<div class="searchoverlay">
@@ -165,13 +147,14 @@
 		</div>
 
 	</main>
-	
-	
+
+
 	<script src="{{ site.baseurl }}/js/minisearch.js"></script>
 	<script src="{{ site.baseurl }}/js/search.js"></script>
 
 	<script src="{{ site.baseurl }}/js/lottie.min.js"></script>
 	<script src="{{ site.baseurl }}/js/script.js"></script>
+	<script src="{{ site.baseurl }}/js/copy_button.js"></script>
 	{% if page.railroad and page.railroad != "" and page.railroad != nil %}
 	<script src="{{ site.baseurl }}/js/railroad.js"></script>
 	<script src="{{ site.baseurl }}/js/{{ page.railroad }}"></script>

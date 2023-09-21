@@ -1,14 +1,13 @@
 ---
 layout: docu
 title: Numeric Functions
-selected: Documentation/Functions/Numeric Functions
-expanded: Functions
 ---
 ## Numeric Operators
+
 The table below shows the available mathematical operators for numeric types.
 
 | Operator | Description | Example | Result |
-|:---|:---|:---|:---|
+|:-|:---|:-|:-|
 | `+` | addition | `2 + 3` | 5 |
 | `-` | subtraction | `2 - 3` | -1 |
 | `*` | multiplication | `2 * 3` | 6 |
@@ -32,15 +31,16 @@ The modulo, bitwise, and negation and factorial operators work only on integral 
 whereas the others are available for all numeric data types.
 
 ## Numeric Functions
+
 The table below shows the available mathematical functions.
 
 | Function | Description | Example | Result |
-|:---|:---|:---|:---|
+|:---|:---|:---|:--|
 | `abs(x)` | absolute value | `abs(-17.4)` | 17.4 |
 | `acos(x)` | computes the arccosine of x | `acos(0.5)` | 1.0471975511965976 |
 | `asin(x)` | computes the arcsine of x | `asin(0.5)` | 0.5235987755982989 |
 | `atan(x)` | computes the arctangent of x | `atan(0.5)` | 0.4636476090008061 |
-| `atan2(x, y)` | computes the arctangent (x, y) | `atan2(0.5, 0.5)` | 0.7853981633974483 |
+| `atan2(y, x)` | computes the arctangent (y, x) | `atan2(0.5, 0.5)` | 0.7853981633974483 |
 | `bit_count(x)` | returns the number of bits that are set | `bit_count(31)` | 5 |
 | `cbrt(x)` | returns the cube root of the number | `cbrt(8)` | 2 |
 | `ceil(x)` | rounds the number up | `ceil(17.4)` | 18 |
@@ -49,6 +49,7 @@ The table below shows the available mathematical functions.
 | `cot(x)` | computes the cotangent of x | `cot(0.5)` | 1.830487721712452 |
 | `degrees(x)` | converts radians to degrees | `degrees(pi())` | 180 |
 | `even(x)` | round to next even number by rounding away from zero. | `even(2.9)` | 4 |
+| `exp(x)` | computes `e ** x` | `exp(0.693)` | 2 |
 | `factorial(x)` | See `!` operator. Computes the product of the current integer and all integers below it | `factorial(4)` | 24 |
 | `floor(x)` | rounds the number down | `floor(17.4)` | 17 |
 | `gamma(x)` | interpolation of (x-1) factorial (so decimal inputs are allowed) | `gamma(5.5)` | 52.34277778455352 |
@@ -72,7 +73,7 @@ The table below shows the available mathematical functions.
 | `power(x, y)` | Alias of `pow`. computes x to the power of y | `power(2, 3)` | 8 |
 | `radians(x)` | converts degrees to radians | `radians(90)` | 1.5707963267948966 |
 | `random()` | returns a random number between 0 and 1 | `random()` | various |
-| `round(v numeric, s int)` | round to *s* decimal places | `round(42.4332, 2)` | 42.43 |
+| `round(v numeric, s int)` | round to *s* decimal places, values *s < 0* are allowed | `round(42.4332, 2)` | 42.43 |
 | `setseed(x)` | sets the seed to be used for the random function | `setseed(0.42)` | |
 | `sin(x)` | computes the sin of x | `sin(90)` | 0.8939966636005579 |
 | `sign(x)` | returns the sign of x as -1, 0 or 1 | `sign(-349)` | -1 |
