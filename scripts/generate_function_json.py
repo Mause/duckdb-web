@@ -40,8 +40,8 @@ def get_versions():
             )
         ]
     )
-    # can't find working binaries for versions older than v0.1.9
-    return versions[versions.index("v0.1.9") :]
+    # we don't provide docs for versions older than this
+    return versions[versions.index("v0.4.0") :]
 
 
 @lru_cache()
