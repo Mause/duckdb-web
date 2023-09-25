@@ -1,3 +1,4 @@
+import sys
 import ast
 import contextlib
 import os
@@ -14,6 +15,7 @@ from zipfile import ZipFile
 from os.path import exists
 from shutil import copyfileobj
 from tqdm import tqdm
+from typing import Set
 
 parser = ArgumentParser()
 parser.add_argument('--source', required=True)
