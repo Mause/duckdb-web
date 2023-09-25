@@ -43,6 +43,7 @@ from tqdm import tqdm
 
 # fill variable 'files' with the path to each .xml file that we created here
 
+
 def process_file(fpath):
     dict_list = []
     with open(fpath, 'r') as f:
@@ -55,6 +56,7 @@ def process_file(fpath):
                 row_dict[c.name] = ''.join(c.findAll(text=True, recursive=False)).trim()
             dict_list.append(row_dict)
     return dict_list
+
 
 # process documents (in parallel to speed things up)
 pool = multiprocessing.Pool(multiprocessing.cpu_count())
@@ -99,6 +101,7 @@ def after_tag(s, tag):
     m = re.findall(r'<' + tag + r'>([\s\S]*?)<.*>', s)
     return m[0].replace('\n', '').strip()
 
+
 topic_dict = {}
 with open('../../trec/topics', 'r') as f:
     bs_content = bs(f.read(), "lxml")
@@ -114,7 +117,8 @@ This gives us a dictionary that has query number as keys, and query strings as v
 We want to store the results in a specific format, so that they can be evaluated by [trec eval](https://github.com/usnistgov/trec_eval.git):
 ```python
 # create a prepared statement to make querying our document collection easier
-con.execute("""
+con.execute(
+    """
     PREPARE fts_query AS (
         WITH scored_docs AS (
             SELECT *, fts_main_documents.match_bm25(docno, ?) AS score FROM documents)
@@ -123,7 +127,8 @@ con.execute("""
         WHERE score IS NOT NULL
         ORDER BY score DESC
         LIMIT 1000)
-    """)
+    """
+)
 
 # enable parallelism
 con.execute('PRAGMA threads=32')
@@ -132,7 +137,16 @@ for query in topic_dict:
     q_str = topic_dict[query].replace('\'', ' ')
     con.execute("EXECUTE fts_query('" + q_str + "')")
     for i, row in enumerate(con.fetchall()):
-        results.append(query + " Q0 " + row[0].trim() + " " + str(i) + " " + str(row[1]) + " STANDARD")
+        results.append(
+            query
+            + " Q0 "
+            + row[0].trim()
+            + " "
+            + str(i)
+            + " "
+            + str(row[1])
+            + " STANDARD"
+        )
 con.close()
 
 with open('results', 'w+') as f:

@@ -10,7 +10,7 @@ The following example shows how one can use both DuckDB and Vaex DataFrame for a
 
 ## Installation
 
-```python
+```sh
 pip install duckdb
 pip install vaex
 ```
@@ -29,17 +29,18 @@ df = vaex.datasets.titanic()
 
 df['age'] = df.age.fillna(df.age.mean())
 df['fare'] = df.age.fillna(df.fare.mean())
-df['family_size'] = (df.sibsp + df.parch + 1)
+df['family_size'] = df.sibsp + df.parch + 1
 df['fare_per_family_member'] = df.fare / df.family_size
 df['name_title'] = df['name'].str.replace('.* ([A-Z][a-z]+)\..*', "\\1", regex=True)
 
-arrow_table  = df.to_arrow_table()
+arrow_table = df.to_arrow_table()
 ```
 
 Now we can directly query the Arrow Table using DuckDB, the output of which can be another Arrow Table, which can be used for subsequent DuckDB queries, or it can be converted to a Vaex DataFrame:
 
 ```python
-query_result_arrow_table = duckdb.query('''
+query_result_arrow_table = duckdb.query(
+    '''
 
     SELECT
 
@@ -54,7 +55,8 @@ query_result_arrow_table = duckdb.query('''
 
     GROUP BY pclass
     ORDER BY pclass
-''').arrow()
+'''
+).arrow()
 ```
 
 ## DuckDB to Vaex DataFrame

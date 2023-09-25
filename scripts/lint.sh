@@ -15,6 +15,7 @@ done
 npx markdownlint-cli docs/ dev/ _posts/ --config .markdownlint.jsonc --ignore docs/archive $fix || echo 'mdlit failed'
 
 black scripts --skip-string-normalization $check || echo 'black failed'
+find . -name '*.md' | grep -v node_modules | grep -v vendor | grep -v archive | xargs blacken-docs-jb -S || echo 'blacken-docs failed'
 
 if [[ ! -z $(which vale) ]]; then
     echo "Vale binary not found, please install it from https://vale.sh/docs/vale-cli/installation/"

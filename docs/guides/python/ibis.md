@@ -38,7 +38,7 @@ con.create_table(
 )
 ```
 
-```python
+```text
 # Output:
 DatabaseTable: penguins
   species           string
@@ -71,7 +71,7 @@ penguins = con.table("penguins")
 penguins
 ```
 
-```python
+```text
 # Output:
 DatabaseTable: penguins
   species           string
@@ -105,7 +105,7 @@ penguins.head().to_pandas()
 penguins.head()
 ```
 
-```python
+```text
 # Output:
 r0 := DatabaseTable: penguins
   species           string

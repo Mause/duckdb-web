@@ -74,9 +74,13 @@ con.load_extension("substrait")
 To generate a Substrait BLOB the `get_substrait(sql)` function must be called, from a connection, with a valid SQL select query.
 ```python
 con.execute(query='CREATE TABLE crossfit (exercise text, difficulty_level int)')
-con.execute(query="INSERT INTO crossfit VALUES ('Push Ups', 3), ('Pull Ups', 5) , ('Push Jerk', 7), ('Bar Muscle Up', 10)")
+con.execute(
+    query="INSERT INTO crossfit VALUES ('Push Ups', 3), ('Pull Ups', 5) , ('Push Jerk', 7), ('Bar Muscle Up', 10)"
+)
 
-proto_bytes = con.get_substrait(query="SELECT count(exercise) AS exercise FROM crossfit WHERE difficulty_level <= 5").fetchone()[0]
+proto_bytes = con.get_substrait(
+    query="SELECT count(exercise) AS exercise FROM crossfit WHERE difficulty_level <= 5"
+).fetchone()[0]
 ```
 
 
@@ -84,7 +88,9 @@ proto_bytes = con.get_substrait(query="SELECT count(exercise) AS exercise FROM c
 
 To generate a JSON representing the Substrait plan the `get_substrait_json(sql)` function, from a connection, must be called with a valid SQL select query.
 ```python
-json = con.get_substrait_json("SELECT count(exercise) AS exercise FROM crossfit WHERE difficulty_level <= 5").fetchone()[0]
+json = con.get_substrait_json(
+    "SELECT count(exercise) AS exercise FROM crossfit WHERE difficulty_level <= 5"
+).fetchone()[0]
 ```
 
 ### BLOB Consumption

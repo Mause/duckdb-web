@@ -12,8 +12,17 @@ The extension adds two `PRAGMA` statements to DuckDB: one to create, and one to 
 ### PRAGMA create_fts_index
 
 ```python
-create_fts_index(input_table, input_id, *input_values, stemmer='porter', stopwords='english',
-                 ignore='(\\.|[^a-z])+', strip_accents=1, lower=1, overwrite=0)
+create_fts_index(
+    input_table,
+    input_id,
+    *input_values,
+    stemmer='porter',
+    stopwords='english',
+    ignore='(\\.|[^a-z])+',
+    strip_accents=1,
+    lower=1,
+    overwrite=0
+)
 ```
 `PRAGMA` that creates a FTS index for the specified table.
 
@@ -46,7 +55,9 @@ Drops a FTS index for the specified table.
 ### match_bm25
 
 ```python
-match_bm25(input_id, query_string, fields := NULL, k := 1.2, b:= 0.75, conjunctive := 0)
+match_bm25(
+    input_id, query_string, fields := NULL, k := 1.2, b := 0.75, conjunctive := 0
+)
 ```
 When an index is built, this retrieval macro is created that can be used to search the index.
 

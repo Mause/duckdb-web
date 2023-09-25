@@ -9,6 +9,7 @@ CSV files can be read using the `read_csv` function, called either from within P
 
 ```python
 import duckdb
+
 # read from a file using fully auto-detected settings
 duckdb.read_csv('example.csv')
 # read multiple CSV files from a folder
@@ -33,6 +34,7 @@ Parquet files can be read using the `read_parquet` function, called either from 
 
 ```python
 import duckdb
+
 # read from a single Parquet file
 duckdb.read_parquet('example.parquet')
 # read multiple Parquet files from a folder
@@ -51,6 +53,7 @@ JSON files can be read using the `read_json` function, called either from within
 
 ```python
 import duckdb
+
 # read from a single JSON file
 duckdb.read_json('example.json')
 # read multiple JSON files from a folder
@@ -68,7 +71,10 @@ DuckDB is automatically able to query a Pandas DataFrame, Polars DataFrame, or A
 ```python
 import duckdb
 import pandas as pd
-test_df = pd.DataFrame.from_dict({"i":[1, 2, 3, 4], "j":["one", "two", "three", "four"]})
+
+test_df = pd.DataFrame.from_dict(
+    {"i": [1, 2, 3, 4], "j": ["one", "two", "three", "four"]}
+)
 duckdb.sql('SELECT * FROM test_df').fetchall()
 # [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]
 ```
@@ -79,8 +85,11 @@ If your Pandas DataFrame is stored in another location, here is an example of ma
 ```python
 import duckdb
 import pandas as pd
+
 my_dictionary = {}
-my_dictionary['test_df'] = pd.DataFrame.from_dict({"i":[1, 2, 3, 4], "j":["one", "two", "three", "four"]})
+my_dictionary['test_df'] = pd.DataFrame.from_dict(
+    {"i": [1, 2, 3, 4], "j": ["one", "two", "three", "four"]}
+)
 duckdb.register('test_df_view', my_dictionary['test_df'])
 duckdb.sql('SELECT * FROM test_df_view').fetchall()
 # [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]

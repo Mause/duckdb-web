@@ -7,6 +7,7 @@ SQL queries can be executed using the `duckdb.sql` command.
 
 ```python
 import duckdb
+
 duckdb.sql("SELECT 42").show()
 ```
 

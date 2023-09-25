@@ -12,7 +12,7 @@ This example workflow is also available as a [Google Colab notebook](https://col
 
 ## Installation
 
-```python
+```sh
 pip install --quiet duckdb datafusion pyarrow
 ```
 
@@ -51,31 +51,29 @@ Calculate a new DataFusion DataFrame and output it to a variable as an Apache Ar
 
 ```python
 arrow_batches = (
-    datafusion_df
-    .aggregate(
-        [df.col("fruits")],
-        [f.sum(df.col("A")).alias("sum_A_by_fruits")]
+    datafusion_df.aggregate(
+        [df.col("fruits")], [f.sum(df.col("A")).alias("sum_A_by_fruits")]
     )
     .sort(df.col("fruits").sort(ascending=True))
     .collect()
 )
-datafusion_to_arrow = (
-    pa.Table.from_batches(arrow_batches)
-)
+datafusion_to_arrow = pa.Table.from_batches(arrow_batches)
 datafusion_to_arrow
 ```
 
 Then query the Apache Arrow table using DuckDB, and output the results as another Apache Arrow table for use in a subsequent DuckDB or DataFusion operation.
 
 ```python
-output = duckdb.query("""
-  SELECT 
+output = duckdb.query(
+    """
+  SELECT
     fruits,
     first(sum_A_by_fruits) as sum_A
   FROM datafusion_to_arrow
   GROUP BY ALL
   ORDER BY ALL
-""").arrow()
+"""
+).arrow()
 ```
 
 ## DuckDB to DataFusion
@@ -87,7 +85,8 @@ This example reuses the original Pandas DataFrame created above as a starting po
 After the import statements and example DataFrame creation above, query the Pandas DataFrame using DuckDB and output the results as an Arrow table.
 
 ```python
-duckdb_to_arrow = duckdb.query("""
+duckdb_to_arrow = duckdb.query(
+    """
   SELECT
     fruits,
     cars,
@@ -99,7 +98,8 @@ duckdb_to_arrow = duckdb.query("""
   ORDER BY
     fruits,
     df.B
-""").arrow()
+"""
+).arrow()
 ```
 
 Load the Apache Arrow table into DataFusion using the DataFusion DataFrame constructor.
@@ -114,13 +114,9 @@ Complete a calculation using DataFusion, then output the results as another Apac
 
 ```python
 output_2 = (
-    datafusion_df_2
-    .aggregate(
-        [df.col("fruits")],
-        [f.sum(df.col('sum_A_by_fruits'))]
-    )
+    datafusion_df_2.aggregate([df.col("fruits")], [f.sum(df.col('sum_A_by_fruits'))])
 ).collect()
 output_2
 ```
 
-To learn more about DataFusion, feel free to explore their [GitHub repository](https://github.com/apache/arrow-datafusion-python/)! 
+To learn more about DataFusion, feel free to explore their [GitHub repository](https://github.com/apache/arrow-datafusion-python/)!

@@ -262,7 +262,7 @@ In the following figure, you can see a visual representation of DuckDB's Swizzla
 
 To evaluate the benefits and disadvantages of our current storage implementation, we run a benchmark (Available at this [Colab Link](https://colab.research.google.com/drive/1lidiFNswQfxdmYlsufXUT80IFpyluEF3?usp=sharing)), where we create a table containing 50,000,000 integral elements with a primary key constraint on top of them. 
 ```python
-con = duckdb.connect("vault.db") 
+con = duckdb.connect("vault.db")
 con.execute("CREATE TABLE integers (x integer primary key)")
 con.execute("INSERT INTO integers SELECT * FROM range(50000000);")
 ```
@@ -293,7 +293,7 @@ We can see storing the index is 2x more expensive than not storing the index. Th
 We now measure the loading time of restarting our database.
 ``` python
 cur_time = time.time()
-con = duckdb.connect("vault.db") 
+con = duckdb.connect("vault.db")
 print("Load time: " + str(time.time() - cur_time))
 ```
 
@@ -311,10 +311,10 @@ We now measure the cold query time (i.e., the Database has just been restarted, 
 
 ```python
 times = []
-for i in range (0,50000000, 10000):
-  cur_time = time.time()
-  con.execute("select x from integers where x = " + str(i))
-  times.append(time.time() - cur_time)
+for i in range(0, 50000000, 10000):
+    cur_time = time.time()
+    con.execute("select x from integers where x = " + str(i))
+    times.append(time.time() - cur_time)
 ```
 
 <img src="/images/blog/ART/cold-run.png"
