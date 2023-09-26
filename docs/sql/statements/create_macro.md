@@ -3,6 +3,7 @@ layout: docu
 title: Create Macro
 railroad: statements/createmacro.js
 ---
+
 The `CREATE MACRO` statement can create a scalar or table macro (function) in the catalog. 
 A macro may only be a single `SELECT` statement (similar to a `VIEW`), but it has the benefit of accepting parameters.
 For a scalar macro, `CREATE MACRO` is followed by the name of the macro, and optionally parameters within a set of parentheses. The keyword `AS` is next, followed by the text of the macro. By design, a scalar macro may only return a single value.
@@ -10,7 +11,7 @@ For a table macro, the syntax is similar to a scalar macro except `AS` is replac
 
 If a `MACRO` is temporary, it is only usable within the same database connection and is deleted when the connection is closed.
 
-### Examples
+## Examples
 
 ```sql
 -- create a macro that adds two expressions (a and b)
@@ -42,7 +43,7 @@ CREATE OR REPLACE TEMP MACRO dynamic_table(col1_value, col2_value) AS TABLE
     SELECT 'Hello' AS col1_value, 456 AS col2_value;
 ```
 
-### Syntax
+## Syntax
 
 <div id="rrdiagram"></div>
 

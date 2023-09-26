@@ -2,9 +2,10 @@
 layout: docu
 title: R API
 ---
+
 ## Installation
 
-The DuckDB R API can be installed using `install.packages`. Please see the [installation page](../installation?environment=r) for details.
+The DuckDB R API can be installed using `install.packages("duckdb")`. Please see the [installation page](../installation?environment=r) for details.
 
 ## Basic API Usage
 
@@ -125,6 +126,6 @@ tbl(con, "read_parquet('dataset/**/*.parquet', hive_partitioning=1)") |>
   collect()
 ```
 
-## Repository
+## GitHub Repository
 
-The source code of the DuckDB R API is available on [GitHub](https://github.com/duckdb/duckdb-r).
+[<span class="github">GitHub</span>](https://github.com/duckdb/duckdb-r)

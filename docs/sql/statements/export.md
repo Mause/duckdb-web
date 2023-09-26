@@ -3,9 +3,10 @@ layout: docu
 title: Export & Import Database
 railroad: statements/export.js
 ---
+
 The `EXPORT DATABASE` command allows you to export the contents of the database to a specific directory. The `IMPORT DATABASE` command allows you to then read the contents again.
 
-### Examples
+## Examples
 
 ```sql
 -- export the database to the target directory
@@ -22,7 +23,7 @@ IMPORT DATABASE 'target_directory';
 
 For details regarding the writing of Parquet files, see the [Parquet Files page in the Data Import section](../../data/parquet/overview#writing-to-parquet-files), and the [Copy Statement page](copy).
 
-### Syntax
+## Syntax
 
 <div id="rrdiagram"></div>
 

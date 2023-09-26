@@ -16,7 +16,7 @@ By default the system will try to auto-detect all options. However, options can 
 The detection works by operating on a sample of the file. The size of the sample can be modified by setting the `sample_size` parameter. The default sample size is `20480` rows. Setting the `sample_size` parameter to `-1` means the entire file is read for sampling. The way sampling is performed depends on the type of file. If we are reading from a regular file on disk, we will jump into the file and try to sample from different locations in the file. If we are reading from a file in which we cannot jump - such as a `.gz` compressed CSV file or `stdin` - samples are taken only from the beginning of the file.
 
 
-### Dialect Detection
+## Dialect Detection
 
 Dialect detection works by attempting to parse the samples using the set of considered values. The detected dialect is the dialect that has (1) a consistent number of columns for each row, and (2) the highest number of columns for each row.
 
@@ -29,9 +29,7 @@ The following dialects are considered for automatic dialect detection.
 | `escape`   | `"` `'` `\` (empty)   |
 
 
-Consider the following example file.
-
-**flights.csv**
+Consider the example file [`flights.csv`](/data/flights.csv):
 
 ```csv
 FlightDate|UniqueCarrier|OriginCityName|DestCityName
@@ -48,7 +46,7 @@ In this file, the dialect detection works as follows:
 
 In this example - the system selects the `|` as the delimiter. All rows are split into the same amount of columns, and there is more than one column per row meaning the delimiter was actually found in the CSV file.
 
-### Type Detection
+## Type Detection
 
 After detecting the dialect, the system will attempt to figure out the types of each of the columns. Note that this step is only performed if we are calling `read_csv_auto`. In case of the `COPY` statement the types of the table that we are copying into will be used instead.
 
@@ -64,21 +62,21 @@ The type detection works by attempting to convert the values in each column to t
 | `TIMESTAMP` |
 | `VARCHAR`   |
 
-Note everything can be cast to `VARCHAR`. This type has the lowest priority - i.e., columns are converted to `VARCHAR` if they cannot be cast to anything else. In `flights.csv` the `FlightDate` column will be cast to a `DATE`, while the other columns will be cast to `VARCHAR`.
+Note everything can be cast to `VARCHAR`. This type has the lowest priority - i.e., columns are converted to `VARCHAR` if they cannot be cast to anything else. In [`flights.csv`](/data/flights.csv) the `FlightDate` column will be cast to a `DATE`, while the other columns will be cast to `VARCHAR`.
 
 The detected types can be individually overridden using the `types` option. This option takes either a list of types (e.g., `types=[INT, VARCHAR, DATE]`) which overrides the types of the columns in-order of occurrence in the CSV file. Alternatively, `types` takes a `name -> type` map which overrides options of individual columns (e.g., `types={'quarter': INT}`).
 
 The type detection can be entirely disabled by using the `all_varchar` option. If this is set all columns will remain as `VARCHAR` (as they originally occur in the CSV file).
 
-### Header Detection
+## Header Detection
 
-Header detection works by checking if the candidate header row deviates from the other rows in the file in terms of types. For example, in `flights.csv`, we can see that the header row consists of only `VARCHAR` columns - whereas the values contain a `DATE` value for the `FlightDate` column. As such - the system defines the first row as the header row and extracts the column names from the header row.
+Header detection works by checking if the candidate header row deviates from the other rows in the file in terms of types. For example, in [`flights.csv`](/data/flights.csv), we can see that the header row consists of only `VARCHAR` columns - whereas the values contain a `DATE` value for the `FlightDate` column. As such - the system defines the first row as the header row and extracts the column names from the header row.
 
 In files that do not have a header row, the column names are generated as `column0`, `column1`, etc.
 
 Note that headers cannot be detected correctly if all columns are of type `VARCHAR` - as in this case the system cannot distinguish the header row from the other rows in the file. In this case the system assumes the file has no header. This can be overridden using the `header` option.
 
-### Dates and Timestamps
+## Dates and Timestamps
 
 DuckDB supports the [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) format by default for timestamps, dates and times. Unfortunately, not all dates and times are formatted using this standard. For that reason, the CSV reader also supports the `dateformat` and `timestampformat` options. Using this format the user can specify a [format string](../../sql/functions/dateformat) that specifies how the date or timestamp should be read.
 

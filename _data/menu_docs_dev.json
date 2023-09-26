@@ -103,6 +103,16 @@
           ]
         },
         {
+          "page": "ODBC",
+          "slug": "odbc",
+          "subfolderitems": [
+            {
+              "page": "ODBC Application",
+              "url": "general"
+            }
+          ]
+        },
+        {
           "page": "Python",
           "slug": "python",
           "subfolderitems": [
@@ -930,12 +940,28 @@
               "url": "overview"
             },
             {
+              "page": "Official Extensions",
+              "url": "official_extensions"
+            },
+            {
               "page": "Working with Extensions",
               "url": "working_with_extensions"
             },
             {
               "page": "AutoComplete",
               "url": "autocomplete"
+            },
+            {
+              "page": "AWS",
+              "url": "aws"
+            },
+            {
+              "page": "Azure",
+              "url": "azure"
+            },
+            {
+              "page": "Excel",
+              "url": "excel"
             },
             {
               "page": "Full Text Search",
@@ -958,6 +984,10 @@
               "url": "postgres_scanner"
             },
             {
+              "page": "Spatial",
+              "url": "spatial"
+            },
+            {
               "page": "SQLite Scanner",
               "url": "sqlite_scanner"
             },
@@ -974,8 +1004,12 @@
               "url": "inet"
             },
             {
-              "page": "Excel",
-              "url": "excel"
+              "page": "TPC-H",
+              "url": "tpch"
+            },
+            {
+              "page": "TPC-DS",
+              "url": "tpcds"
             }
           ]
         }

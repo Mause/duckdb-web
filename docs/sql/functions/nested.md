@@ -2,6 +2,7 @@
 layout: docu
 title: Nested Functions
 ---
+
 This section describes functions and operators for examining and manipulating nested values. There are three nested data types: lists, structs, and maps.
 
 ## List Functions
@@ -10,8 +11,8 @@ In the descriptions, `l` is the three element list `[4, 5, 6]`.
 
 <!-- This follows the order of shorthand, core/main function (list_), other list_ aliases, array_ aliases -->
 
-| Function                                                     | Aliases                                           | Description                                                                                                                                                                        | Example                                 | Result            |
-|--------------------------------------------------------------|---------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|-------------------|
+| Function | Aliases | Description | Example | Result |
+|-----|-----|-----|-----|---|
 | *`list`*`[`*`index`*`]`                                      |                                                   | Bracket notation serves as an alias for `list_extract`.                                                                                                                            | `l[3]`                                  | `6`               |
 | `list_extract(`*`list`*`, `*`index`*`)`                      | `list_element`, `array_extract`                   | Extract the `index`th (1-based) value from the list.                                                                                                                               | `list_extract(l, 3)`                    | `6`               |
 | *`list`*`[`*`begin`*`:`*`end`*`]`                            |                                                   | Bracket notation with colon is an alias for `list_slice`.                                                                                                                          | `l[2:3]`                                | `[5, 6]`          |
@@ -153,34 +154,34 @@ SELECT * FROM range(date '1992-01-01', date '1992-03-01', interval '1' month);
 
 ## Slicing
 The function `list_slice` can be used to extract a sublist from a list.  The following variants exist:
-- `list_slice(`*`list`*`, `*`begin`*`, `*`end`*`)`
-- `list_slice(`*`list`*`, `*`begin`*`, `*`end`*`)`
-- `array_slice(`*`list`*`, `*`begin`*`, `*`end`*`, `*`step`*`)`
-- `array_slice(`*`list`*`, `*`begin`*`, `*`end`*`, `*`step`*`)`
-- `list[`*`begin`*`:`*`end`*`]`
-- `list[`*`begin`*`:`*`end`*`:`*`step`*`]`
+* `list_slice(`*`list`*`, `*`begin`*`, `*`end`*`)`
+* `list_slice(`*`list`*`, `*`begin`*`, `*`end`*`)`
+* `array_slice(`*`list`*`, `*`begin`*`, `*`end`*`, `*`step`*`)`
+* `array_slice(`*`list`*`, `*`begin`*`, `*`end`*`, `*`step`*`)`
+* `list[`*`begin`*`:`*`end`*`]`
+* `list[`*`begin`*`:`*`end`*`:`*`step`*`]`
 
 **`list`**
-- Is the list to be sliced
+* Is the list to be sliced
 
 **`begin`**
-- Is the index of the first element to be included in the slice
-- When `begin < 0` the index is counted from the end of the list
-- When `begin < 0` and `-begin > length`, `begin` is clamped to the beginning of the list
-- When `begin > length`, the result is an empty list
-- **Bracket Notation:** When `begin` is omitted, it defaults to the beginning of the list
+* Is the index of the first element to be included in the slice
+* When `begin < 0` the index is counted from the end of the list
+* When `begin < 0` and `-begin > length`, `begin` is clamped to the beginning of the list
+* When `begin > length`, the result is an empty list
+* **Bracket Notation:** When `begin` is omitted, it defaults to the beginning of the list
 
 **`end`**
-- Is the index of the last element to be included in the slice
-- When `end < 0` the index is counted from the end of the list
-- When `end > length`, end is clamped to `length`
-- When `end < begin`, the result is an empty list
-- **Bracket Notation:** When `end` is omitted, it defaults to the end of the list. When `end` is omitted and a `step` is provided, `end` must be replaced with a `-`.
+* Is the index of the last element to be included in the slice
+* When `end < 0` the index is counted from the end of the list
+* When `end > length`, end is clamped to `length`
+* When `end < begin`, the result is an empty list
+* **Bracket Notation:** When `end` is omitted, it defaults to the end of the list. When `end` is omitted and a `step` is provided, `end` must be replaced with a `-`
 
 **`step`** *(optional)*
-- Is the step size between elements in the slice
-- When `step < 0` the slice is reversed, and `begin` and `end` are swapped
-- Must be non-zero
+* Is the step size between elements in the slice
+* When `step < 0` the slice is reversed, and `begin` and `end` are swapped
+* Must be non-zero
 
 ```sql
 SELECT list_slice([1, 2, 3, 4, 5], 2, 4);

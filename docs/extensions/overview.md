@@ -11,6 +11,8 @@ These may extend DuckDB's functionality by providing support for additional file
 > Extensions are loadable on all clients (e.g., Python and R).
 > Extensions distributed via the official repository are built and tested on MacOS (amd64 and arm64), Windows (amd64) and Linux (amd64 and arm64).
 
+We maintain a [list of official extensions](official_extensions).
+
 ## Using Extensions
 
 ### Listing Extensions
@@ -65,15 +67,15 @@ Some extensions make several changes to the running DuckDB instance, hence, auto
 These extensions have to be installed and loaded using the following SQL statements:
 
 ```sql
-INSTALL 'spatial';
-LOAD 'spatial';
+INSTALL spatial;
+LOAD spatial;
 ```
 
 ```sql
 CREATE TABLE tbl(geom GEOMETRY);
 ```
 
-If you are using the [Python API client](../api/python/overview), you can install and load them with the `load_extension(name: str)` and `install_extension(name: str)` methods.
+If you are using the [Python API client](../api/python/overview), you can install and load them with the `install_extension(name: str)` and `load_extension(name: str)` methods.
 
 > Autoloadable extensions can also be installed explicitly.
 
@@ -83,43 +85,26 @@ Extensions are signed with a cryptographic key, which also simplifies distributi
 All extensions provided by the DuckDB core team are signed.
 
 If you wish to load your own extensions or extensions from third-parties you will need to enable the `allow_unsigned_extensions` flag.
-To load unsigned extensions using the [CLI](../api/cli), pass the `-unsigned` flag to it on startup.
+To load unsigned extensions using the [CLI client](../api/cli), pass the `-unsigned` flag to it on startup.
 
-### List of Official Extensions
+## Installation Location and Sharing Extensions between Clients
 
-| Extension name | Description | Aliases |
-|---|-----|--|
-| arrow [<span class="git">GitHub</span>](https://github.com/duckdblabs/arrow)                                           | A zero-copy data integration between Apache Arrow and DuckDB                       |                 |
-| autocomplete                                                                                                           | Adds support for autocomplete in the shell                                         |                 |
-| aws                                                                                                                    | Provides features that depend on the AWS SDK                                       |                 |
-| azure                                                                                                                  | Adds a filesystem abstraction for Azure blob storage to DuckDB                     |                 |
-| [excel](excel)                                                                                                         | Adds support for Excel-like format strings                                         |                 |
-| [fts](full_text_search)                                                                                                | Adds support for Full-Text Search Indexes                                          |                 |
-| [httpfs](httpfs)                                                                                                       | Adds support for reading and writing files over a HTTP(S) connection               | http, https, s3 |
-| [iceberg](iceberg) [<span class="git">GitHub</span>](https://github.com/duckdblabs/duckdb_iceberg)                     | Adds support for Apache Iceberg                                                    |                 |
-| icu                                                                                                                    | Adds support for time zones and collations using the ICU library                   |                 |
-| inet                                                                                                                   | Adds support for IP-related data types and functions                               |                 |
-| jemalloc                                                                                                               | Overwrites system allocator with JEMalloc                                          |                 |
-| [json](json)                                                                                                           | Adds support for JSON operations                                                   |                 |
-| parquet                                                                                                                | Adds support for reading and writing parquet files                                 |                 |
-| [postgres_scanner](postgres_scanner) [<span class="git">GitHub</span>](https://github.com/duckdblabs/postgres_scanner) | Adds support for reading from a Postgres database                                  | postgres        |
-| [spatial](spatial) [<span class="git">GitHub</span>](https://github.com/duckdblabs/duckdb_spatial)                     | Geospatial extension that adds support for working with spatial data and functions |                 |
-| [sqlite_scanner](sqlite_scanner) [<span class="git">GitHub</span>](https://github.com/duckdblabs/sqlite_scanner)       | Adds support for reading SQLite database files                                     | sqlite, sqlite3 |
-| [substrait](substrait) [<span class="git">GitHub</span>](https://github.com/duckdblabs/substrait)                      | Adds support for the Substrait integration                                         |                 |
-| tpcds                                                                                                                  | Adds TPC-DS data generation and query support                                      |                 |
-| tpch                                                                                                                   | Adds TPC-H data generation and query support                                       |                 |
+Extensions are installed under the user's home directory, to `~/.duckdb/extensions/{DuckDB version}/{Platform name}`. For example, the extensions for DuckDB version 0.9.0 on macOS Arm64 (Apple Silicon) are installed to `~/.duckdb/extensions/v0.9.0/osx_arm64`.
 
+The shared installation location allows extensions to be shared between the client APIs _of the same DuckDB version_. For example, if an extension is installed with version 0.9.0 of the CLI client, it is available from the Python, R, etc. client libraries provided that they have access to the user's home directory and use DuckDB version 0.9.0.
 
-### Developing Extensions
+> For development builds, the directory of the extensions corresponds to the Git hash of the build, e.g., `~/.duckdb/extensions/fc2e4b26a6/linux_amd64_gcc4`.
+
+## Developing Extensions
 
 The same API that the official extensions use is available for developing extensions. This allows users to extend the functionaly of DuckDB such to suit their domain the best.
 A template for creating extensions is available in the [`extension-template` repository](https://github.com/duckdb/extension-template/).
 
-### Working with Extensions
+## Working with Extensions
 
 For more details, see the [Working with Extensions page](working_with_extensions).
 
-### Pages in This Section
+## Pages in This Section
 
 <!--
 any extensions that have their own pages will automatically be added to a table of contents that is rendered directly below this list.

@@ -3,9 +3,10 @@ layout: docu
 title: Create View
 railroad: statements/createview.js
 ---
+
 The `CREATE VIEW` statement defines a new view in the catalog.
 
-### Examples
+## Examples
 
 ```sql
 -- create a simple view
@@ -16,7 +17,7 @@ CREATE OR REPLACE VIEW v1 AS SELECT 42;
 CREATE VIEW v1(a) AS SELECT 42;
 ```
 
-### Syntax
+## Syntax
 
 <div id="rrdiagram"></div>
 

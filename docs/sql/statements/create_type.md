@@ -3,9 +3,10 @@ layout: docu
 title: Create Type
 railroad: statements/createtype.js
 ---
-The `CREATE Type` statement defines a new type in the catalog.
 
-### Examples
+The `CREATE TYPE` statement defines a new type in the catalog.
+
+## Examples
 
 ```sql
 -- create a simple enum type
@@ -18,7 +19,7 @@ CREATE TYPE one_thing AS UNION(number INTEGER, string VARCHAR);
 CREATE TYPE x_index AS INTEGER;
 ```
 
-### Syntax
+## Syntax
 
 <div id="rrdiagram"></div>
 
