@@ -29,7 +29,7 @@ match sys.platform:
         platform = 'osx-universal'
     case 'win32':
         platform = 'windows-amd64'
-url = "https://github.com/duckdb/duckdb/releases/download/{{version}}/duckdb_cli-{triplet}.zip"
+url = f"https://github.com/duckdb/duckdb/releases/download/{{version}}/duckdb_cli-{platform}.zip"
 
 
 @cache
