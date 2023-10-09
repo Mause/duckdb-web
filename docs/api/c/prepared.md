@@ -368,7 +368,7 @@ Binds an int64_t value to the prepared statement at the specified index.
 ### `duckdb_bind_hugeint`
 
 ---
-Binds an duckdb_hugeint value to the prepared statement at the specified index.
+Binds a duckdb_hugeint value to the prepared statement at the specified index.
 
 #### Syntax
 
@@ -470,7 +470,7 @@ Binds an uint64_t value to the prepared statement at the specified index.
 ### `duckdb_bind_float`
 
 ---
-Binds an float value to the prepared statement at the specified index.
+Binds a float value to the prepared statement at the specified index.
 
 #### Syntax
 
@@ -487,7 +487,7 @@ Binds an float value to the prepared statement at the specified index.
 ### `duckdb_bind_double`
 
 ---
-Binds an double value to the prepared statement at the specified index.
+Binds a double value to the prepared statement at the specified index.
 
 #### Syntax
 
