@@ -90,7 +90,6 @@ def get_functions(version: str) -> Set[str]:
     )
 
 
-
 def get_raw_result(binary: str, example: str) -> str:
     proc = Popen(
         [
@@ -122,14 +121,14 @@ def get_raw_result(binary: str, example: str) -> str:
 
     rows = list(DictReader(StringIO(out)))
     if not rows:
-        return None
+        return [None]
 
-    result = rows[0]["result"]
+    result = [row["result"] for row in rows]
     try:
-        if result in ['true', 'false']:
-            return result == 'true'
-        else:
-            return ast.literal_eval(result)
+        return [
+            row == 'true' if row in ['true', 'false'] else ast.literal_eval(row)
+            for row in result
+        ]
     except (SyntaxError, ValueError):
         return result
 
@@ -145,7 +144,7 @@ def get_result(example: str) -> str:
         return 'v0.8.1'
 
     try:
-        return get_raw_result(args.binary, example)
+        return get_raw_result(args.binary, example)[0]
     except CalledProcessError as e:
         print(e.stderr)
         return None
