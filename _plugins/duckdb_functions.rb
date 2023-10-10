@@ -137,7 +137,9 @@ module Jekyll
     end
 
     def render_function(function)
-      markdown_to_html(_render_function(function))
+      res = markdown_to_html(_render_function(function))
+      res += "<div class=\"pill\">Added in #{function['added_in_version']}</div>" if function['added_in_version']
+      res
     end
 
     # @param [string] filter_expression

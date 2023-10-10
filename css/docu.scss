@@ -166,18 +166,26 @@ form {
     margin: 0 auto;
 }
 
-.pill, 
-a.pill,
-body.documentation main .wrap a.pill{
-    background-color: #F3F3F3;
-    font-size: 12px;
-    border-radius: 50px;
-    padding: .3em .8em;
-    text-decoration: none;
-    margin-left: 5px;
-    &:hover{
-        background: black!important;
-        color: white;
+// PILL BOX
+body.documentation main .wrap {
+     a.pill {
+        background-color: #F3F3F3;
+    }
+    .pill{
+        font-size: 12px;
+        border-radius: 50px;
+        padding: .3em .8em;
+        text-decoration: none;
+        margin-left: 5px;
+        width: -moz-fit-content;
+        width: fit-content;
+        &:hover{
+            background: black!important;
+            color: white;
+        }
+    }
+    td > div.pill {
+        background-color: white;
     }
 }
 
