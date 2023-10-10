@@ -10,7 +10,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 from subprocess import check_output, CalledProcessError, PIPE, TimeoutExpired, Popen
 from urllib.request import urlretrieve, urlopen
-from functools import lru_cache, cache
+from functools import cache
 from zipfile import ZipFile
 from os.path import exists
 from shutil import copyfileobj
@@ -46,7 +46,7 @@ def get_versions():
     return versions[versions.index("v0.4.0") :]
 
 
-@lru_cache()
+@cache
 def get_duck(version: str) -> str:
     dest = Path(f"duckdb-{version}")
     if not dest.exists():
@@ -70,6 +70,7 @@ def find_added_version(function: dict) -> str:
                 return version
 
 
+@cache
 def get_functions(version: str) -> Set[str]:
     return set(
         get_raw_result(
