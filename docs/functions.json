@@ -12,7 +12,8 @@
       "factorial"
     ],
     "category": "math",
-    "result": "24"
+    "added_in_version": "v0.4.0",
+    "result": 24
   },
   {
     "name": "&",
@@ -25,6 +26,7 @@
     "type": "scalar_function_set",
     "struct": "BitwiseAndFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": 11
   },
   {
@@ -43,6 +45,7 @@
       "^"
     ],
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 8.0
   },
   {
@@ -55,6 +58,7 @@
     "type": "scalar_function_set",
     "struct": "LeftShiftFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": 16
   },
   {
@@ -67,6 +71,7 @@
     "type": "scalar_function_set",
     "struct": "RightShiftFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": 2
   },
   {
@@ -82,6 +87,7 @@
       "abs"
     ],
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 17.4
   },
   {
@@ -98,6 +104,7 @@
       "starts_with"
     ],
     "category": "string",
+    "added_in_version": "v0.7.0",
     "result": true
   },
   {
@@ -109,6 +116,7 @@
     "example": "acos(0.5)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 1.0471975511965979
   },
   {
@@ -121,6 +129,7 @@
     "example": "age(TIMESTAMP '2001-04-10', TIMESTAMP '1992-09-20')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "8 years 6 months 20 days"
   },
   {
@@ -132,6 +141,7 @@
     "example": "alias(42 + 1)",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "result"
   },
   {
@@ -143,6 +153,7 @@
     "example": "approx_count_distinct(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -155,6 +166,7 @@
     "example": "approx_quantile(A,0.5)",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -171,6 +183,7 @@
       "max_by"
     ],
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -187,6 +200,7 @@
       "min_by"
     ],
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -199,6 +213,7 @@
     "type": "scalar_function",
     "struct": "ASCIIFun",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 937
   },
   {
@@ -210,6 +225,7 @@
     "example": "asin(0.5)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 0.5235987755982989
   },
   {
@@ -221,6 +237,7 @@
     "example": "atan(0.5)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 0.4636476090008061
   },
   {
@@ -233,6 +250,7 @@
     "example": "atan2(1.0, 0.0)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 1.5707963267948966
   },
   {
@@ -247,6 +265,7 @@
       "mean"
     ],
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -261,6 +280,7 @@
     "example": "bar(5, 0, 20, 10)",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.7.0",
     "result": "\u2588\u2588\u258c"
   },
   {
@@ -275,7 +295,8 @@
       "to_binary"
     ],
     "category": "string",
-    "result": "101010"
+    "added_in_version": "v0.8.0",
+    "result": 101010
   },
   {
     "name": "bit_and",
@@ -286,6 +307,7 @@
     "example": "bit_and(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -297,6 +319,7 @@
     "example": "bit_count(31)",
     "type": "scalar_function_set",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 5
   },
   {
@@ -308,6 +331,7 @@
     "example": "bit_or(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -320,6 +344,7 @@
     "example": "bit_position('010'::BIT, '1110101'::BIT)",
     "type": "scalar_function",
     "category": "bit",
+    "added_in_version": "v0.7.0",
     "result": 4
   },
   {
@@ -331,6 +356,7 @@
     "example": "bit_xor(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -344,6 +370,7 @@
     "struct": "BitStringFun",
     "type": "scalar_function",
     "category": "bit",
+    "added_in_version": "v0.8.0",
     "result": "0001010"
   },
   {
@@ -355,6 +382,7 @@
     "example": "bitstring_agg(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.8.0",
     "result": null
   },
   {
@@ -366,6 +394,7 @@
     "example": "bool_and(A)",
     "type": "aggregate_function",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -377,6 +406,7 @@
     "example": "bool_or(A)",
     "type": "aggregate_function",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -388,7 +418,8 @@
     "example": "cardinality( map([4, 2], ['a', 'b']) );",
     "type": "scalar_function",
     "category": "map",
-    "result": "2"
+    "added_in_version": "v0.4.0",
+    "result": 2
   },
   {
     "name": "cbrt",
@@ -399,6 +430,7 @@
     "example": "cbrt(8)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 2.0
   },
   {
@@ -413,7 +445,8 @@
       "ceiling"
     ],
     "category": "math",
-    "result": 18.0
+    "added_in_version": "v0.4.0",
+    "result": 18
   },
   {
     "name": "century",
@@ -424,6 +457,7 @@
     "example": "century(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 21
   },
   {
@@ -435,6 +469,7 @@
     "example": "chr(65)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "A"
   },
   {
@@ -447,6 +482,7 @@
     "example": "COVAR_POP(y, x) / (STDDEV_POP(x) * STDDEV_POP(y))",
     "type": "aggregate_function",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -458,6 +494,7 @@
     "example": "cos(90)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": -0.4480736161291701
   },
   {
@@ -469,6 +506,7 @@
     "example": "cot(0.5)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 1.830487721712452
   },
   {
@@ -481,6 +519,7 @@
     "example": "(SUM(x*y) - SUM(x) * SUM(y) / COUNT(*)) / COUNT(*)",
     "type": "aggregate_function",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -493,6 +532,7 @@
     "example": "(SUM(x*y) - SUM(x) * SUM(y) / COUNT(*)) / (COUNT(*) - 1)",
     "type": "aggregate_function",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -502,6 +542,7 @@
     "example": "current_database()",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "memory"
   },
   {
@@ -514,6 +555,7 @@
     ],
     "parameters": [],
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "2023-07-23"
   },
   {
@@ -523,7 +565,8 @@
     "example": "current_query()",
     "type": "scalar_function",
     "category": "generic",
-    "result": "SELECT current_query() AS result"
+    "added_in_version": "v0.4.0",
+    "result": "SELECT current_query() AS result;"
   },
   {
     "name": "current_schema",
@@ -532,6 +575,7 @@
     "example": "current_schema()",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "main"
   },
   {
@@ -543,6 +587,7 @@
     "example": "current_schemas(true)",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "[main, main, main, pg_catalog]"
   },
   {
@@ -554,6 +599,7 @@
     "example": "current_setting('access_mode')",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "automatic"
   },
   {
@@ -566,6 +612,7 @@
     "example": "damerau_levenshtein('hello', 'world')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.8.0",
     "result": 4
   },
   {
@@ -582,7 +629,8 @@
       "datediff"
     ],
     "category": "date",
-    "result": 2
+    "added_in_version": "v0.4.0",
+    "result": null
   },
   {
     "name": "date_part",
@@ -596,6 +644,7 @@
       "datepart"
     ],
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 38
   },
   {
@@ -612,7 +661,8 @@
       "datesub"
     ],
     "category": "date",
-    "result": 1
+    "added_in_version": "v0.4.0",
+    "result": null
   },
   {
     "name": "date_trunc",
@@ -627,7 +677,8 @@
       "datetrunc"
     ],
     "category": "date",
-    "result": "1992-09-20 20:00:00+00"
+    "added_in_version": "v0.4.0",
+    "result": null
   },
   {
     "name": "day",
@@ -638,6 +689,7 @@
     "example": "day(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 3
   },
   {
@@ -650,6 +702,7 @@
     "example": "dayname(TIMESTAMP '1992-03-22')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "Sunday"
   },
   {
@@ -662,6 +715,7 @@
     "example": "dayofmonth(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 3
   },
   {
@@ -674,6 +728,7 @@
     "example": "dayofweek(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 2
   },
   {
@@ -686,6 +741,7 @@
     "example": "dayofyear(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 215
   },
   {
@@ -697,6 +753,7 @@
     "example": "decade(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 202
   },
   {
@@ -708,6 +765,7 @@
     "example": "decode('\\xC3\\xBC'::BLOB)",
     "type": "scalar_function",
     "category": "blob",
+    "added_in_version": "v0.4.0",
     "result": "\u00fc"
   },
   {
@@ -719,6 +777,7 @@
     "example": "degrees(pi())",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 180.0
   },
   {
@@ -730,6 +789,7 @@
     "example": "encode('my_string_with_\u00fc')",
     "type": "scalar_function",
     "category": "blob",
+    "added_in_version": "v0.4.0",
     "result": "my_string_with_\\xC3\\xBC"
   },
   {
@@ -741,6 +801,7 @@
     "example": "",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -752,7 +813,8 @@
     "example": "enum_code('happy'::mood)",
     "type": "scalar_function",
     "category": "enum",
-    "result": null
+    "added_in_version": "v0.7.0",
+    "result": 2
   },
   {
     "name": "enum_first",
@@ -763,7 +825,8 @@
     "example": "enum_first(NULL::mood)",
     "type": "scalar_function",
     "category": "enum",
-    "result": null
+    "added_in_version": "v0.4.0",
+    "result": "sad"
   },
   {
     "name": "enum_last",
@@ -774,7 +837,8 @@
     "example": "enum_last(NULL::mood)",
     "type": "scalar_function",
     "category": "enum",
-    "result": null
+    "added_in_version": "v0.4.0",
+    "result": "anxious"
   },
   {
     "name": "enum_range",
@@ -785,7 +849,8 @@
     "example": "enum_range(NULL::mood)",
     "type": "scalar_function",
     "category": "enum",
-    "result": null
+    "added_in_version": "v0.4.0",
+    "result": "[sad, ok, happy, anxious]"
   },
   {
     "name": "enum_range_boundary",
@@ -797,7 +862,8 @@
     "example": "enum_range_boundary(NULL, 'happy'::mood)",
     "type": "scalar_function",
     "category": "enum",
-    "result": null
+    "added_in_version": "v0.4.0",
+    "result": "[sad, ok, happy]"
   },
   {
     "name": "epoch",
@@ -808,6 +874,7 @@
     "example": "epoch(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 1627991984.123456
   },
   {
@@ -819,6 +886,7 @@
     "example": "epoch_ms(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 1627991984123
   },
   {
@@ -830,6 +898,7 @@
     "example": "epoch_ns(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.9.0",
     "result": 1627991984123456000
   },
   {
@@ -841,6 +910,7 @@
     "example": "epoch_us(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.9.0",
     "result": 1627991984123456
   },
   {
@@ -852,6 +922,7 @@
     "example": "era(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 1
   },
   {
@@ -863,6 +934,7 @@
     "example": "error('access_mode')",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.8.0",
     "result": null
   },
   {
@@ -874,6 +946,7 @@
     "example": "even(2.9)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 4.0
   },
   {
@@ -885,6 +958,7 @@
     "example": "exp(1)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 2.718281828459045
   },
   {
@@ -897,6 +971,7 @@
     "type": "aggregate_function",
     "struct": "FAvgFun",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -909,7 +984,14 @@
     "struct": "ListFlattenFun",
     "type": "scalar_function",
     "category": "list",
-    "result": "[1, 2, 3, 4, 5]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   {
     "name": "floor",
@@ -920,7 +1002,8 @@
     "example": "floor(17.4)",
     "type": "scalar_function_set",
     "category": "math",
-    "result": 17.0
+    "added_in_version": "v0.4.0",
+    "result": 17
   },
   {
     "name": "format",
@@ -932,6 +1015,7 @@
     "example": "format('Benchmark \"{}\" took {} seconds', 'CSV', 42)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "Benchmark \"CSV\" took 42 seconds"
   },
   {
@@ -946,6 +1030,7 @@
       "formatReadableDecimalSize"
     ],
     "category": "string",
+    "added_in_version": "v0.8.0",
     "result": "16KB"
   },
   {
@@ -957,6 +1042,7 @@
     "example": "from_base64('QQ==')",
     "type": "scalar_function",
     "category": "blob",
+    "added_in_version": "v0.4.0",
     "result": "A"
   },
   {
@@ -968,6 +1054,7 @@
     "example": "gamma(5.5)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 52.34277778455352
   },
   {
@@ -981,7 +1068,11 @@
     "example": "generate_series(2, 5, 3)",
     "type": "scalar_function_set",
     "category": "list",
-    "result": "[2, 5]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      2,
+      5
+    ]
   },
   {
     "name": "get_bit",
@@ -993,6 +1084,7 @@
     "example": "get_bit('0110010'::BIT, 2)",
     "type": "scalar_function",
     "category": "bit",
+    "added_in_version": "v0.7.0",
     "result": 1
   },
   {
@@ -1003,6 +1095,7 @@
     "type": "scalar_function",
     "parameters": [],
     "category": "date",
+    "added_in_version": "v0.5.0",
     "result": "14:04:22.524"
   },
   {
@@ -1016,6 +1109,7 @@
     ],
     "parameters": [],
     "category": "date",
+    "added_in_version": "v0.5.0",
     "result": "2023-07-23 14:04:22.538+00"
   },
   {
@@ -1029,6 +1123,7 @@
     "example": "greatest(42, 84)",
     "type": "scalar_function_set",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": 84
   },
   {
@@ -1044,6 +1139,7 @@
       "gcd"
     ],
     "category": "math",
+    "added_in_version": "v0.8.0",
     "result": 3
   },
   {
@@ -1059,6 +1155,7 @@
       "mismatches"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 1
   },
   {
@@ -1070,7 +1167,8 @@
     "example": "hash('\ud83e\udd86')",
     "type": "scalar_function",
     "category": "generic",
-    "result": "2595805878642663834"
+    "added_in_version": "v0.4.0",
+    "result": 2595805878642663834
   },
   {
     "name": "hex",
@@ -1084,6 +1182,7 @@
       "to_hex"
     ],
     "category": "string",
+    "added_in_version": "v0.8.0",
     "result": "2A"
   },
   {
@@ -1098,6 +1197,7 @@
       "static AggregateFunction GetHistogramUnorderedMap(LogicalType &type);"
     ],
     "category": "nested",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1110,6 +1210,7 @@
     "example": "hour(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 11
   },
   {
@@ -1122,6 +1223,7 @@
     "example": "in_search_path('memory', 'main')",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.8.1",
     "result": true
   },
   {
@@ -1138,6 +1240,7 @@
       "position"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 2
   },
   {
@@ -1150,6 +1253,7 @@
     "type": "scalar_function_set",
     "struct": "IsFiniteFun",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": true
   },
   {
@@ -1162,6 +1266,7 @@
     "type": "scalar_function_set",
     "struct": "IsInfiniteFun",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": true
   },
   {
@@ -1174,6 +1279,7 @@
     "type": "scalar_function_set",
     "struct": "IsNanFun",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": true
   },
   {
@@ -1186,6 +1292,7 @@
     "example": "isodow(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 2
   },
   {
@@ -1198,6 +1305,7 @@
     "example": "isoyear(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 2021
   },
   {
@@ -1210,6 +1318,7 @@
     "example": "jaccard('duck','luck')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 0.6
   },
   {
@@ -1222,6 +1331,7 @@
     "example": "jaro_similarity('duck','duckdb')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.5.0",
     "result": 0.8888888888888888
   },
   {
@@ -1234,6 +1344,7 @@
     "example": "jaro_winkler_similarity('duck','duckdb')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.5.0",
     "result": 0.9333333333333333
   },
   {
@@ -1246,6 +1357,7 @@
     "example": "julian(timestamp '2006-01-01 12:00')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.9.0",
     "result": null
   },
   {
@@ -1261,6 +1373,7 @@
       "sumkahan"
     ],
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1272,6 +1385,7 @@
     "example": "",
     "type": "aggregate_function",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1283,6 +1397,7 @@
     "example": "last_day(TIMESTAMP '1992-03-22 01:02:03.1234')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "1992-03-31"
   },
   {
@@ -1296,6 +1411,7 @@
     "example": "least(42, 84)",
     "type": "scalar_function_set",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": 42
   },
   {
@@ -1311,6 +1427,7 @@
       "lcm"
     ],
     "category": "math",
+    "added_in_version": "v0.8.0",
     "result": 798
   },
   {
@@ -1323,6 +1440,7 @@
     "example": "left('Hello\ud83e\udd86', 2)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "He"
   },
   {
@@ -1335,6 +1453,7 @@
     "example": "left_grapheme('\ud83e\udd26\ud83c\udffc\u200d\u2642\ufe0f\ud83e\udd26\ud83c\udffd\u200d\u2640\ufe0f', 1)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.6.0",
     "result": "\ud83e\udd26\ud83c\udffc\u200d\u2642\ufe0f"
   },
   {
@@ -1350,6 +1469,7 @@
       "editdist3"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 3
   },
   {
@@ -1362,6 +1482,7 @@
     "type": "scalar_function",
     "struct": "LogGammaFun",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 0.0
   },
   {
@@ -1376,6 +1497,7 @@
       "array_agg"
     ],
     "category": "nested",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1394,6 +1516,7 @@
       "aggregate"
     ],
     "category": "list",
+    "added_in_version": "v0.4.0",
     "result": 1
   },
   {
@@ -1409,6 +1532,7 @@
       "<=>"
     ],
     "category": "list",
+    "added_in_version": "v0.9.0",
     "result": 1.0
   },
   {
@@ -1424,6 +1548,7 @@
       "<->"
     ],
     "category": "list",
+    "added_in_version": "v0.9.0",
     "result": 0.0
   },
   {
@@ -1438,7 +1563,12 @@
       "array_distinct"
     ],
     "category": "list",
-    "result": "[5, -3, 1]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      5,
+      -3,
+      1
+    ]
   },
   {
     "name": "list_filter",
@@ -1454,7 +1584,10 @@
       "filter"
     ],
     "category": "list",
-    "result": "[5]"
+    "added_in_version": "v0.5.0",
+    "result": [
+      5
+    ]
   },
   {
     "name": "list_inner_product",
@@ -1470,6 +1603,7 @@
       "<#>"
     ],
     "category": "list",
+    "added_in_version": "v0.9.0",
     "result": 14.0
   },
   {
@@ -1484,7 +1618,13 @@
       "array_reverse_sort"
     ],
     "category": "list",
-    "result": "[6, 3, 2, 1]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      6,
+      3,
+      2,
+      1
+    ]
   },
   {
     "name": "list_slice",
@@ -1501,6 +1641,7 @@
       "array_slice"
     ],
     "category": "list",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1515,7 +1656,13 @@
       "array_sort"
     ],
     "category": "list",
-    "result": "[1, 2, 3, 6]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      1,
+      2,
+      3,
+      6
+    ]
   },
   {
     "name": "list_transform",
@@ -1533,7 +1680,12 @@
       "apply"
     ],
     "category": "list",
-    "result": "[2, 3, 4]"
+    "added_in_version": "v0.5.0",
+    "result": [
+      2,
+      3,
+      4
+    ]
   },
   {
     "name": "list_unique",
@@ -1547,7 +1699,8 @@
       "array_unique"
     ],
     "category": "list",
-    "result": "3"
+    "added_in_version": "v0.4.0",
+    "result": 3
   },
   {
     "name": "list_value",
@@ -1562,7 +1715,12 @@
       "list_pack"
     ],
     "category": "list",
-    "result": "[4, 5, 6]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "name": "ln",
@@ -1573,6 +1731,7 @@
     "example": "ln(2)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 0.6931471805599453
   },
   {
@@ -1587,6 +1746,7 @@
       "log"
     ],
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 3.0
   },
   {
@@ -1598,6 +1758,7 @@
     "example": "log2(8)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 3.0
   },
   {
@@ -1611,6 +1772,7 @@
     "example": "lpad('hello', 10, '>')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": ">>>>>hello"
   },
   {
@@ -1623,6 +1785,7 @@
     "example": "ltrim('>>>>test<<', '><')",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "test<<"
   },
   {
@@ -1634,6 +1797,7 @@
     "example": "MEDIAN(ABS(x-MEDIAN(x)))",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1647,6 +1811,7 @@
     "example": "make_date(1992, 9, 20)",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "1992-09-20"
   },
   {
@@ -1660,6 +1825,7 @@
     "example": "make_time(13, 34, 27.123456)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "13:34:27.123456"
   },
   {
@@ -1676,6 +1842,7 @@
     "example": "make_timestamp(1992, 9, 20, 13, 34, 27.123456)",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "1992-09-20 13:34:27.123456"
   },
   {
@@ -1688,6 +1855,7 @@
     "example": "map(['key1', 'key2'], ['val1', 'val2'])",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.4.0",
     "result": "{key1=val1, key2=val2}"
   },
   {
@@ -1700,6 +1868,7 @@
     "example": "map_concat(map([1,2], ['a', 'b']), map([2,3], ['c', 'd']));",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.8.0",
     "result": "{1=a, 2=c, 3=d}"
   },
   {
@@ -1711,6 +1880,7 @@
     "example": "map_entries(map(['key'], ['val']))",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.8.0",
     "result": "[{'key': key, 'value': val}]"
   },
   {
@@ -1726,6 +1896,7 @@
       "element_at"
     ],
     "category": "map",
+    "added_in_version": "v0.4.0",
     "result": "[val]"
   },
   {
@@ -1737,6 +1908,7 @@
     "example": "map_from_entries([{k: 5, v: 'val1'}, {k: 3, v: 'val2'}]);",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.5.0",
     "result": "{5=val1, 3=val2}"
   },
   {
@@ -1748,6 +1920,7 @@
     "example": "map_keys(map(['key'], ['val']))",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.8.0",
     "result": "[key]"
   },
   {
@@ -1759,6 +1932,7 @@
     "example": "map_values(map(['key'], ['val']))",
     "type": "scalar_function",
     "category": "map",
+    "added_in_version": "v0.8.0",
     "result": "[val]"
   },
   {
@@ -1770,6 +1944,7 @@
     "example": "max(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1782,6 +1957,7 @@
     "type": "scalar_function",
     "struct": "MD5Fun",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "202cb962ac59075b964b07152d234b70"
   },
   {
@@ -1794,7 +1970,8 @@
     "type": "scalar_function",
     "struct": "MD5NumberFun",
     "category": "string",
-    "result": "149263671248412135425768892945843956768"
+    "added_in_version": "v0.4.0",
+    "result": 149263671248412135425768892945843956768
   },
   {
     "name": "md5_number_lower",
@@ -1806,7 +1983,8 @@
     "type": "scalar_function",
     "struct": "MD5NumberLowerFun",
     "category": "string",
-    "result": "8091599832034528150"
+    "added_in_version": "v0.4.0",
+    "result": 8091599832034528150
   },
   {
     "name": "md5_number_upper",
@@ -1818,7 +1996,8 @@
     "type": "scalar_function",
     "struct": "MD5NumberUpperFun",
     "category": "string",
-    "result": "6559309979213966368"
+    "added_in_version": "v0.4.0",
+    "result": 6559309979213966368
   },
   {
     "name": "median",
@@ -1829,6 +2008,7 @@
     "example": "QUANTILE_CONT(x, 0.5)",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1841,6 +2021,7 @@
     "example": "microsecond(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 44123456
   },
   {
@@ -1852,6 +2033,7 @@
     "example": "millennium(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 3
   },
   {
@@ -1864,6 +2046,7 @@
     "example": "millisecond(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 44123
   },
   {
@@ -1875,6 +2058,7 @@
     "example": "min(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1887,6 +2071,7 @@
     "example": "minute(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 59
   },
   {
@@ -1898,6 +2083,7 @@
     "example": "",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1909,6 +2095,7 @@
     "example": "month(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 8
   },
   {
@@ -1921,6 +2108,7 @@
     "example": "monthname(TIMESTAMP '1992-09-20')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "September"
   },
   {
@@ -1934,7 +2122,8 @@
     "type": "scalar_function_set",
     "struct": "NextAfterFun",
     "category": "math",
-    "result": 1.0000001192092896
+    "added_in_version": "v0.4.0",
+    "result": 1.0000001
   },
   {
     "name": "pi",
@@ -1943,6 +2132,7 @@
     "type": "scalar_function",
     "parameters": [],
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 3.141592653589793
   },
   {
@@ -1955,6 +2145,7 @@
     "example": "printf('Benchmark \"%s\" took %d seconds', 'CSV', 42)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "Benchmark \"CSV\" took 42 seconds"
   },
   {
@@ -1966,6 +2157,7 @@
     "example": "product(A)",
     "type": "aggregate_function",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1978,6 +2170,7 @@
     "example": "",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -1993,6 +2186,7 @@
       "quantile"
     ],
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2004,6 +2198,7 @@
     "example": "quarter(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 3
   },
   {
@@ -2015,6 +2210,7 @@
     "example": "radians(90)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 1.5707963267948966
   },
   {
@@ -2024,7 +2220,8 @@
     "type": "scalar_function",
     "parameters": [],
     "category": "random",
-    "result": 0.4729174713138491
+    "added_in_version": "v0.4.0",
+    "result": 0.41688403743319213
   },
   {
     "name": "range",
@@ -2038,7 +2235,10 @@
     "type": "scalar_function_set",
     "struct": "ListRangeFun",
     "category": "list",
-    "result": "[2]"
+    "added_in_version": "v0.4.0",
+    "result": [
+      2
+    ]
   },
   {
     "name": "regr_avgx",
@@ -2050,6 +2250,7 @@
     "example": "",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2062,6 +2263,7 @@
     "example": "",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2074,6 +2276,7 @@
     "example": "(SUM(x*y) - SUM(x) * SUM(y) / COUNT(*)) / COUNT(*)",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2086,6 +2289,7 @@
     "example": "AVG(y)-REGR_SLOPE(y,x)*AVG(x)",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2098,6 +2302,7 @@
     "example": "",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2110,6 +2315,7 @@
     "example": "COVAR_POP(x,y) / VAR_POP(x)",
     "type": "aggregate_function",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2123,6 +2329,7 @@
     "type": "aggregate_function",
     "struct": "RegrSXXFun",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2136,6 +2343,7 @@
     "type": "aggregate_function",
     "struct": "RegrSXYFun",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2149,6 +2357,7 @@
     "type": "aggregate_function",
     "struct": "RegrSYYFun",
     "category": "regression",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2161,6 +2370,7 @@
     "example": "repeat('A', 5)",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "AAAAA"
   },
   {
@@ -2174,6 +2384,7 @@
     "example": "replace('hello', 'l', '-')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "he--o"
   },
   {
@@ -2187,6 +2398,7 @@
     "example": "reservoir_quantile(A,0.5,1024)",
     "type": "aggregate_function_set",
     "category": "holistic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2198,6 +2410,7 @@
     "example": "reverse('hello')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "olleh"
   },
   {
@@ -2210,6 +2423,7 @@
     "example": "right('Hello\ud83e\udd86', 3)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "lo\ud83e\udd86"
   },
   {
@@ -2222,6 +2436,7 @@
     "example": "right_grapheme('\ud83e\udd26\ud83c\udffc\u200d\u2642\ufe0f\ud83e\udd26\ud83c\udffd\u200d\u2640\ufe0f', 1)",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.6.0",
     "result": "\ud83e\udd26\ud83c\udffd\u200d\u2640\ufe0f"
   },
   {
@@ -2234,6 +2449,7 @@
     "example": "round(42.4332, 2)",
     "type": "scalar_function_set",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 42.43
   },
   {
@@ -2245,6 +2461,7 @@
     "example": "row(4, 'hello')",
     "type": "scalar_function",
     "category": "struct",
+    "added_in_version": "v0.4.0",
     "result": "{'': 4, '': hello}"
   },
   {
@@ -2258,6 +2475,7 @@
     "example": "rpad('hello', 10, '<')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "hello<<<<<"
   },
   {
@@ -2270,6 +2488,7 @@
     "example": "rtrim('>>>>test<<', '><')",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": ">>>>test"
   },
   {
@@ -2282,6 +2501,7 @@
     "example": "second(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 44
   },
   {
@@ -2294,6 +2514,7 @@
     "type": "aggregate_function",
     "struct": "StandardErrorOfTheMeanFun",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2307,6 +2528,7 @@
     "example": "set_bit('0110010'::BIT, 2, 0)",
     "type": "scalar_function",
     "category": "bit",
+    "added_in_version": "v0.7.0",
     "result": "0100010"
   },
   {
@@ -2316,6 +2538,7 @@
     "type": "scalar_function",
     "parameters": [],
     "category": "random",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2328,6 +2551,7 @@
     "type": "scalar_function",
     "struct": "SHA256Fun",
     "category": "string",
+    "added_in_version": "v0.9.0",
     "result": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
   },
   {
@@ -2339,6 +2563,7 @@
     "example": "sign(-349)",
     "type": "scalar_function_set",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": -1
   },
   {
@@ -2351,6 +2576,7 @@
     "type": "scalar_function_set",
     "struct": "SignBitFun",
     "category": "math",
+    "added_in_version": "v0.7.0",
     "result": false
   },
   {
@@ -2362,6 +2588,7 @@
     "example": "sin(90)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 0.8939966636005579
   },
   {
@@ -2373,6 +2600,7 @@
     "example": "skewness(A)",
     "type": "aggregate_function",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2384,6 +2612,7 @@
     "example": "sqrt(4)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": 2.0
   },
   {
@@ -2395,6 +2624,7 @@
     "example": "stats(5)",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "[Min: 5, Max: 5][Has Null: false, Has No Null: true][Approx Unique: 1]"
   },
   {
@@ -2407,6 +2637,7 @@
     "type": "aggregate_function",
     "struct": "StdDevPopFun",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2422,6 +2653,7 @@
     ],
     "struct": "StdDevSampFun",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2435,6 +2667,7 @@
     "example": "strftime(timestamp '1992-01-01 20:38:40', '%a, %-d %B %Y - %I:%M:%S %p')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "Wed, 1 January 1992 - 08:38:40 PM"
   },
   {
@@ -2450,6 +2683,7 @@
       "group_concat"
     ],
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2467,6 +2701,7 @@
       "split"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "[hello, world]"
   },
   {
@@ -2483,6 +2718,7 @@
       "regexp_split_to_array"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "[hello, world; 42]"
   },
   {
@@ -2496,7 +2732,8 @@
     "example": "strptime('Wed, 1 January 1992 - 08:38:40 PST', '%a, %-d %B %Y - %H:%M:%S %Z')",
     "type": "scalar_function_set",
     "category": "date",
-    "result": "1992-01-01 16:38:40+00"
+    "added_in_version": "v0.4.0",
+    "result": "1992-01-01 08:38:40"
   },
   {
     "name": "struct_insert",
@@ -2508,7 +2745,11 @@
     "example": "struct_insert({'a': 1}, b := 2)",
     "type": "scalar_function",
     "category": "struct",
-    "result": "{'a': 1, 'b': 2}"
+    "added_in_version": "v0.5.0",
+    "result": {
+      "a": 1,
+      "b": 2
+    }
   },
   {
     "name": "struct_pack",
@@ -2519,6 +2760,7 @@
     "example": "struct_pack(i := 4, s := 'string')",
     "type": "scalar_function",
     "category": "struct",
+    "added_in_version": "v0.4.0",
     "result": "{'i': 4, 's': string}"
   },
   {
@@ -2530,6 +2772,7 @@
     "example": "sum(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2541,6 +2784,7 @@
     "example": "sum_no_overflow(A)",
     "type": "aggregate_function_set",
     "category": "distributive",
+    "added_in_version": "v0.5.0",
     "result": null
   },
   {
@@ -2552,6 +2796,7 @@
     "example": "tan(90)",
     "type": "scalar_function",
     "category": "math",
+    "added_in_version": "v0.4.0",
     "result": -1.995200412208242
   },
   {
@@ -2565,6 +2810,7 @@
     "example": "time_bucket(INTERVAL '2 weeks', TIMESTAMP '1992-04-20 15:26:00-07', TIMESTAMP '1992-04-01 00:00:00-07')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.7.0",
     "result": "1992-04-15 07:00:00"
   },
   {
@@ -2576,6 +2822,7 @@
     "example": "timezone(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 0
   },
   {
@@ -2587,6 +2834,7 @@
     "example": "timezone_hour(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 0
   },
   {
@@ -2598,6 +2846,7 @@
     "example": "timezone_minute(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 0
   },
   {
@@ -2611,6 +2860,7 @@
     "example": "to_base(42, 16)",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.9.0",
     "result": "2A"
   },
   {
@@ -2625,6 +2875,7 @@
       "base64"
     ],
     "category": "blob",
+    "added_in_version": "v0.4.0",
     "result": "QQ=="
   },
   {
@@ -2636,6 +2887,7 @@
     "example": "to_days(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "5 days"
   },
   {
@@ -2647,6 +2899,7 @@
     "example": "to_hours(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "05:00:00"
   },
   {
@@ -2658,6 +2911,7 @@
     "example": "to_microseconds(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "00:00:00.000005"
   },
   {
@@ -2669,6 +2923,7 @@
     "example": "to_milliseconds(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "00:00:00.005"
   },
   {
@@ -2680,6 +2935,7 @@
     "example": "to_minutes(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "00:05:00"
   },
   {
@@ -2691,6 +2947,7 @@
     "example": "to_months(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "5 months"
   },
   {
@@ -2702,6 +2959,7 @@
     "example": "to_seconds(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "00:00:05"
   },
   {
@@ -2713,6 +2971,7 @@
     "example": "to_timestamp(1284352323.5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "2010-09-13 04:32:03.5+00"
   },
   {
@@ -2724,6 +2983,7 @@
     "example": "to_years(5)",
     "type": "scalar_function",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": "5 years"
   },
   {
@@ -2737,6 +2997,7 @@
     "example": "translate('12345', '143', 'ax')",
     "type": "scalar_function",
     "category": "string",
+    "added_in_version": "v0.7.0",
     "result": "a2x5"
   },
   {
@@ -2749,6 +3010,7 @@
     "example": "trim('>>>>test<<', '><')",
     "type": "scalar_function_set",
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": "test"
   },
   {
@@ -2760,7 +3022,8 @@
     "example": "trunc(17.4)",
     "type": "scalar_function_set",
     "category": "math",
-    "result": 17.0
+    "added_in_version": "v0.8.0",
+    "result": 17
   },
   {
     "struct": "TryStrpTimeFun",
@@ -2773,6 +3036,7 @@
     "example": "try_strptime('Wed, 1 January 1992 - 08:38:40 PM', '%a, %-d %B %Y - %I:%M:%S %p')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.8.0",
     "result": "1992-01-01 20:38:40"
   },
   {
@@ -2783,7 +3047,8 @@
     "struct": "CurrentTransactionIdFun",
     "type": "scalar_function",
     "category": "generic",
-    "result": 56
+    "added_in_version": "v0.4.0",
+    "result": 54
   },
   {
     "name": "typeof",
@@ -2795,6 +3060,7 @@
     "struct": "TypeOfFun",
     "type": "scalar_function",
     "category": "generic",
+    "added_in_version": "v0.4.0",
     "result": "VARCHAR"
   },
   {
@@ -2809,6 +3075,7 @@
       "from_binary"
     ],
     "category": "string",
+    "added_in_version": "v0.8.0",
     "result": "\\x06"
   },
   {
@@ -2823,6 +3090,7 @@
       "from_hex"
     ],
     "category": "string",
+    "added_in_version": "v0.8.0",
     "result": "*"
   },
   {
@@ -2837,6 +3105,7 @@
       "ord"
     ],
     "category": "string",
+    "added_in_version": "v0.4.0",
     "result": 252
   },
   {
@@ -2849,6 +3118,7 @@
     "example": "union_extract(s, 'k')",
     "type": "scalar_function",
     "category": "union",
+    "added_in_version": "v0.6.0",
     "result": null
   },
   {
@@ -2860,6 +3130,7 @@
     "example": "union_tag(union_value(k := 'foo'))",
     "type": "scalar_function",
     "category": "union",
+    "added_in_version": "v0.6.0",
     "result": "k"
   },
   {
@@ -2871,6 +3142,7 @@
     "example": "union_value(k := 'hello')",
     "type": "scalar_function",
     "category": "union",
+    "added_in_version": "v0.6.0",
     "result": "hello"
   },
   {
@@ -2884,7 +3156,8 @@
     ],
     "parameters": [],
     "category": "random",
-    "result": "111e1179-01dd-4f7e-9a67-139fa9b2236c"
+    "added_in_version": "v0.4.0",
+    "result": "085e3e5a-1207-48ff-9380-46ebcb82cb79"
   },
   {
     "name": "var_pop",
@@ -2895,6 +3168,7 @@
     "example": "",
     "type": "aggregate_function",
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2909,6 +3183,7 @@
       "variance"
     ],
     "category": "algebraic",
+    "added_in_version": "v0.4.0",
     "result": null
   },
   {
@@ -2920,6 +3195,7 @@
     "example": "vector_type(col)",
     "type": "scalar_function",
     "category": "debug",
+    "added_in_version": "v0.9.0",
     "result": null
   },
   {
@@ -2929,7 +3205,8 @@
     "example": "version()",
     "type": "scalar_function",
     "category": "generic",
-    "result": "v0.8.2-dev5154"
+    "added_in_version": "v0.4.0",
+    "result": "v0.8.1"
   },
   {
     "name": "week",
@@ -2940,6 +3217,7 @@
     "example": "week(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 31
   },
   {
@@ -2952,6 +3230,7 @@
     "example": "weekday(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 2
   },
   {
@@ -2964,6 +3243,7 @@
     "example": "weekofyear(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 31
   },
   {
@@ -2977,6 +3257,7 @@
     "type": "scalar_function_set",
     "struct": "BitwiseXorFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": 20
   },
   {
@@ -2988,6 +3269,7 @@
     "example": "year(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 2021
   },
   {
@@ -3000,6 +3282,7 @@
     "example": "yearweek(timestamp '2021-08-03 11:59:44.123456')",
     "type": "scalar_function_set",
     "category": "date",
+    "added_in_version": "v0.4.0",
     "result": 202131
   },
   {
@@ -3013,6 +3296,7 @@
     "type": "scalar_function_set",
     "struct": "BitwiseOrFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": 35
   },
   {
@@ -3025,6 +3309,7 @@
     "type": "scalar_function_set",
     "struct": "BitwiseNotFun",
     "category": "operators",
+    "added_in_version": "v0.4.0",
     "result": -16
   }
 ]

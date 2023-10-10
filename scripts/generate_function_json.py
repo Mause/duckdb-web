@@ -65,21 +65,9 @@ def find_added_version(function: dict) -> str:
     oldest_version = versions[0]
 
     for version in versions:
-        with contextlib.suppress(CalledProcessError):
-            path = get_duck(version)
-            get_raw_result(path, function['example'])
-            return (
-                f"{oldest_version} or prior" if version == oldest_version else version
-            )
-
-    for version in versions:
-        with contextlib.suppress(CalledProcessError), contextlib.suppress(
-            BrokenPipeError
-        ):
+        with contextlib.suppress(CalledProcessError, BrokenPipeError):
             if function['name'] in get_functions(version):
                 return version
-
-    # return "indeterminate, example passed in no versions"
 
 
 def get_functions(version: str) -> Set[str]:
