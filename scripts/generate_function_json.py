@@ -79,47 +79,41 @@ def get_functions(version: str) -> Set[str]:
     )
 
 
+def load_data(out: str):
+    dd = json._default_decoder
+    end = 0
+    rows = []
+    while out[end:]:
+        obj, end = dd.raw_decode(out, end)
+        end += 1
+        rows.append(obj)
+    return rows
+
+
 def get_raw_result(binary: str, example: str) -> str:
-    proc = Popen(
+    extra = []
+    if "enum" in example.lower():
+        extra.extend(
+            ['-c', "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious');"]
+        )
+
+    out = check_output(
         [
             binary,
-            "-csv",
-            # '-cmd',
-            # 'SELECT setseed(0.42); ',
-            # '-cmd',
-            # 'LOAD icu;',
-            "-batch",
+            '-json',
+            '-c',
+            'SELECT setseed(0.42); ',
+            '-c',
+            'LOAD icu;',
+            *extra,
+            '-c',
+            f'SELECT {example.strip(";")} AS result',
         ],
-        stdout=PIPE,
         stderr=PIPE,
         text=True,
-        stdin=PIPE,
     )
-    if "enum" in example.lower():
-        proc.stdin.write(
-            "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious');\n"
-        )
-
-    proc.stdin.write(f'SELECT {example.strip(";")} AS result;\n')
-    proc.stdin.close()
-    out = proc.stdout.read()
-    if err := proc.stderr.read():
-        raise CalledProcessError(
-            output=out, stderr=err, cmd="", returncode=proc.returncode
-        )
-
-    rows = list(DictReader(StringIO(out)))
-    if not rows:
-        return [None]
-
-    result = [row["result"] for row in rows]
-    try:
-        return [
-            row == 'true' if row in ['true', 'false'] else ast.literal_eval(row)
-            for row in result
-        ]
-    except (SyntaxError, ValueError):
-        return result
+    rows = load_data(out)[-1]
+    return [row['result'] for row in rows]
 
 
 def get_result(example: str) -> str:

@@ -13,7 +13,7 @@
     ],
     "category": "math",
     "added_in_version": "v0.4.0",
-    "result": 24
+    "result": "24"
   },
   {
     "name": "&",
@@ -296,7 +296,7 @@
     ],
     "category": "string",
     "added_in_version": "v0.8.0",
-    "result": 101010
+    "result": "101010"
   },
   {
     "name": "bit_and",
@@ -419,7 +419,7 @@
     "type": "scalar_function",
     "category": "map",
     "added_in_version": "v0.4.0",
-    "result": 2
+    "result": "2"
   },
   {
     "name": "cbrt",
@@ -446,7 +446,7 @@
     ],
     "category": "math",
     "added_in_version": "v0.4.0",
-    "result": 18
+    "result": 18.0
   },
   {
     "name": "century",
@@ -566,7 +566,7 @@
     "type": "scalar_function",
     "category": "generic",
     "added_in_version": "v0.4.0",
-    "result": "SELECT current_query() AS result;"
+    "result": "SELECT current_query() AS result"
   },
   {
     "name": "current_schema",
@@ -814,7 +814,7 @@
     "type": "scalar_function",
     "category": "enum",
     "added_in_version": "v0.7.0",
-    "result": 2
+    "result": "2"
   },
   {
     "name": "enum_first",
@@ -985,13 +985,7 @@
     "type": "scalar_function",
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ]
+    "result": "[1, 2, 3, 4, 5]"
   },
   {
     "name": "floor",
@@ -1003,7 +997,7 @@
     "type": "scalar_function_set",
     "category": "math",
     "added_in_version": "v0.4.0",
-    "result": 17
+    "result": 17.0
   },
   {
     "name": "format",
@@ -1069,10 +1063,7 @@
     "type": "scalar_function_set",
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      2,
-      5
-    ]
+    "result": "[2, 5]"
   },
   {
     "name": "get_bit",
@@ -1168,7 +1159,7 @@
     "type": "scalar_function",
     "category": "generic",
     "added_in_version": "v0.4.0",
-    "result": 2595805878642663834
+    "result": "2595805878642663834"
   },
   {
     "name": "hex",
@@ -1564,11 +1555,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      5,
-      -3,
-      1
-    ]
+    "result": "[5, -3, 1]"
   },
   {
     "name": "list_filter",
@@ -1585,9 +1572,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.5.0",
-    "result": [
-      5
-    ]
+    "result": "[5]"
   },
   {
     "name": "list_inner_product",
@@ -1619,12 +1604,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      6,
-      3,
-      2,
-      1
-    ]
+    "result": "[6, 3, 2, 1]"
   },
   {
     "name": "list_slice",
@@ -1657,12 +1637,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      1,
-      2,
-      3,
-      6
-    ]
+    "result": "[1, 2, 3, 6]"
   },
   {
     "name": "list_transform",
@@ -1681,11 +1656,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.5.0",
-    "result": [
-      2,
-      3,
-      4
-    ]
+    "result": "[2, 3, 4]"
   },
   {
     "name": "list_unique",
@@ -1700,7 +1671,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": 3
+    "result": "3"
   },
   {
     "name": "list_value",
@@ -1716,11 +1687,7 @@
     ],
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      4,
-      5,
-      6
-    ]
+    "result": "[4, 5, 6]"
   },
   {
     "name": "ln",
@@ -1971,7 +1938,7 @@
     "struct": "MD5NumberFun",
     "category": "string",
     "added_in_version": "v0.4.0",
-    "result": 149263671248412135425768892945843956768
+    "result": "149263671248412135425768892945843956768"
   },
   {
     "name": "md5_number_lower",
@@ -1984,7 +1951,7 @@
     "struct": "MD5NumberLowerFun",
     "category": "string",
     "added_in_version": "v0.4.0",
-    "result": 8091599832034528150
+    "result": "8091599832034528150"
   },
   {
     "name": "md5_number_upper",
@@ -1997,7 +1964,7 @@
     "struct": "MD5NumberUpperFun",
     "category": "string",
     "added_in_version": "v0.4.0",
-    "result": 6559309979213966368
+    "result": "6559309979213966368"
   },
   {
     "name": "median",
@@ -2123,7 +2090,7 @@
     "struct": "NextAfterFun",
     "category": "math",
     "added_in_version": "v0.4.0",
-    "result": 1.0000001
+    "result": 1.0000001192092896
   },
   {
     "name": "pi",
@@ -2221,7 +2188,7 @@
     "parameters": [],
     "category": "random",
     "added_in_version": "v0.4.0",
-    "result": 0.41688403743319213
+    "result": 0.4729174713138491
   },
   {
     "name": "range",
@@ -2236,9 +2203,7 @@
     "struct": "ListRangeFun",
     "category": "list",
     "added_in_version": "v0.4.0",
-    "result": [
-      2
-    ]
+    "result": "[2]"
   },
   {
     "name": "regr_avgx",
@@ -2746,10 +2711,7 @@
     "type": "scalar_function",
     "category": "struct",
     "added_in_version": "v0.5.0",
-    "result": {
-      "a": 1,
-      "b": 2
-    }
+    "result": "{'a': 1, 'b': 2}"
   },
   {
     "name": "struct_pack",
@@ -3023,7 +2985,7 @@
     "type": "scalar_function_set",
     "category": "math",
     "added_in_version": "v0.8.0",
-    "result": 17
+    "result": 17.0
   },
   {
     "struct": "TryStrpTimeFun",
@@ -3048,7 +3010,7 @@
     "type": "scalar_function",
     "category": "generic",
     "added_in_version": "v0.4.0",
-    "result": 54
+    "result": 56
   },
   {
     "name": "typeof",
@@ -3157,7 +3119,7 @@
     "parameters": [],
     "category": "random",
     "added_in_version": "v0.4.0",
-    "result": "085e3e5a-1207-48ff-9380-46ebcb82cb79"
+    "result": "111e1179-01dd-4f7e-9a67-139fa9b2236c"
   },
   {
     "name": "var_pop",
