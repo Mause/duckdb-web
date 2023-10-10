@@ -996,6 +996,10 @@
               "url": "substrait"
             },
             {
+              "page": "INET",
+              "url": "inet"
+            },
+            {
               "page": "TPC-H",
               "url": "tpch"
             },
