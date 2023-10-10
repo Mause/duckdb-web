@@ -11,11 +11,12 @@ from argparse import ArgumentParser
 from subprocess import check_output, CalledProcessError, PIPE, TimeoutExpired, Popen
 from urllib.request import urlretrieve, urlopen
 from functools import cache
+from itertools import chain
 from zipfile import ZipFile
 from os.path import exists
 from shutil import copyfileobj
 from tqdm import tqdm
-from typing import Set
+from typing import Set, List
 
 parser = ArgumentParser()
 parser.add_argument('--source', required=True)
@@ -90,24 +91,12 @@ def load_data(out: str):
     return rows
 
 
-def get_raw_result(binary: str, example: str) -> str:
-    extra = []
-    if "enum" in example.lower():
-        extra.extend(
-            ['-c', "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious');"]
-        )
-
+def get_raw_result(binary: str, parts: List[str]) -> str:
     out = check_output(
         [
             binary,
             '-json',
-            '-c',
-            'SELECT setseed(0.42); ',
-            '-c',
-            'LOAD icu;',
-            *extra,
-            '-c',
-            f'SELECT {example.strip(";")} AS result',
+            *chain.from_iterable(['-c', part] for part in parts),
         ],
         stderr=PIPE,
         text=True,
@@ -125,6 +114,13 @@ def get_result(example: str) -> str:
         return '2023-07-23 14:04:22.538+00'
     elif example == 'version()':
         return 'v0.8.1'
+
+    parts = [
+        'SELECT setseed(0.42); ',
+        'LOAD icu;',
+        "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious')",
+        f'SELECT {example.strip(";")} AS result',
+    ]
 
     try:
         return get_raw_result(args.binary, example)[0]
