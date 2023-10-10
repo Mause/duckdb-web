@@ -141,15 +141,6 @@ def main():
     for version in tqdm(get_versions(), desc='Loading DuckDB versions'):
         get_duck(version)
 
-    with open('docs/functions.json') as fh:
-        existing_functions = {
-            function['name']: function.get('added_in_version')
-            for function in json.load(fh)
-            if 'version' in function
-        }
-
-    existing_functions.clear()  # TODO: remove me
-
     for file in source.glob('src/core_functions/**/*.json'):
         category = file.parent.stem
         with file.open() as fh:
@@ -163,10 +154,7 @@ def main():
                         else []
                     ),
                     'category': category,
-                    'added_in_version': existing_functions.get(
-                        function['name'],
-                        find_added_version(function),
-                    ),
+                    'added_in_version': find_added_version(function),
                     'result': get_result(function['example'])
                     if function.get('example') and 'scalar' in function['type']
                     else None,
