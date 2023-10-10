@@ -314,3 +314,5 @@ report.html
 
 # Python pickle files
 environment.pickle
+
+duckdb-*

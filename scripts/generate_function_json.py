@@ -1,12 +1,136 @@
+import sys
+import ast
+import contextlib
+import os
+from io import StringIO
+import stat
 import json
+from csv import DictReader
 from pathlib import Path
 from argparse import ArgumentParser
-from subprocess import check_output, CalledProcessError, PIPE
+from subprocess import check_output, CalledProcessError, PIPE, TimeoutExpired, Popen
+from urllib.request import urlretrieve, urlopen
+from functools import lru_cache, cache
+from zipfile import ZipFile
+from os.path import exists
+from shutil import copyfileobj
+from tqdm import tqdm
+from typing import Set
 
 parser = ArgumentParser()
 parser.add_argument('--source', required=True)
 parser.add_argument('--binary', required=True)
 args = parser.parse_args()
+
+match sys.platform:
+    case 'linux':
+        platform = 'linux-amd64'
+    case 'darwin':
+        platform = 'osx-universal'
+    case 'win32':
+        platform = 'windows-amd64'
+url = f"https://github.com/duckdb/duckdb/releases/download/{{version}}/duckdb_cli-{platform}.zip"
+
+
+@cache
+def get_versions():
+    versions = sorted(
+        [
+            version["tag_name"]
+            for version in json.load(
+                urlopen("https://api.github.com/repos/duckdb/duckdb/releases")
+            )
+        ]
+    )
+    # we don't provide docs for versions older than this
+    return versions[versions.index("v0.4.0") :]
+
+
+@lru_cache()
+def get_duck(version: str) -> str:
+    dest = Path(f"duckdb-{version}")
+    if not dest.exists():
+        filename, _ = urlretrieve(url.format(version=version))
+
+        with ZipFile(filename) as zipfile, dest.open("wb") as fh:
+            copyfileobj(zipfile.open("duckdb"), fh)
+
+        os.chmod(dest, dest.stat().st_mode | stat.S_IEXEC)
+
+    return str(dest.resolve())
+
+
+def find_added_version(function: dict) -> str:
+    versions = get_versions()
+    oldest_version = versions[0]
+
+    for version in versions:
+        with contextlib.suppress(CalledProcessError):
+            path = get_duck(version)
+            get_raw_result(path, function['example'])
+            return (
+                f"{oldest_version} or prior" if version == oldest_version else version
+            )
+
+    for version in versions:
+        with contextlib.suppress(CalledProcessError), contextlib.suppress(
+            BrokenPipeError
+        ):
+            if function['name'] in get_functions(version):
+                return version
+
+    # return "indeterminate, example passed in no versions"
+
+
+def get_functions(version: str) -> Set[str]:
+    return set(
+        get_raw_result(
+            get_duck(version), 'function_name as result from duckdb_functions()'
+        )
+    )
+
+
+def get_raw_result(binary: str, example: str) -> str:
+    proc = Popen(
+        [
+            binary,
+            "-csv",
+            # '-cmd',
+            # 'SELECT setseed(0.42); ',
+            # '-cmd',
+            # 'LOAD icu;',
+            "-batch",
+        ],
+        stdout=PIPE,
+        stderr=PIPE,
+        text=True,
+        stdin=PIPE,
+    )
+    if "enum" in example.lower():
+        proc.stdin.write(
+            "CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy', 'anxious');\n"
+        )
+
+    proc.stdin.write(f'SELECT {example.strip(";")} AS result;\n')
+    proc.stdin.close()
+    out = proc.stdout.read()
+    if err := proc.stderr.read():
+        raise CalledProcessError(
+            output=out, stderr=err, cmd="", returncode=proc.returncode
+        )
+
+    rows = list(DictReader(StringIO(out)))
+    if not rows:
+        return [None]
+
+    result = [row["result"] for row in rows]
+    try:
+        return [
+            row == 'true' if row in ['true', 'false'] else ast.literal_eval(row)
+            for row in result
+        ]
+    except (SyntaxError, ValueError):
+        return result
 
 
 def get_result(example: str) -> str:
@@ -16,25 +140,13 @@ def get_result(example: str) -> str:
         return '14:04:22.524'
     elif example == 'get_current_timestamp()':
         return '2023-07-23 14:04:22.538+00'
+    elif example == 'version()':
+        return 'v0.8.1'
 
     try:
-        out = check_output(
-            [
-                args.binary,
-                '-json',
-                '-c',
-                'SELECT setseed(0.42); ',
-                '-c',
-                'LOAD icu;',
-                '-c',
-                f'SELECT {example.strip(";")} AS result',
-            ],
-            stderr=PIPE,
-        )
-        rows = json.loads(out.splitlines()[-1])
-        return rows[0]['result']
+        return get_raw_result(args.binary, example)[0]
     except CalledProcessError as e:
-        print(example.strip(), e.stderr.decode())
+        print(e.stderr)
         return None
 
 
@@ -42,6 +154,19 @@ def main():
     functions = []
     source = Path(args.source)
     assert source.exists()
+
+    for version in tqdm(get_versions(), desc='Loading DuckDB versions'):
+        get_duck(version)
+
+    with open('docs/functions.json') as fh:
+        existing_functions = {
+            function['name']: function.get('added_in_version')
+            for function in json.load(fh)
+            if 'version' in function
+        }
+
+    existing_functions.clear()  # TODO: remove me
+
     for file in source.glob('src/core_functions/**/*.json'):
         category = file.parent.stem
         with file.open() as fh:
@@ -55,8 +180,12 @@ def main():
                         else []
                     ),
                     'category': category,
+                    'added_in_version': existing_functions.get(
+                        function['name'],
+                        find_added_version(function),
+                    ),
                     'result': get_result(function['example'])
-                    if function.get('example')
+                    if function.get('example') and 'scalar' in function['type']
                     else None,
                 }
                 for function in json.load(fh)
