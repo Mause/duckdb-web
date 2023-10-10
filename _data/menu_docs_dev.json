@@ -996,10 +996,6 @@
               "url": "substrait"
             },
             {
-              "page": "Spatial",
-              "url": "spatial"
-            },
-            {
               "page": "INET",
               "url": "inet"
             },
