@@ -1,7 +1,0 @@
-{
-    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
-    "name": "fasql",
-    "git_repository": "https://github.com/wheretrue/fasql",
-    "description": "DuckDB Extension for reading and writing FASTA and FASTQ Files",
-    "extension_repository": "dbe.wheretrue.com/fasql/latest"
-}
