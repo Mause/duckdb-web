@@ -22,6 +22,13 @@ jobs:
       - run: pip install wheel pip -U
       - run: pip install -r requirements.txt -U
       - run: pip install duckdb --pre -U  # grab the latest duckdb python dev version
+      - run: gh repo clone duckdb/duckdb-swift
+      - run: |
+          git apply ../.github/workflows/duckdb-swift.patch
+          mkdir ../docs/api/swift
+          swift package generate-documentation --disable-indexing --transform-for-static-hosting --hosting-base-path /docs/api/swift/api --output-path ../docs/api/swift/api
+        working-directory: duckdb-swift
+        name: Build Swift Docs
       - run: gh repo clone duckdb/duckdb
       - run: gh repo clone duckdb/duckdb-node
       - name: download latest duckdb cli binary
@@ -30,6 +37,7 @@ jobs:
           gh run download $RUN_ID --repo duckdb/duckdb --name duckdb-binaries-linux
           mkdir -p duckdb/build/debug
           unzip duckdb_cli-linux-amd64.zip -d duckdb/build/debug
+          rm -rf duckdb-swift
 
       - name: Update docs
         uses: technote-space/create-pr-action@v2

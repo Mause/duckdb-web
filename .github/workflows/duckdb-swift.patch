@@ -1,0 +1,19 @@
+diff --git a/Package.swift b/Package.swift
+index e3a0e60..972e57f 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -3,11 +3,13 @@
+ import PackageDescription
+ 
+ let package = Package(
+-
+   name: "DuckDB",
+   products: [
+     .library(name: "DuckDB", targets: ["DuckDB"]),
+   ],
++  dependencies: [
++    .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
++  ],
+   targets: [
+     .target(
+       name: "DuckDB",
