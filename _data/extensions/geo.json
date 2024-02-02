@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "GEO",
+    "description": "This extension will provide a GEO type for DuckDB and enable basic GIS data analysis in it. It is currently a work-in-progress. It only support geography types and operations.",
+    "git_repository": "https://github.com/handstuyennn/geo"
+}

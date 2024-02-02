@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "aliases": {
+            "type": "array",
+            "items": {
+                "type":"string"
+            }
+        },
+        "extension_repository": {
+            "type": "string"
+        },
+        "git_repository": {
+            "type": "string"
+        }
+    },
+    "required": ["name"]
+}

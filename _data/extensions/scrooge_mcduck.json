@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "Scrooge-McDuck",
+    "description": "Scrooge McDuck is a financial extension to DuckDB. The main goal of this extension is to support a set of aggregation functions and data scanners frequently used on financial data.",
+    "git_repository": "https://github.com/pdet/Scrooge-McDuck"
+}

@@ -1,0 +1,7 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "Athena",
+    "description": "An experimental Athena extension for DuckDB",
+    "git_repository": "https://github.com/dacort/duckdb-athena-extension",
+    "extension_repository": "d2j9pg7mqm9we6.cloudfront.net/athena/latest"
+}

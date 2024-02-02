@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Mause/duckdb-web/third-party-extensions/_data/extension.schema.json",
+    "name": "Motherduck",
+    "description": "Motherduck extension for DuckDB",
+    "extension_repository": "extensions.duckdb.org"
+}

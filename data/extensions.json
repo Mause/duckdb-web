@@ -1,0 +1,7 @@
+---
+---
+{% assign extensions = "" | split: ", " %}
+{% for extension in site.data.extensions %}
+    {% assign extensions = extensions | push: extension[1] %}
+{% endfor %}
+{{ extensions | jsonify }}
